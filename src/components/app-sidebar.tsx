@@ -44,29 +44,29 @@ export function AppSidebar() {
   
   return (
     <>
-      {/* Floating expand button when sidebar is collapsed */}
+      {/* Always visible expand button when sidebar is collapsed */}
       {isCollapsed && (
         <Button
           variant="outline"
           size="icon"
           onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-50 h-10 w-10 bg-card shadow-lg border-2 hover:bg-accent hover:scale-105 transition-all duration-200"
+          className="fixed top-4 left-4 z-[100] h-10 w-10 bg-white shadow-xl border-2 border-primary/20 hover:bg-primary/5 hover:border-primary/40 hover:scale-110 transition-all duration-200"
         >
-          <Menu className="h-5 w-5" />
+          <Menu className="h-5 w-5 text-primary" />
         </Button>
       )}
       
-      <Sidebar className="border-r border-border bg-sidebar shadow-xl">
-        <SidebarHeader className="border-b border-border/50 p-4">
+      <Sidebar className="border-r border-border/60 bg-white shadow-2xl z-50">
+        <SidebarHeader className="border-b border-border/30 p-4 bg-gradient-to-r from-primary/5 to-primary/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-lg">
-                <GraduationCap className="h-6 w-6 text-primary-foreground" />
+                <GraduationCap className="h-6 w-6 text-white" />
               </div>
               {!isCollapsed && (
                 <div className="flex flex-col">
-                  <span className="text-xl font-bold text-sidebar-foreground">Learniz</span>
-                  <span className="text-xs text-sidebar-foreground/60">Student Portal</span>
+                  <span className="text-xl font-bold text-foreground">Learniz</span>
+                  <span className="text-xs text-muted-foreground">Student Portal</span>
                 </div>
               )}
             </div>
@@ -75,7 +75,7 @@ export function AppSidebar() {
                 variant="ghost"
                 size="icon"
                 onClick={toggleSidebar}
-                className="h-8 w-8 hover:bg-sidebar-accent/80 text-sidebar-foreground"
+                className="h-8 w-8 hover:bg-primary/10 text-primary hover:text-primary/80 transition-colors"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -83,23 +83,23 @@ export function AppSidebar() {
           </div>
         </SidebarHeader>
 
-        <SidebarContent className="px-3 py-4">
+        <SidebarContent className="px-3 py-4 bg-gradient-to-b from-background to-background/50">
           <SidebarGroup>
-            <SidebarGroupLabel className="text-sidebar-foreground/50 font-medium mb-3 px-2">
+            <SidebarGroupLabel className="text-muted-foreground font-medium mb-3 px-2">
               {!isCollapsed && "Navigation"}
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu className="space-y-1">
+              <SidebarMenu className="space-y-2">
                 {navigationItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton 
                       asChild 
                       className={`
-                        relative rounded-xl transition-all duration-200 hover:bg-sidebar-accent/80
-                        group hover:scale-[1.02] h-12
+                        relative rounded-xl transition-all duration-200 hover:bg-primary/10
+                        group hover:scale-[1.02] h-12 border border-transparent
                         ${isActive(item.url) 
-                          ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm' 
-                          : 'text-sidebar-foreground/70 hover:text-sidebar-foreground'
+                          ? 'bg-primary/15 text-primary border-primary/30 shadow-md font-medium' 
+                          : 'text-foreground/70 hover:text-foreground hover:border-primary/20'
                         }
                       `}
                     >
