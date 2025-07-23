@@ -50,23 +50,23 @@ export function AppSidebar() {
           variant="outline"
           size="icon"
           onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-[100] h-10 w-10 bg-white shadow-xl border-2 border-primary/20 hover:bg-primary/5 hover:border-primary/40 hover:scale-110 transition-all duration-200"
+          className="fixed top-4 left-4 z-[100] h-10 w-10 bg-white shadow-lg border-gray-200 hover:bg-gray-50 hover:border-primary transition-all duration-200"
         >
-          <Menu className="h-5 w-5 text-primary" />
+          <Menu className="h-5 w-5 text-gray-700" />
         </Button>
       )}
       
-      <Sidebar className="border-r border-border/60 bg-white shadow-2xl z-50">
-        <SidebarHeader className="border-b border-border/30 p-4 bg-gradient-to-r from-primary/5 to-primary/10">
+      <Sidebar className="border-r border-gray-200 bg-white shadow-sm z-50">
+        <SidebarHeader className="border-b border-gray-200 p-4 bg-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-lg">
-                <GraduationCap className="h-6 w-6 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-md">
+                <GraduationCap className="h-5 w-5 text-white" />
               </div>
               {!isCollapsed && (
                 <div className="flex flex-col">
-                  <span className="text-xl font-bold text-foreground">Learniz</span>
-                  <span className="text-xs text-muted-foreground">Student Portal</span>
+                  <span className="text-lg font-bold text-gray-900">Learniz</span>
+                  <span className="text-xs text-gray-500">Student Portal</span>
                 </div>
               )}
             </div>
@@ -75,7 +75,7 @@ export function AppSidebar() {
                 variant="ghost"
                 size="icon"
                 onClick={toggleSidebar}
-                className="h-8 w-8 hover:bg-primary/10 text-primary hover:text-primary/80 transition-colors"
+                className="h-8 w-8 hover:bg-gray-100 text-gray-600 hover:text-gray-800 transition-colors"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -83,9 +83,9 @@ export function AppSidebar() {
           </div>
         </SidebarHeader>
 
-        <SidebarContent className="px-3 py-4 bg-gradient-to-b from-background to-background/50">
+        <SidebarContent className="px-3 py-4 bg-white">
           <SidebarGroup>
-            <SidebarGroupLabel className="text-muted-foreground font-medium mb-3 px-2">
+            <SidebarGroupLabel className="text-gray-500 font-medium mb-3 px-2">
               {!isCollapsed && "Navigation"}
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -95,16 +95,16 @@ export function AppSidebar() {
                     <SidebarMenuButton 
                       asChild 
                       className={`
-                        relative rounded-xl transition-all duration-200 hover:bg-primary/10
-                        group hover:scale-[1.02] h-12 border border-transparent
+                        relative rounded-lg transition-all duration-200 hover:bg-gray-100
+                        group h-11 border border-transparent
                         ${isActive(item.url) 
-                          ? 'bg-primary/15 text-primary border-primary/30 shadow-md font-medium' 
-                          : 'text-foreground/70 hover:text-foreground hover:border-primary/20'
+                          ? 'bg-primary/10 text-primary border-primary/20 shadow-sm font-medium' 
+                          : 'text-gray-700 hover:text-gray-900 hover:border-gray-200'
                         }
                       `}
                     >
                       <NavLink to={item.url} className="flex items-center gap-3 w-full">
-                        <item.icon className={`h-5 w-5 transition-all duration-200 ${isActive(item.url) ? 'text-primary' : 'group-hover:scale-110'}`} />
+                        <item.icon className={`h-5 w-5 transition-all duration-200 ${isActive(item.url) ? 'text-primary' : 'group-hover:scale-105'}`} />
                         {!isCollapsed && (
                           <>
                             <span className="font-medium">{item.title}</span>

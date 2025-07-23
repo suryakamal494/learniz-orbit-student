@@ -14,40 +14,40 @@ const subjects = [
     id: 1,
     name: "Mathematics",
     icon: Calculator,
-    gradient: "from-blue-500 to-cyan-500",
-    bgGradient: "from-blue-50 to-cyan-50",
-    borderColor: "border-blue-200",
-    textColor: "text-blue-700",
+    bgColor: "bg-blue-100",
+    iconBg: "bg-blue-500",
+    textColor: "text-blue-600",
+    progressColor: "bg-blue-500",
     progress: 78
   },
   {
     id: 2,
     name: "Physics",
     icon: Atom,
-    gradient: "from-purple-500 to-pink-500",
-    bgGradient: "from-purple-50 to-pink-50",
-    borderColor: "border-purple-200",
-    textColor: "text-purple-700",
+    bgColor: "bg-purple-100",
+    iconBg: "bg-purple-500",
+    textColor: "text-purple-600",
+    progressColor: "bg-purple-500",
     progress: 65
   },
   {
     id: 3,
     name: "Chemistry",
     icon: FlaskConical,
-    gradient: "from-green-500 to-emerald-500",
-    bgGradient: "from-green-50 to-emerald-50",
-    borderColor: "border-green-200",
-    textColor: "text-green-700",
+    bgColor: "bg-green-100",
+    iconBg: "bg-green-500",
+    textColor: "text-green-600",
+    progressColor: "bg-green-500",
     progress: 82
   },
   {
     id: 4,
     name: "Biology",
     icon: Microscope,
-    gradient: "from-orange-500 to-red-500",
-    bgGradient: "from-orange-50 to-red-50",
-    borderColor: "border-orange-200",
-    textColor: "text-orange-700",
+    bgColor: "bg-orange-100",
+    iconBg: "bg-orange-500",
+    textColor: "text-orange-600",
+    progressColor: "bg-orange-500",
     progress: 71
   }
 ]
@@ -62,7 +62,7 @@ export function SubjectsGrid() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-foreground">
+        <h2 className="text-2xl font-bold text-gray-900">
           Your Subjects
         </h2>
       </div>
@@ -72,52 +72,41 @@ export function SubjectsGrid() {
           <Card 
             key={subject.id} 
             className={`
-              relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10
-              hover:-translate-y-2 bg-gradient-to-br ${subject.bgGradient} ${subject.borderColor} 
-              border-2 group cursor-pointer hover:border-primary/40 transform-gpu
-              backdrop-blur-sm hover:scale-105 shadow-lg
+              relative overflow-hidden transition-all duration-300 hover:shadow-lg
+              hover:-translate-y-1 ${subject.bgColor} border-0
+              group cursor-pointer transform-gpu
             `}
             onClick={() => handleSubjectClick(subject.id, subject.name)}
           >
             <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
               <div className={`
-                p-4 rounded-2xl bg-gradient-to-r ${subject.gradient} text-white shadow-xl
-                group-hover:scale-110 transition-transform duration-300
+                p-4 rounded-2xl ${subject.iconBg} text-white shadow-md
+                group-hover:scale-105 transition-transform duration-300
               `}>
                 <subject.icon className="h-8 w-8" />
               </div>
               
               <div className="space-y-2">
-                <h3 className={`text-lg font-semibold ${subject.textColor} group-hover:text-primary transition-colors`}>
+                <h3 className={`text-lg font-semibold ${subject.textColor}`}>
                   {subject.name}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   {subject.progress}% Complete
                 </p>
               </div>
               
-              <div className="w-full bg-white/50 rounded-full h-2 shadow-inner">
+              <div className="w-full bg-white/70 rounded-full h-2">
                 <div 
                   className={`
-                    h-2 rounded-full bg-gradient-to-r ${subject.gradient} 
-                    transition-all duration-1000 ease-out shadow-sm
+                    h-2 rounded-full ${subject.progressColor}
+                    transition-all duration-1000 ease-out
                   `}
                   style={{ width: `${subject.progress}%` }}
                 />
               </div>
               
-              <ArrowUpRight className={`h-4 w-4 ${subject.textColor} group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300`} />
+              <ArrowUpRight className={`h-4 w-4 ${subject.textColor} group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300`} />
             </CardContent>
-            
-            {/* Enhanced background decoration */}
-            <div className={`
-              absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-r ${subject.gradient} 
-              rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-300
-            `} />
-            <div className={`
-              absolute -bottom-2 -left-2 w-12 h-12 bg-gradient-to-r ${subject.gradient} 
-              rounded-full opacity-5 group-hover:opacity-15 transition-opacity duration-300
-            `} />
           </Card>
         ))}
       </div>
