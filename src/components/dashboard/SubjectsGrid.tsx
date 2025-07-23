@@ -15,8 +15,8 @@ const subjects = [
     name: "Mathematics",
     icon: Calculator,
     gradient: "from-blue-500 to-cyan-500",
-    bgGradient: "from-blue-500/10 to-cyan-500/10",
-    borderColor: "border-blue-500/30",
+    bgGradient: "from-blue-50 to-cyan-50",
+    borderColor: "border-blue-200",
     progress: 78
   },
   {
@@ -24,8 +24,8 @@ const subjects = [
     name: "Physics",
     icon: Atom,
     gradient: "from-purple-500 to-pink-500",
-    bgGradient: "from-purple-500/10 to-pink-500/10",
-    borderColor: "border-purple-500/30",
+    bgGradient: "from-purple-50 to-pink-50",
+    borderColor: "border-purple-200",
     progress: 65
   },
   {
@@ -33,8 +33,8 @@ const subjects = [
     name: "Chemistry",
     icon: FlaskConical,
     gradient: "from-green-500 to-emerald-500",
-    bgGradient: "from-green-500/10 to-emerald-500/10",
-    borderColor: "border-green-500/30",
+    bgGradient: "from-green-50 to-emerald-50",
+    borderColor: "border-green-200",
     progress: 82
   },
   {
@@ -42,8 +42,8 @@ const subjects = [
     name: "Biology",
     icon: Microscope,
     gradient: "from-orange-500 to-red-500",
-    bgGradient: "from-orange-500/10 to-red-500/10",
-    borderColor: "border-orange-500/30",
+    bgGradient: "from-orange-50 to-red-50",
+    borderColor: "border-orange-200",
     progress: 71
   }
 ]
@@ -68,10 +68,10 @@ export function SubjectsGrid() {
           <Card 
             key={subject.id} 
             className={`
-              relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20 
-              hover:-translate-y-2 bg-gradient-to-br ${subject.bgGradient} ${subject.borderColor} 
-              border-2 group cursor-pointer hover:border-primary/50 transform-gpu
-              backdrop-blur-sm
+              relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/10
+              hover:-translate-y-1 bg-gradient-to-br ${subject.bgGradient} ${subject.borderColor} 
+              border-2 group cursor-pointer hover:border-primary/30 transform-gpu
+              backdrop-blur-sm hover:scale-105
             `}
             onClick={() => handleSubjectClick(subject.id, subject.name)}
           >
@@ -108,7 +108,7 @@ export function SubjectsGrid() {
             {/* Subtle background decoration */}
             <div className={`
               absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-r ${subject.gradient} 
-              rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-300
+              rounded-full opacity-5 group-hover:opacity-10 transition-opacity duration-300
             `} />
           </Card>
         ))}
