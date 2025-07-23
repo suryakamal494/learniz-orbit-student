@@ -8,8 +8,8 @@ import {
   Bell,
   GraduationCap,
   ChevronRight,
-  Menu,
-  X
+  PanelLeftClose,
+  PanelLeftOpen
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 import {
@@ -43,25 +43,27 @@ export function AppSidebar() {
   const isActive = (path: string) => currentPath === path
   
   return (
-    <Sidebar className="border-r border-border/40 bg-gradient-to-b from-sidebar via-sidebar to-sidebar/80 backdrop-blur-sm">
-      <SidebarHeader className="border-b border-border/20 p-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-lg">
-            <GraduationCap className="h-7 w-7 text-primary-foreground" />
-          </div>
-          {!isCollapsed && (
-            <div className="flex flex-col">
-              <span className="text-xl font-bold text-sidebar-foreground">Learniz</span>
-              <span className="text-xs text-sidebar-foreground/70">Student Portal</span>
+    <Sidebar className="border-r border-border bg-sidebar backdrop-blur-xl">
+      <SidebarHeader className="border-b border-border/40 p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-lg">
+              <GraduationCap className="h-6 w-6 text-primary-foreground" />
             </div>
-          )}
+            {!isCollapsed && (
+              <div className="flex flex-col">
+                <span className="text-lg font-bold text-sidebar-foreground">Learniz</span>
+                <span className="text-xs text-sidebar-foreground/70">Student Portal</span>
+              </div>
+            )}
+          </div>
           <Button
             variant="ghost"
             size="icon"
             onClick={toggleSidebar}
-            className="ml-auto h-8 w-8 hover:bg-sidebar-accent/80"
+            className="h-8 w-8 hover:bg-sidebar-accent/80 text-sidebar-foreground"
           >
-            {isCollapsed ? <Menu className="h-4 w-4" /> : <X className="h-4 w-4" />}
+            {isCollapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
           </Button>
         </div>
       </SidebarHeader>
@@ -79,9 +81,9 @@ export function AppSidebar() {
                     asChild 
                     className={`
                       relative rounded-lg transition-all duration-200 hover:bg-sidebar-accent/80
-                      group hover:scale-[1.02] hover:shadow-sm
+                      group hover:scale-[1.02] 
                       ${isActive(item.url) 
-                        ? 'bg-gradient-to-r from-primary/20 to-primary/10 text-primary border-l-4 border-primary shadow-md' 
+                        ? 'bg-primary/20 text-primary border-l-2 border-primary' 
                         : 'text-sidebar-foreground/80 hover:text-sidebar-foreground'
                       }
                     `}
@@ -92,7 +94,7 @@ export function AppSidebar() {
                         <>
                           <span className="font-medium">{item.title}</span>
                           {isActive(item.url) && (
-                            <ChevronRight className="h-4 w-4 ml-auto text-primary animate-pulse" />
+                            <ChevronRight className="h-4 w-4 ml-auto text-primary" />
                           )}
                         </>
                       )}
