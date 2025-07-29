@@ -183,20 +183,20 @@ const getTypeIconColor = (type: string) => {
 export function LatestUpdates() {
   return (
     <div className="space-y-6">
-      {/* Today's Classes */}
-      <Card className="bg-gradient-to-br from-white via-white to-blue-50/30 border border-blue-100/60 shadow-sm">
+      {/* Today's Classes - Standardized */}
+      <Card className="bg-gradient-to-br from-white via-white to-blue-50/30 border border-blue-100/60 shadow-premium">
         <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-2 text-lg">
+          <CardTitle className="flex items-center gap-3 text-lg">
             <div className="p-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg">
               <Calendar className="h-5 w-5 text-white" />
             </div>
-            <span className="bg-gradient-to-r from-blue-700 to-blue-800 bg-clip-text text-transparent font-bold">
+            <span className="bg-gradient-to-r from-blue-700 to-blue-800 bg-clip-text text-transparent font-semibold">
               Today's Classes
             </span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="h-96 overflow-hidden">
-          <div className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-blue-50 pr-2">
+        <CardContent className="min-h-0">
+          <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-blue-50 pr-2">
             <div className="space-y-4">
               {todayClasses.map((classItem) => (
                 <TodayClassCard key={classItem.id} classItem={classItem} />
@@ -206,20 +206,20 @@ export function LatestUpdates() {
         </CardContent>
       </Card>
 
-      {/* Latest Updates */}
-      <Card className="bg-gradient-to-br from-white via-white to-purple-50/30 border border-purple-100/60 shadow-sm">
+      {/* Latest Updates - Standardized */}
+      <Card className="bg-gradient-to-br from-white via-white to-purple-50/30 border border-purple-100/60 shadow-premium">
         <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-2 text-lg">
+          <CardTitle className="flex items-center gap-3 text-lg">
             <div className="p-2 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg">
               <Bell className="h-5 w-5 text-white" />
             </div>
-            <span className="bg-gradient-to-r from-purple-700 to-purple-800 bg-clip-text text-transparent font-bold">
+            <span className="bg-gradient-to-r from-purple-700 to-purple-800 bg-clip-text text-transparent font-semibold">
               Latest Updates
             </span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="h-96 overflow-hidden">
-          <div className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-purple-200 scrollbar-track-purple-50 pr-2">
+        <CardContent className="min-h-0">
+          <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-purple-200 scrollbar-track-purple-50 pr-2">
             <div className="space-y-3">
               {updates.map((update) => (
                 <div
@@ -238,7 +238,7 @@ export function LatestUpdates() {
                         </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-gray-700 line-clamp-2 mb-2 leading-relaxed">
+                    <p className="text-body-sm text-gray-700 line-clamp-2 mb-2 leading-relaxed">
                       {update.description}
                     </p>
                     <div className="flex items-center gap-1 text-xs text-gray-600 bg-white/40 px-2 py-1 rounded-md w-fit">

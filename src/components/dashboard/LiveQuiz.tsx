@@ -55,13 +55,13 @@ export const LiveQuiz: React.FC<LiveQuizProps> = ({ data, isLoading = false }) =
       <div className="space-y-4">
         <div className="flex items-center gap-3">
           <div className="skeleton-premium h-6 w-6 rounded-full"></div>
-          <div className="skeleton-premium h-7 w-32 rounded-lg"></div>
+          <div className="skeleton-premium h-6 w-32 rounded-lg"></div>
         </div>
         
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {Array.from({ length: 3 }).map((_, index) => (
             <Card key={index} className="border-0 shadow-premium">
-              <CardContent className="p-4">
+              <CardContent className="p-6">
                 <div className="space-y-3">
                   <div className="skeleton-premium h-4 w-3/4 rounded-lg"></div>
                   <div className="skeleton-premium h-5 w-16 rounded-full"></div>
@@ -87,49 +87,48 @@ export const LiveQuiz: React.FC<LiveQuizProps> = ({ data, isLoading = false }) =
 
   return (
     <div className="space-y-4 animate-fade-in">
-      {/* Compact Header */}
+      {/* Standardized Header */}
       <div className="flex items-center gap-3">
-        <div className="p-1.5 bg-gradient-to-br from-red-500 to-pink-500 rounded-lg text-white shadow-md">
-          <Zap className="h-4 w-4" />
+        <div className="p-2 bg-gradient-to-br from-red-500 to-pink-500 rounded-lg text-white shadow-md">
+          <Zap className="h-5 w-5" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-foreground">Live Quiz</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-xl font-semibold text-foreground">Live Quiz</h2>
+          <p className="text-body-sm text-muted-foreground">
             {activeQuizzes.length} active • Join now!
           </p>
         </div>
       </div>
 
-      {/* Fixed Quiz Cards Grid - No overlapping */}
+      {/* Standardized Quiz Cards Grid */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {activeQuizzes.map((quiz) => (
           <Card 
             key={quiz.id} 
             className="
-              group relative overflow-hidden border border-red-100 bg-white/80 backdrop-blur-sm
-              hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover:border-red-200
-              w-full
+              group relative overflow-hidden border-red-100 bg-white/80 backdrop-blur-sm
+              hover:shadow-premium-lg hover:-translate-y-1 transition-all duration-300 hover:border-red-200
             "
           >
             {/* Live indicator */}
-            <div className="absolute top-2 right-2 flex items-center gap-1">
+            <div className="absolute top-4 right-4 flex items-center gap-1">
               <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></div>
               <span className="text-[10px] font-semibold text-red-600 uppercase tracking-wide">LIVE</span>
             </div>
 
-            <CardContent className="p-4 space-y-3">
+            <CardContent className="p-6 space-y-4">
               {/* Quiz Title */}
               <div className="pr-8">
-                <h3 className="text-sm font-semibold text-foreground line-clamp-2 leading-tight group-hover:text-red-600 transition-colors">
+                <h3 className="text-lg font-semibold text-foreground line-clamp-2 leading-tight group-hover:text-red-600 transition-colors">
                   {quiz.title}
                 </h3>
               </div>
 
-              {/* Subject Badge */}
+              {/* Subject Badge and Timer */}
               <div className="flex items-center justify-between">
                 <Badge 
                   variant="secondary" 
-                  className={`${getSubjectColor(quiz.subject)} text-xs px-2 py-1 font-medium`}
+                  className={`${getSubjectColor(quiz.subject)} text-xs px-3 py-1 font-medium`}
                 >
                   {quiz.subject}
                 </Badge>
@@ -143,13 +142,13 @@ export const LiveQuiz: React.FC<LiveQuizProps> = ({ data, isLoading = false }) =
               <Button 
                 onClick={() => handleTakeQuiz(quiz.id, quiz.subjectId)}
                 className="
-                  w-full h-8 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600
-                  text-white font-medium shadow-md hover:shadow-lg text-xs
-                  transform hover:scale-[1.02] transition-all duration-200
+                  w-full h-10 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600
+                  text-white font-medium shadow-md hover:shadow-lg text-sm
+                  transform hover:scale-[1.02] transition-all duration-300
                 "
                 size="sm"
               >
-                <Zap className="h-3 w-3 mr-1.5" />
+                <Zap className="h-4 w-4 mr-2" />
                 Take Quiz
               </Button>
             </CardContent>

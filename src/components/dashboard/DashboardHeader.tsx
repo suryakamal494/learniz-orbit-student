@@ -12,7 +12,7 @@ export function DashboardHeader() {
         <div className="flex items-center gap-4">
           <SidebarTrigger className="lg:hidden hover:bg-primary/10 transition-colors" />
           <div className="animate-fade-in">
-            <h1 className="text-2xl md:text-3xl font-bold text-gradient">
+            <h1 className="text-display-sm font-bold text-gradient">
               Dashboard
             </h1>
           </div>

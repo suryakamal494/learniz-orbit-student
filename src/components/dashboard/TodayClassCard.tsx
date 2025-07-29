@@ -70,7 +70,7 @@ const getSubjectBorder = (subject: string) => {
 
 export function TodayClassCard({ classItem }: TodayClassCardProps) {
   return (
-    <div className={`p-4 rounded-xl border-2 bg-gradient-to-br ${getSubjectGradient(classItem.subject)} ${getSubjectBorder(classItem.subject)} backdrop-blur-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group`}>
+    <div className={`p-4 rounded-xl border-2 bg-gradient-to-br ${getSubjectGradient(classItem.subject)} ${getSubjectBorder(classItem.subject)} backdrop-blur-sm hover:shadow-premium hover:scale-[1.02] transition-all duration-300 group`}>
       <div className="flex items-start justify-between mb-3">
         <Badge 
           variant="secondary" 
@@ -86,10 +86,10 @@ export function TodayClassCard({ classItem }: TodayClassCardProps) {
       </div>
       
       <div className="mb-3">
-        <h4 className={`font-bold text-lg mb-1 ${getSubjectColor(classItem.subject)} group-hover:text-opacity-80 transition-colors`}>
+        <h4 className={`font-semibold text-lg mb-1 ${getSubjectColor(classItem.subject)} group-hover:text-opacity-80 transition-colors`}>
           {classItem.subject}
         </h4>
-        <p className="text-sm text-gray-700/80 line-clamp-2 leading-relaxed">
+        <p className="text-body-sm text-gray-700/80 line-clamp-2 leading-relaxed">
           {classItem.topic}
         </p>
       </div>
@@ -102,9 +102,9 @@ export function TodayClassCard({ classItem }: TodayClassCardProps) {
         
         <Button 
           size="sm" 
-          className="h-8 px-4 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-xs font-semibold shadow-md hover:shadow-lg transition-all duration-200 group-hover:scale-105"
+          className="h-9 px-4 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 group-hover:scale-105"
         >
-          <Play className="h-3 w-3 mr-1.5" />
+          <Play className="h-4 w-4 mr-1.5" />
           Join
         </Button>
       </div>

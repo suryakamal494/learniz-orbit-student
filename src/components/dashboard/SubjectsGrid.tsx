@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card"
 import { 
   Calculator, 
@@ -107,16 +108,16 @@ export function SubjectsGrid({ subjects = defaultSubjects, isLoading = false }: 
 
   if (isLoading) {
     return (
-      <div className="space-y-8">
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div className="skeleton-premium h-8 w-48 rounded-xl"></div>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
           {Array.from({ length: 4 }).map((_, index) => (
             <Card key={index} className="border-0 shadow-premium">
               <CardContent className="p-6">
-                <div className="skeleton-premium h-16 w-16 rounded-2xl mb-4"></div>
+                <div className="skeleton-premium h-12 w-12 rounded-xl mb-4"></div>
                 <div className="skeleton-premium h-5 w-3/4 rounded-lg mb-3"></div>
                 <div className="skeleton-premium h-4 w-1/2 rounded-lg mb-4"></div>
                 <div className="skeleton-premium h-2 w-full rounded-full"></div>
@@ -130,19 +131,19 @@ export function SubjectsGrid({ subjects = defaultSubjects, isLoading = false }: 
 
   if (subjects.length === 0) {
     return (
-      <div className="space-y-8">
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-display-md text-foreground">Your Subjects</h2>
+          <h2 className="text-xl font-semibold text-foreground">Your Subjects</h2>
         </div>
         
         <Card className="p-20 text-center glass-premium border-0">
           <div className="space-y-6">
-            <div className="w-24 h-24 bg-gradient-to-br from-muted/50 to-muted/30 rounded-2xl flex items-center justify-center mx-auto">
-              <BookOpen className="h-12 w-12 text-muted-foreground" />
+            <div className="w-16 h-16 bg-gradient-to-br from-muted/50 to-muted/30 rounded-xl flex items-center justify-center mx-auto">
+              <BookOpen className="h-8 w-8 text-muted-foreground" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-display-xs text-foreground">No subjects available</h3>
-              <p className="text-body-md text-muted-foreground max-w-md mx-auto">
+              <h3 className="text-lg font-semibold text-foreground">No subjects available</h3>
+              <p className="text-body-sm text-muted-foreground max-w-md mx-auto">
                 Subjects will appear here once they are assigned to you. Contact your instructor for more information.
               </p>
             </div>
@@ -153,17 +154,17 @@ export function SubjectsGrid({ subjects = defaultSubjects, isLoading = false }: 
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="animate-fade-in space-y-2">
-          <h2 className="text-display-md text-foreground">Your Subjects</h2>
-          <p className="text-body-md text-muted-foreground">
+          <h2 className="text-xl font-semibold text-foreground">Your Subjects</h2>
+          <p className="text-body-sm text-muted-foreground">
             {subjects.length} active course{subjects.length !== 1 ? 's' : ''} • Keep learning and growing!
           </p>
         </div>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
         {subjects.map((subject, index) => {
           const config = getSubjectConfig(subject.name, index)
           const IconComponent = config.icon
@@ -172,46 +173,46 @@ export function SubjectsGrid({ subjects = defaultSubjects, isLoading = false }: 
             <Card 
               key={subject.id} 
               className={`
-                group cursor-pointer border-0 shadow-lg 
+                group cursor-pointer border-0 shadow-premium 
                 ${config.cardBg} ${config.hoverShadow}
-                transition-all duration-500 ease-out
-                hover:-translate-y-2 hover:shadow-xl
-                rounded-3xl overflow-hidden
+                transition-all duration-300 ease-out
+                hover:-translate-y-2 hover:shadow-premium-lg
+                rounded-xl overflow-hidden
                 backdrop-blur-sm border border-white/20
               `}
               onClick={() => handleSubjectClick(subject.id, subject.name)}
             >
-              <CardContent className="p-8 text-center relative">
+              <CardContent className="p-6 text-center relative">
                 {/* Decorative gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
-                {/* Subject Icon */}
-                <div className="flex justify-center mb-6 relative z-10">
+                {/* Subject Icon - Standardized size */}
+                <div className="flex justify-center mb-4 relative z-10">
                   <div className={`
-                    p-4 rounded-2xl ${config.iconBg} text-white shadow-lg
+                    p-3 rounded-xl ${config.iconBg} text-white shadow-md
                     transform transition-all duration-300
                     group-hover:scale-110 group-hover:rotate-3
                   `}>
-                    <IconComponent className="h-8 w-8" />
+                    <IconComponent className="h-6 w-6" />
                   </div>
                 </div>
                 
-                {/* Subject Name */}
+                {/* Subject Name - Standardized typography */}
                 <h3 className={`
-                  text-xl font-bold ${config.textColor} mb-2 relative z-10
+                  text-lg font-semibold ${config.textColor} mb-2 relative z-10
                   group-hover:text-opacity-90 transition-colors duration-300
                 `}>
                   {subject.name}
                 </h3>
                 
-                {/* Progress Text */}
-                <p className="text-sm text-gray-600 mb-4 font-medium relative z-10">
+                {/* Progress Text - Standardized */}
+                <p className="text-body-sm text-gray-600 mb-4 font-medium relative z-10">
                   {subject.progress}% Complete
                 </p>
                 
-                {/* Progress Bar */}
-                <div className="mb-6 relative z-10">
-                  <div className={`h-3 ${config.progressBg} rounded-full overflow-hidden shadow-inner`}>
+                {/* Progress Bar - Standardized height */}
+                <div className="mb-4 relative z-10">
+                  <div className={`h-2 ${config.progressBg} rounded-full overflow-hidden shadow-inner`}>
                     <div 
                       className={`
                         h-full ${config.progressColor} rounded-full 
@@ -224,15 +225,15 @@ export function SubjectsGrid({ subjects = defaultSubjects, isLoading = false }: 
                   </div>
                 </div>
                 
-                {/* Arrow Button */}
+                {/* Arrow Button - Standardized */}
                 <div className="flex justify-center relative z-10">
                   <div className={`
-                    p-3 rounded-xl ${config.textColor} opacity-60
+                    p-2 rounded-lg ${config.textColor} opacity-60
                     group-hover:opacity-100 transition-all duration-300
                     group-hover:scale-125 group-hover:-rotate-12
                     bg-white/50 group-hover:bg-white/80
                   `}>
-                    <ArrowUpRight className="h-5 w-5" />
+                    <ArrowUpRight className="h-4 w-4" />
                   </div>
                 </div>
               </CardContent>
