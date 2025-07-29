@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import MessagesPage from "./pages/MessagesPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import SchedulePage from "./pages/SchedulePage";
+import LoginPage from "./pages/LoginPage";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,9 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* Login page - standalone */}
+            <Route path="/login" element={<LoginPage />} />
+            
             {/* Routes that need full screen (exams, quizzes) */}
             <Route path="/subject/:subjectId/exam/:examId/instructions" element={<ExamInstructionsPage />} />
             <Route path="/subject/:subjectId/exam/:examId" element={<ExamPage />} />
