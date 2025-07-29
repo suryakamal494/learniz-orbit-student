@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card"
 import { 
   Calculator, 
@@ -56,28 +55,40 @@ const getSubjectConfig = (name: string, index: number) => {
   
   const configs = [
     {
-      iconBg: "bg-blue-500",
-      cardBg: "bg-blue-50",
-      textColor: "text-blue-600",
-      progressColor: "bg-blue-500"
+      // Deep Blue - Mathematics
+      iconBg: "bg-gradient-to-br from-blue-500 to-blue-600",
+      cardBg: "bg-gradient-to-br from-blue-50 via-blue-50/80 to-blue-100/60",
+      textColor: "text-blue-700",
+      progressBg: "bg-blue-100",
+      progressColor: "bg-gradient-to-r from-blue-500 to-blue-600",
+      hoverShadow: "hover:shadow-blue-200/50"
     },
     {
-      iconBg: "bg-purple-500", 
-      cardBg: "bg-purple-50",
-      textColor: "text-purple-600",
-      progressColor: "bg-purple-500"
+      // Rich Purple - Physics
+      iconBg: "bg-gradient-to-br from-purple-500 to-indigo-600",
+      cardBg: "bg-gradient-to-br from-purple-50 via-purple-50/80 to-indigo-100/60",
+      textColor: "text-purple-700",
+      progressBg: "bg-purple-100",
+      progressColor: "bg-gradient-to-r from-purple-500 to-indigo-600",
+      hoverShadow: "hover:shadow-purple-200/50"
     },
     {
-      iconBg: "bg-green-500",
-      cardBg: "bg-green-50", 
-      textColor: "text-green-600",
-      progressColor: "bg-green-500"
+      // Emerald Green - Chemistry
+      iconBg: "bg-gradient-to-br from-emerald-500 to-teal-600",
+      cardBg: "bg-gradient-to-br from-emerald-50 via-emerald-50/80 to-teal-100/60",
+      textColor: "text-emerald-700",
+      progressBg: "bg-emerald-100",
+      progressColor: "bg-gradient-to-r from-emerald-500 to-teal-600",
+      hoverShadow: "hover:shadow-emerald-200/50"
     },
     {
-      iconBg: "bg-orange-500",
-      cardBg: "bg-orange-50",
-      textColor: "text-orange-600", 
-      progressColor: "bg-orange-500"
+      // Warm Orange - Biology
+      iconBg: "bg-gradient-to-br from-orange-500 to-red-500",
+      cardBg: "bg-gradient-to-br from-orange-50 via-orange-50/80 to-red-100/60",
+      textColor: "text-orange-700",
+      progressBg: "bg-orange-100",
+      progressColor: "bg-gradient-to-r from-orange-500 to-red-500",
+      hoverShadow: "hover:shadow-orange-200/50"
     }
   ]
 
@@ -161,48 +172,65 @@ export function SubjectsGrid({ subjects = defaultSubjects, isLoading = false }: 
             <Card 
               key={subject.id} 
               className={`
-                group cursor-pointer border-0 shadow-md hover:shadow-lg
-                ${config.cardBg} transition-all duration-300 hover:-translate-y-1
+                group cursor-pointer border-0 shadow-lg 
+                ${config.cardBg} ${config.hoverShadow}
+                transition-all duration-500 ease-out
+                hover:-translate-y-2 hover:shadow-xl
                 rounded-3xl overflow-hidden
+                backdrop-blur-sm border border-white/20
               `}
               onClick={() => handleSubjectClick(subject.id, subject.name)}
             >
               <CardContent className="p-8 text-center relative">
+                {/* Decorative gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
                 {/* Subject Icon */}
-                <div className="flex justify-center mb-6">
+                <div className="flex justify-center mb-6 relative z-10">
                   <div className={`
                     p-4 rounded-2xl ${config.iconBg} text-white shadow-lg
+                    transform transition-all duration-300
+                    group-hover:scale-110 group-hover:rotate-3
                   `}>
                     <IconComponent className="h-8 w-8" />
                   </div>
                 </div>
                 
                 {/* Subject Name */}
-                <h3 className={`text-xl font-semibold ${config.textColor} mb-2`}>
+                <h3 className={`
+                  text-xl font-bold ${config.textColor} mb-2 relative z-10
+                  group-hover:text-opacity-90 transition-colors duration-300
+                `}>
                   {subject.name}
                 </h3>
                 
                 {/* Progress Text */}
-                <p className="text-sm text-gray-500 mb-4">
+                <p className="text-sm text-gray-600 mb-4 font-medium relative z-10">
                   {subject.progress}% Complete
                 </p>
                 
                 {/* Progress Bar */}
-                <div className="mb-6">
-                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div className="mb-6 relative z-10">
+                  <div className={`h-3 ${config.progressBg} rounded-full overflow-hidden shadow-inner`}>
                     <div 
-                      className={`h-full ${config.progressColor} rounded-full transition-all duration-500`}
+                      className={`
+                        h-full ${config.progressColor} rounded-full 
+                        transition-all duration-700 ease-out
+                        shadow-sm
+                        group-hover:shadow-md
+                      `}
                       style={{ width: `${subject.progress}%` }}
                     />
                   </div>
                 </div>
                 
                 {/* Arrow Button */}
-                <div className="flex justify-center">
+                <div className="flex justify-center relative z-10">
                   <div className={`
-                    p-2 rounded-xl ${config.textColor} opacity-70 
+                    p-3 rounded-xl ${config.textColor} opacity-60
                     group-hover:opacity-100 transition-all duration-300
-                    group-hover:scale-110
+                    group-hover:scale-125 group-hover:-rotate-12
+                    bg-white/50 group-hover:bg-white/80
                   `}>
                     <ArrowUpRight className="h-5 w-5" />
                   </div>
