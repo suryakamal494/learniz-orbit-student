@@ -10,8 +10,8 @@ interface MediaViewerProps {
   content: {
     id: string
     title: string
-    type: 'video' | 'reading' | 'pdf' | 'pdf-collection'
-    url?: string
+    type: 'youtube' | 'pdf'
+    url: string
     size?: string
     pages?: number
     duration?: string
@@ -29,7 +29,7 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ isOpen, onClose, conte
   }
 
   const handleDownload = () => {
-    if (content.type === 'pdf' && content.url) {
+    if (content.type === 'pdf') {
       const link = document.createElement('a')
       link.href = content.url
       link.download = content.title + '.pdf'
@@ -41,9 +41,7 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ isOpen, onClose, conte
   }
 
   const handleExternalOpen = () => {
-    if (content.url) {
-      window.open(content.url, '_blank', 'noopener,noreferrer')
-    }
+    window.open(content.url, '_blank', 'noopener,noreferrer')
   }
 
   const handlePdfError = () => {
@@ -64,7 +62,7 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ isOpen, onClose, conte
               </DialogDescription>
             </div>
             <div className="flex items-center gap-2">
-              {content.type === 'pdf' && content.url && (
+              {content.type === 'pdf' && (
                 <Button
                   variant="outline"
                   size="sm"
@@ -75,23 +73,21 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ isOpen, onClose, conte
                   <span className="hidden sm:inline">Download</span>
                 </Button>
               )}
-              {content.url && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleExternalOpen}
-                  className="flex items-center gap-2 h-8 px-3 text-xs sm:h-9 sm:px-4 sm:text-sm"
-                >
-                  <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">Open External</span>
-                </Button>
-              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleExternalOpen}
+                className="flex items-center gap-2 h-8 px-3 text-xs sm:h-9 sm:px-4 sm:text-sm"
+              >
+                <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">Open External</span>
+              </Button>
             </div>
           </div>
         </DialogHeader>
         
         <div className="flex-1 p-4 sm:p-6">
-          {content.type === 'video' && content.url ? (
+          {content.type === 'youtube' ? (
             <iframe
               src={getYouTubeEmbedUrl(content.url)}
               className="w-full h-full rounded-lg"
@@ -100,11 +96,11 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ isOpen, onClose, conte
               allowFullScreen
               title={content.title}
             />
-          ) : content.type === 'pdf' && content.url ? (
+          ) : content.type === 'pdf' ? (
             <>
               {!pdfError ? (
                 <iframe
-                  src={`${content.url}#toolbar=1&navpanes=1&scrollbar=1`}
+                  src={content.url}
                   className="w-full h-full rounded-lg border"
                   frameBorder="0"
                   title={content.title}
@@ -131,26 +127,7 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ isOpen, onClose, conte
                 </div>
               )}
             </>
-          ) : content.type === 'reading' ? (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-muted rounded-lg border">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold mb-2">Reading Material</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  This is a reading material. Content will be displayed here.
-                </p>
-                {content.url && (
-                  <Button onClick={handleExternalOpen} className="flex items-center gap-2">
-                    <ExternalLink className="h-4 w-4" />
-                    Open Reading Material
-                  </Button>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-muted rounded-lg border">
-              <p className="text-muted-foreground">Content type not supported</p>
-            </div>
-          )}
+          ) : null}
         </div>
       </DialogContent>
     </Dialog>
