@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Clock, BookOpen, Calendar, Users, Bell } from "lucide-react"
@@ -67,6 +68,26 @@ const todayClasses: TodayClass[] = [
     type: "lab",
     status: "upcoming",
     totalStudents: 25
+  },
+  {
+    id: "class-6",
+    subject: "Physics",
+    title: "Electromagnetism - Maxwell's Equations",
+    time: "07:00 PM",
+    teacher: "Dr. Anderson",
+    type: "live",
+    status: "upcoming",
+    totalStudents: 30
+  },
+  {
+    id: "class-7",
+    subject: "Chemistry",
+    title: "Physical Chemistry Lab - Thermodynamics",
+    time: "08:30 PM",
+    teacher: "Prof. Martinez",
+    type: "lab",
+    status: "upcoming",
+    totalStudents: 26
   }
 ]
 
@@ -125,6 +146,30 @@ const updates: Update[] = [
     time: "4 days ago",
     type: "assignment",
     subject: "Mathematics"
+  },
+  {
+    id: "8",
+    title: "Assignment Deadline",
+    description: "Physics Assignment 2 deadline extended to next week",
+    time: "5 days ago",
+    type: "announcement",
+    subject: "Physics"
+  },
+  {
+    id: "9",
+    title: "New Video Lecture",
+    description: "Organic Chemistry video lectures now available",
+    time: "6 days ago",
+    type: "material",
+    subject: "Chemistry"
+  },
+  {
+    id: "10",
+    title: "Test Results",
+    description: "Biology unit test results have been published",
+    time: "1 week ago",
+    type: "grade",
+    subject: "Biology"
   }
 ]
 
@@ -163,7 +208,7 @@ export function LatestUpdates() {
             Today's Classes
           </CardTitle>
         </CardHeader>
-        <CardContent className="h-80 overflow-y-auto custom-scrollbar">
+        <CardContent className="h-96 overflow-y-auto custom-scrollbar">
           <div className="space-y-3 pr-2">
             {todayClasses.map((classItem) => (
               <TodayClassCard key={classItem.id} classItem={classItem} />
@@ -180,7 +225,7 @@ export function LatestUpdates() {
             Latest Updates
           </CardTitle>
         </CardHeader>
-        <CardContent className="h-80 overflow-y-auto custom-scrollbar">
+        <CardContent className="h-96 overflow-y-auto custom-scrollbar">
           <div className="space-y-3 pr-2">
             {updates.map((update) => (
               <div
@@ -212,23 +257,3 @@ export function LatestUpdates() {
     </div>
   )
 }
-
-<style>
-.custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 2px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 2px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-</style>
