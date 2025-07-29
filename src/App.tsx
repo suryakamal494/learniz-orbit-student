@@ -10,6 +10,7 @@ import SubjectPage from "./pages/SubjectPage";
 import ExamInstructionsPage from "./pages/ExamInstructionsPage";
 import ExamPage from "./pages/ExamPage";
 import ExamResultsPage from "./pages/ExamResultsPage";
+import AnalysisPage from "./pages/AnalysisPage";
 import NotFound from "./pages/NotFound";
 import MessagesPage from "./pages/MessagesPage";
 import NotificationsPage from "./pages/NotificationsPage";
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/subject/:subjectId/exam/:examId/instructions" element={<ExamInstructionsPage />} />
             <Route path="/subject/:subjectId/exam/:examId" element={<ExamPage />} />
             <Route path="/subject/:subjectId/exam/:examId/results" element={<ExamResultsPage />} />
+            <Route path="/analysis" element={<AnalysisPage />} />
             <Route path="/schedule" element={<SchedulePage />} />
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
