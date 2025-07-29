@@ -34,8 +34,8 @@ export default function MessagesPage() {
 
   if (selectedThread) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="flex items-center gap-4 p-4 border-b border-border/50">
+      <div className="space-y-6 p-4 md:p-8 max-w-full overflow-hidden">
+        <div className="flex items-center gap-4">
           <Button
             variant="ghost"
             size="icon"
@@ -57,29 +57,27 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="space-y-6 p-4 md:p-8 max-w-full overflow-hidden">
       <MessagesHeader 
         activeTab={activeTab} 
         onTabChange={setActiveTab} 
         unreadCount={messages.filter(m => !m.isRead).length}
       />
       
-      <main className="p-4 md:p-6">
-        {activeTab === 'inbox' ? (
-          <MessagesList 
-            messages={messages} 
-            faculty={mockFaculty}
-            onMessageClick={handleMessageClick}
-            onComposeClick={handleComposeMessage}
-          />
-        ) : (
-          <ComposeForm 
-            faculty={mockFaculty}
-            onCancel={() => setActiveTab('inbox')}
-            onSend={() => setActiveTab('inbox')}
-          />
-        )}
-      </main>
+      {activeTab === 'inbox' ? (
+        <MessagesList 
+          messages={messages} 
+          faculty={mockFaculty}
+          onMessageClick={handleMessageClick}
+          onComposeClick={handleComposeMessage}
+        />
+      ) : (
+        <ComposeForm 
+          faculty={mockFaculty}
+          onCancel={() => setActiveTab('inbox')}
+          onSend={() => setActiveTab('inbox')}
+        />
+      )}
     </div>
   )
 }

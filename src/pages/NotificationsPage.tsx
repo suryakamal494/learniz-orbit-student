@@ -1,7 +1,5 @@
 
 import { useState } from 'react'
-import { SidebarProvider } from '@/components/ui/sidebar'
-import { AppSidebar } from '@/components/app-sidebar'
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader'
 import { NotificationsHeader } from '@/components/notifications/NotificationsHeader'
 import { NotificationsList } from '@/components/notifications/NotificationsList'
@@ -33,31 +31,23 @@ const NotificationsPage = () => {
   }
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
-        <AppSidebar />
+    <div className="space-y-6 p-4 md:p-8 max-w-full overflow-hidden">
+      <DashboardHeader />
+      
+      <div className="max-w-4xl">
+        <NotificationsHeader 
+          filter={filter}
+          onFilterChange={setFilter}
+          onMarkAllRead={markAllAsRead}
+          unreadCount={notifications.filter(n => !n.isRead).length}
+        />
         
-        <main className="flex-1 flex flex-col overflow-hidden">
-          <DashboardHeader />
-          
-          <div className="flex-1 overflow-auto">
-            <div className="container mx-auto px-4 md:px-6 py-6 max-w-4xl">
-              <NotificationsHeader 
-                filter={filter}
-                onFilterChange={setFilter}
-                onMarkAllRead={markAllAsRead}
-                unreadCount={notifications.filter(n => !n.isRead).length}
-              />
-              
-              <NotificationsList 
-                notifications={filteredNotifications}
-                onMarkAsRead={markAsRead}
-              />
-            </div>
-          </div>
-        </main>
+        <NotificationsList 
+          notifications={filteredNotifications}
+          onMarkAsRead={markAsRead}
+        />
       </div>
-    </SidebarProvider>
+    </div>
   )
 }
 
