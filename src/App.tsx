@@ -1,9 +1,11 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
+import { AppLayout } from "@/components/layout/AppLayout";
 import Index from "./pages/Index";
 import SubjectPage from "./pages/SubjectPage";
 import ExamInstructionsPage from "./pages/ExamInstructionsPage";
@@ -26,17 +28,26 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/subject/:subjectId" element={<SubjectPage />} />
+            {/* Routes that need full screen (exams, quizzes) */}
             <Route path="/subject/:subjectId/exam/:examId/instructions" element={<ExamInstructionsPage />} />
             <Route path="/subject/:subjectId/exam/:examId" element={<ExamPage />} />
             <Route path="/subject/:subjectId/exam/:examId/results" element={<ExamResultsPage />} />
             <Route path="/subject/:subjectId/live-quiz/:quizId" element={<LiveQuizPage />} />
-            <Route path="/analysis" element={<AnalysisPage />} />
-            <Route path="/schedule" element={<SchedulePage />} />
-            <Route path="/messages" element={<MessagesPage />} />
-            <Route path="/notifications" element={<NotificationsPage />} />
-            <Route path="*" element={<NotFound />} />
+            
+            {/* Routes with global layout (sidebar) */}
+            <Route path="*" element={
+              <AppLayout>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/subject/:subjectId" element={<SubjectPage />} />
+                  <Route path="/analysis" element={<AnalysisPage />} />
+                  <Route path="/schedule" element={<SchedulePage />} />
+                  <Route path="/messages" element={<MessagesPage />} />
+                  <Route path="/notifications" element={<NotificationsPage />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AppLayout>
+            } />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

@@ -1,8 +1,9 @@
 
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Bell, User, Settings } from "lucide-react"
+import { Bell, Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { ProfileDropdown } from "./ProfileDropdown"
 
 export function DashboardHeader() {
   return (
@@ -39,15 +40,7 @@ export function DashboardHeader() {
               <Settings className="h-5 w-5 transition-transform group-hover:rotate-90" />
             </Button>
             
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full hover:bg-primary/10 transition-colors group"
-            >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-                <User className="h-4 w-4 text-white" />
-              </div>
-            </Button>
+            <ProfileDropdown />
           </div>
         </div>
       </div>
