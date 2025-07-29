@@ -77,14 +77,14 @@ export function ScheduleFilters({ filters, onFiltersChange, onClearAll }: Schedu
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Subject</label>
             <Select
-              value={filters.subject || ''}
-              onValueChange={(value) => onFiltersChange({ subject: value || undefined })}
+              value={filters.subject || 'all'}
+              onValueChange={(value) => onFiltersChange({ subject: value === 'all' ? undefined : value })}
             >
               <SelectTrigger className="glass border-border/40">
                 <SelectValue placeholder="All subjects" />
               </SelectTrigger>
               <SelectContent className="glass border-border/40">
-                <SelectItem value="">All subjects</SelectItem>
+                <SelectItem value="all">All subjects</SelectItem>
                 {subjects.map((subject) => (
                   <SelectItem key={subject} value={subject}>
                     {subject}
@@ -98,14 +98,14 @@ export function ScheduleFilters({ filters, onFiltersChange, onClearAll }: Schedu
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Faculty</label>
             <Select
-              value={filters.faculty || ''}
-              onValueChange={(value) => onFiltersChange({ faculty: value || undefined })}
+              value={filters.faculty || 'all'}
+              onValueChange={(value) => onFiltersChange({ faculty: value === 'all' ? undefined : value })}
             >
               <SelectTrigger className="glass border-border/40">
                 <SelectValue placeholder="All faculty" />
               </SelectTrigger>
               <SelectContent className="glass border-border/40">
-                <SelectItem value="">All faculty</SelectItem>
+                <SelectItem value="all">All faculty</SelectItem>
                 {faculties.map((faculty) => (
                   <SelectItem key={faculty} value={faculty}>
                     {faculty}
@@ -119,14 +119,14 @@ export function ScheduleFilters({ filters, onFiltersChange, onClearAll }: Schedu
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Class</label>
             <Select
-              value={filters.class || ''}
-              onValueChange={(value) => onFiltersChange({ class: value || undefined })}
+              value={filters.class || 'all'}
+              onValueChange={(value) => onFiltersChange({ class: value === 'all' ? undefined : value })}
             >
               <SelectTrigger className="glass border-border/40">
                 <SelectValue placeholder="All classes" />
               </SelectTrigger>
               <SelectContent className="glass border-border/40">
-                <SelectItem value="">All classes</SelectItem>
+                <SelectItem value="all">All classes</SelectItem>
                 {classes.map((cls) => (
                   <SelectItem key={cls} value={cls}>
                     {cls}
