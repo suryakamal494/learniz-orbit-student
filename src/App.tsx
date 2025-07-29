@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import SubjectPage from "./pages/SubjectPage";
+import ExamPage from "./pages/ExamPage";
+import ExamResultsPage from "./pages/ExamResultsPage";
 import NotFound from "./pages/NotFound";
 import MessagesPage from "./pages/MessagesPage";
 import NotificationsPage from "./pages/NotificationsPage";
@@ -24,6 +26,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/subject/:subjectId" element={<SubjectPage />} />
+            <Route path="/subject/:subjectId/exam/:examId" element={<ExamPage />} />
+            <Route path="/subject/:subjectId/exam/:examId/results" element={<ExamResultsPage />} />
             <Route path="/schedule" element={<SchedulePage />} />
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />

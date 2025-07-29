@@ -1,4 +1,3 @@
-
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -6,6 +5,8 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LMSContainer } from "@/components/lms/LMSContainer"
+import { ExamsContainer } from "@/components/exams/ExamsContainer"
+import { mockExamData } from "@/data/mockExams"
 import { 
   ArrowLeft, 
   Calendar, 
@@ -255,6 +256,10 @@ const SubjectPage = () => {
     nextClass: "Today, 10:00 AM"
   }
 
+  // Get initial tab from URL params
+  const urlParams = new URLSearchParams(location.search)
+  const initialTab = urlParams.get('tab') || 'lms'
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="container max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
@@ -338,7 +343,7 @@ const SubjectPage = () => {
         </div>
 
         {/* Tabs for LMS, Exams, and Notes */}
-        <Tabs defaultValue="lms" className="w-full">
+        <Tabs defaultValue={initialTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 h-12">
             <TabsTrigger value="lms" className="flex items-center gap-2 text-sm sm:text-base">
               <BookOpen className="h-4 w-4" />
@@ -359,14 +364,7 @@ const SubjectPage = () => {
           </TabsContent>
 
           <TabsContent value="exams" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl">Exams & Assessments</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Exams content will be implemented here.</p>
-              </CardContent>
-            </Card>
+            <ExamsContainer data={mockExamData} subjectColor={subjectColor} />
           </TabsContent>
 
           <TabsContent value="notes" className="space-y-4">
