@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { MediaViewer } from "@/components/MediaViewer"
 import { 
   ArrowLeft, 
   Calendar, 
@@ -25,7 +26,7 @@ import {
   Video,
   FileQuestion,
   Download,
-  ExternalLink,
+  Eye,
   Youtube
 } from "lucide-react"
 import { useState } from "react"
@@ -37,6 +38,21 @@ const SubjectPage = () => {
   const subjectName = location.state?.subjectName || "Subject"
   const [expandedChapters, setExpandedChapters] = useState<string[]>([])
   const [expandedContent, setExpandedContent] = useState<string[]>([])
+  const [mediaViewer, setMediaViewer] = useState<{
+    isOpen: boolean
+    content: {
+      id: string
+      title: string
+      type: 'youtube' | 'pdf'
+      url: string
+      size?: string
+      pages?: number
+      duration?: string
+    } | null
+  }>({
+    isOpen: false,
+    content: null
+  })
 
   const toggleChapter = (chapterId: string) => {
     setExpandedChapters(prev => 
@@ -54,8 +70,18 @@ const SubjectPage = () => {
     )
   }
 
-  const openYouTubeVideo = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer')
+  const openMediaViewer = (content: any) => {
+    setMediaViewer({
+      isOpen: true,
+      content
+    })
+  }
+
+  const closeMediaViewer = () => {
+    setMediaViewer({
+      isOpen: false,
+      content: null
+    })
   }
 
   const getSubjectColor = (name: string) => {
@@ -143,7 +169,31 @@ const SubjectPage = () => {
               }
             ]
           },
-          { id: "lms-1-2", title: "Basic Concepts", type: "reading", duration: "10 min" },
+          { 
+            id: "lms-1-2", 
+            title: "Calculus Reference Materials", 
+            type: "pdf-collection",
+            duration: "Study materials",
+            hasSubContent: true,
+            subContent: [
+              {
+                id: "lms-1-2-1",
+                title: "Calculus Formulas Cheat Sheet",
+                type: "pdf",
+                url: "https://tutorial.math.lamar.edu/pdf/Calculus_Cheat_Sheet_All.pdf",
+                size: "2.3 MB",
+                pages: 8
+              },
+              {
+                id: "lms-1-2-2",
+                title: "Integration Techniques Guide",
+                type: "pdf", 
+                url: "https://www.math.ucdavis.edu/~kouba/CalcTwoDIRECTORY/integraltableDIRECTORY/IntegralTable.pdf",
+                size: "1.8 MB",
+                pages: 12
+              }
+            ]
+          },
           { id: "lms-1-3", title: "Practice Quiz", type: "quiz", duration: "20 min" }
         ]
       },
@@ -220,8 +270,22 @@ const SubjectPage = () => {
         downloadCount: 45, 
         status: "available",
         content: [
-          { id: "notes-1-1", title: "Chapter Summary", type: "pdf", size: "1.2 MB" },
-          { id: "notes-1-2", title: "Key Formulas", type: "pdf", size: "0.8 MB" },
+          { 
+            id: "notes-1-1", 
+            title: "Chapter Summary", 
+            type: "pdf", 
+            size: "1.2 MB",
+            url: "https://tutorial.math.lamar.edu/pdf/Calculus_Cheat_Sheet_All.pdf",
+            pages: 4
+          },
+          { 
+            id: "notes-1-2", 
+            title: "Key Formulas", 
+            type: "pdf", 
+            size: "0.8 MB",
+            url: "https://www.math.ucdavis.edu/~kouba/CalcTwoDIRECTORY/integraltableDIRECTORY/IntegralTable.pdf",
+            pages: 6
+          },
           { id: "notes-1-3", title: "Additional Resources", type: "pdf", size: "0.5 MB" }
         ]
       },
@@ -255,6 +319,7 @@ const SubjectPage = () => {
     switch (type) {
       case "video": return <Video className="h-4 w-4" />
       case "video-playlist": return <Video className="h-4 w-4" />
+      case "pdf-collection": return <FileText className="h-4 w-4" />
       case "youtube": return <Youtube className="h-4 w-4" />
       case "reading": return <BookOpen className="h-4 w-4" />
       case "quiz": return <FileQuestion className="h-4 w-4" />
@@ -450,7 +515,7 @@ const SubjectPage = () => {
                                             </div>
                                             <div className="flex items-center gap-2">
                                               <Badge variant="secondary" className="text-xs">
-                                                {item.subContent?.length} videos
+                                                {item.subContent?.length} {item.type === 'video-playlist' ? 'videos' : 'files'}
                                               </Badge>
                                               {expandedContent.includes(item.id) ? (
                                                 <ChevronUp className="h-3 w-3 text-muted-foreground" />
@@ -467,19 +532,21 @@ const SubjectPage = () => {
                                               <div 
                                                 key={subItem.id} 
                                                 className="flex items-center justify-between p-2 bg-white/70 rounded-md hover:bg-white/90 transition-colors cursor-pointer group"
-                                                onClick={() => openYouTubeVideo(subItem.url)}
+                                                onClick={() => openMediaViewer(subItem)}
                                               >
                                                 <div className="flex items-center gap-2">
                                                   {getContentIcon(subItem.type)}
                                                   <div>
-                                                    <h5 className="font-medium text-xs group-hover:text-red-600 transition-colors">
+                                                    <h5 className="font-medium text-xs group-hover:text-blue-600 transition-colors">
                                                       {subItem.title}
                                                     </h5>
-                                                    <p className="text-xs text-muted-foreground">{subItem.duration}</p>
+                                                    <p className="text-xs text-muted-foreground">
+                                                      {subItem.duration || `${subItem.size} ${subItem.pages ? `• ${subItem.pages} pages` : ''}`}
+                                                    </p>
                                                   </div>
                                                 </div>
                                                 <div className="flex items-center gap-1">
-                                                  <ExternalLink className="h-3 w-3 text-muted-foreground group-hover:text-red-600 transition-colors" />
+                                                  <Eye className="h-3 w-3 text-muted-foreground group-hover:text-blue-600 transition-colors" />
                                                 </div>
                                               </div>
                                             ))}
@@ -631,7 +698,7 @@ const SubjectPage = () => {
                             <div className="flex items-center gap-3">
                               {note.status === 'available' ? (
                                 <Button size="sm" variant="outline" className={`hover:${subjectColor.bg} hover:${subjectColor.border}`}>
-                                  Download
+                                  Download All
                                 </Button>
                               ) : (
                                 <Badge variant="secondary">
@@ -658,12 +725,26 @@ const SubjectPage = () => {
                                     {getContentIcon(item.type)}
                                     <div>
                                       <h4 className="font-medium text-sm">{item.title}</h4>
-                                      <p className="text-xs text-muted-foreground">{item.size}</p>
+                                      <p className="text-xs text-muted-foreground">
+                                        {item.size} {item.pages ? `• ${item.pages} pages` : ''}
+                                      </p>
                                     </div>
                                   </div>
-                                  <Button size="sm" variant="ghost" className="h-8">
-                                    <Download className="h-3 w-3" />
-                                  </Button>
+                                  <div className="flex items-center gap-2">
+                                    {item.url ? (
+                                      <Button 
+                                        size="sm" 
+                                        variant="ghost" 
+                                        className="h-8"
+                                        onClick={() => openMediaViewer(item)}
+                                      >
+                                        <Eye className="h-3 w-3" />
+                                      </Button>
+                                    ) : null}
+                                    <Button size="sm" variant="ghost" className="h-8">
+                                      <Download className="h-3 w-3" />
+                                    </Button>
+                                  </div>
                                 </div>
                               ))}
                             </div>
@@ -677,6 +758,12 @@ const SubjectPage = () => {
             </Card>
           </TabsContent>
         </Tabs>
+
+        <MediaViewer
+          isOpen={mediaViewer.isOpen}
+          onClose={closeMediaViewer}
+          content={mediaViewer.content}
+        />
       </div>
     </div>
   )
