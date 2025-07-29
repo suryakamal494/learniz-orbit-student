@@ -1,88 +1,30 @@
+
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { MediaViewer } from "@/components/MediaViewer"
+import { LMSContainer } from "@/components/lms/LMSContainer"
 import { 
   ArrowLeft, 
   Calendar, 
   Clock, 
   BookOpen, 
-  Play, 
   Trophy,
   Star,
   TrendingUp,
   Target,
-  CheckCircle2,
-  Circle,
-  FileText,
-  PenTool,
   GraduationCap,
-  ChevronDown,
-  ChevronUp,
-  Video,
-  FileQuestion,
-  Download,
-  Eye,
-  Youtube
+  FileText,
 } from "lucide-react"
-import { useState } from "react"
+import type { LMSData } from '@/types/lms'
 
 const SubjectPage = () => {
   const { subjectId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
   const subjectName = location.state?.subjectName || "Subject"
-  const [expandedChapters, setExpandedChapters] = useState<string[]>([])
-  const [expandedContent, setExpandedContent] = useState<string[]>([])
-  const [mediaViewer, setMediaViewer] = useState<{
-    isOpen: boolean
-    content: {
-      id: string
-      title: string
-      type: 'youtube' | 'pdf'
-      url: string
-      size?: string
-      pages?: number
-      duration?: string
-    } | null
-  }>({
-    isOpen: false,
-    content: null
-  })
-
-  const toggleChapter = (chapterId: string) => {
-    setExpandedChapters(prev => 
-      prev.includes(chapterId) 
-        ? prev.filter(id => id !== chapterId)
-        : [...prev, chapterId]
-    )
-  }
-
-  const toggleContent = (contentId: string) => {
-    setExpandedContent(prev => 
-      prev.includes(contentId) 
-        ? prev.filter(id => id !== contentId)
-        : [...prev, contentId]
-    )
-  }
-
-  const openMediaViewer = (content: any) => {
-    setMediaViewer({
-      isOpen: true,
-      content
-    })
-  }
-
-  const closeMediaViewer = () => {
-    setMediaViewer({
-      isOpen: false,
-      content: null
-    })
-  }
 
   const getSubjectColor = (name: string) => {
     switch (name.toLowerCase()) {
@@ -126,254 +68,212 @@ const SubjectPage = () => {
 
   const subjectColor = getSubjectColor(subjectName)
 
-  const subjectData = {
-    name: subjectName,
-    progress: 78,
-    streak: 12,
-    score: 92,
-    nextClass: "Today, 10:00 AM",
-    lmsChapters: [
-      { 
-        id: "lms-1", 
-        title: "Introduction to Calculus", 
-        progress: 100, 
+  // Enhanced LMS data structure
+  const lmsData: LMSData = {
+    overallProgress: 78,
+    chapters: [
+      {
+        id: "chapter-1",
+        title: "Introduction to Calculus",
+        description: "Fundamental concepts and definitions",
+        progress: 100,
         status: "completed",
-        content: [
-          { 
-            id: "lms-1-1", 
-            title: "What is Calculus?", 
-            type: "video-playlist", 
-            duration: "50 min total",
-            hasSubContent: true,
-            subContent: [
+        estimatedTime: "2 hours",
+        totalItems: 6,
+        completedItems: 6,
+        topics: [
+          {
+            id: "topic-1-1",
+            title: "What is Calculus?",
+            estimatedTime: "45 min",
+            difficulty: "easy",
+            completed: true,
+            contentItems: [
               {
-                id: "lms-1-1-1",
+                id: "content-1-1-1",
                 title: "The essence of calculus",
                 type: "youtube",
-                url: "https://www.youtube.com/watch?v=UukVP7Mg3TU",
-                duration: "17 min"
+                url: "https://www.youtube.com/watch?v=WUvTyaaNkzM",
+                duration: "17 min",
+                completed: true
               },
               {
-                id: "lms-1-1-2", 
+                id: "content-1-1-2",
                 title: "Introduction to Calculus",
-                type: "youtube",
+                type: "youtube", 
                 url: "https://www.youtube.com/watch?v=YpYSEXAxMJ0",
-                duration: "15 min"
+                duration: "15 min",
+                completed: true
               },
               {
-                id: "lms-1-1-3",
-                title: "Calculus Fundamentals", 
+                id: "content-1-1-3",
+                title: "Calculus Fundamentals",
                 type: "youtube",
                 url: "https://www.youtube.com/watch?v=jHGi1uVN1Uc",
-                duration: "18 min"
+                duration: "18 min",
+                completed: true
               }
             ]
           },
-          { 
-            id: "lms-1-2", 
-            title: "Calculus Reference Materials", 
-            type: "pdf-collection",
-            duration: "Study materials",
-            hasSubContent: true,
-            subContent: [
+          {
+            id: "topic-1-2", 
+            title: "Reference Materials",
+            estimatedTime: "30 min",
+            difficulty: "easy",
+            completed: true,
+            contentItems: [
               {
-                id: "lms-1-2-1",
+                id: "content-1-2-1",
                 title: "Calculus Formulas Cheat Sheet",
                 type: "pdf",
                 url: "https://tutorial.math.lamar.edu/pdf/Calculus_Cheat_Sheet_All.pdf",
                 size: "2.3 MB",
-                pages: 8
+                pages: 8,
+                completed: true
               },
               {
-                id: "lms-1-2-2",
-                title: "Integration Techniques Guide",
-                type: "pdf", 
+                id: "content-1-2-2",
+                title: "Integration Techniques Guide", 
+                type: "pdf",
                 url: "https://www.math.ucdavis.edu/~kouba/CalcTwoDIRECTORY/integraltableDIRECTORY/IntegralTable.pdf",
-                size: "1.8 MB",
-                pages: 12
+                size: "1.8 MB", 
+                pages: 12,
+                completed: true
               }
             ]
           },
-          { id: "lms-1-3", title: "Practice Quiz", type: "quiz", duration: "20 min" }
-        ]
-      },
-      { 
-        id: "lms-2", 
-        title: "Limits and Continuity", 
-        progress: 100, 
-        status: "completed",
-        content: [
-          { id: "lms-2-1", title: "Understanding Limits", type: "video", duration: "25 min" },
-          { id: "lms-2-2", title: "Continuity Explained", type: "video", duration: "20 min" },
-          { id: "lms-2-3", title: "Worked Examples", type: "reading", duration: "15 min" },
-          { 
-            id: "lms-2-4", 
-            title: "Limits and Continuity Reference Materials", 
-            type: "pdf-collection",
-            duration: "Study materials",
-            hasSubContent: true,
-            subContent: [
+          {
+            id: "topic-1-3",
+            title: "Practice Quiz",
+            estimatedTime: "20 min",
+            difficulty: "medium",
+            completed: true,
+            contentItems: [
               {
-                id: "lms-2-4-1",
-                title: "Sample PDF Document",
-                type: "pdf",
-                url: "https://www.aeee.in/wp-content/uploads/2020/08/Sample-pdf.pdf",
-                size: "1.2 MB",
-                pages: 10
-              },
-              {
-                id: "lms-2-4-2",
-                title: "Basic Link PDF Sample",
-                type: "pdf", 
-                url: "https://www.antennahouse.com/hubfs/xsl-fo-sample/pdf/basic-link-1.pdf",
-                size: "0.8 MB",
-                pages: 5
+                id: "content-1-3-1",
+                title: "Basic Concepts Quiz",
+                type: "quiz",
+                duration: "20 min",
+                completed: true
               }
             ]
           }
         ]
       },
-      { 
-        id: "lms-3", 
-        title: "Derivatives", 
-        progress: 85, 
+      {
+        id: "chapter-2",
+        title: "Limits and Continuity", 
+        description: "Understanding limits and continuous functions",
+        progress: 85,
         status: "current",
-        content: [
-          { id: "lms-3-1", title: "Definition of Derivatives", type: "video", duration: "30 min" },
-          { id: "lms-3-2", title: "Derivative Rules", type: "reading", duration: "25 min" },
-          { id: "lms-3-3", title: "Chain Rule", type: "video", duration: "20 min" },
-          { id: "lms-3-4", title: "Practice Problems", type: "quiz", duration: "40 min" }
+        estimatedTime: "3 hours",
+        totalItems: 8,
+        completedItems: 7,
+        topics: [
+          {
+            id: "topic-2-1",
+            title: "Understanding Limits",
+            estimatedTime: "25 min", 
+            difficulty: "medium",
+            completed: true,
+            contentItems: [
+              {
+                id: "content-2-1-1",
+                title: "Introduction to Limits",
+                type: "youtube",
+                url: "https://www.youtube.com/watch?v=riXcZT2ICjA",
+                duration: "25 min",
+                completed: true
+              }
+            ]
+          },
+          {
+            id: "topic-2-2",
+            title: "Continuity Explained",
+            estimatedTime: "20 min",
+            difficulty: "medium", 
+            completed: true,
+            contentItems: [
+              {
+                id: "content-2-2-1", 
+                title: "Continuity Concepts",
+                type: "youtube",
+                url: "https://www.youtube.com/watch?v=a3xHa5Y8mAg",
+                duration: "20 min",
+                completed: true
+              }
+            ]
+          },
+          {
+            id: "topic-2-3",
+            title: "Reference Materials",
+            estimatedTime: "30 min",
+            difficulty: "easy",
+            completed: false,
+            contentItems: [
+              {
+                id: "content-2-3-1",
+                title: "Limits and Continuity Guide",
+                type: "pdf",
+                url: "https://www.whitman.edu/mathematics/calculus_online/section03.01.html",
+                size: "1.2 MB",
+                pages: 10,
+                completed: false
+              },
+              {
+                id: "content-2-3-2",
+                title: "Practice Problems Set",
+                type: "pdf",
+                url: "https://tutorial.math.lamar.edu/Problems/CalcI/Limits_Intro.aspx", 
+                size: "0.8 MB",
+                pages: 5,
+                completed: false
+              }
+            ]
+          }
         ]
       },
-      { 
-        id: "lms-4", 
-        title: "Applications of Derivatives", 
-        progress: 0, 
+      {
+        id: "chapter-3",
+        title: "Derivatives",
+        description: "Introduction to derivatives and applications",
+        progress: 0,
         status: "locked",
-        content: []
-      }
-    ],
-    examChapters: [
-      { 
-        id: "exam-1", 
-        title: "Chapter 1 - Basics", 
-        examType: "Quiz", 
-        score: 95, 
-        status: "completed",
-        content: [
-          { id: "exam-1-1", title: "Basic Concepts Quiz", type: "quiz", score: 95, attempts: 1 },
-          { id: "exam-1-2", title: "Review Questions", type: "practice", score: null, attempts: 0 }
-        ]
-      },
-      { 
-        id: "exam-2", 
-        title: "Chapter 2 - Advanced", 
-        examType: "Test", 
-        score: 88, 
-        status: "completed",
-        content: [
-          { id: "exam-2-1", title: "Comprehensive Test", type: "test", score: 88, attempts: 2 },
-          { id: "exam-2-2", title: "Supplementary Questions", type: "practice", score: 92, attempts: 1 }
-        ]
-      },
-      { 
-        id: "exam-3", 
-        title: "Chapter 3 - Applications", 
-        examType: "Quiz", 
-        score: null, 
-        status: "upcoming",
-        content: [
-          { id: "exam-3-1", title: "Applications Quiz", type: "quiz", score: null, attempts: 0 }
-        ]
-      }
-    ],
-    notesChapters: [
-      { 
-        id: "notes-1", 
-        title: "Introduction Notes", 
-        size: "2.5 MB", 
-        downloadCount: 45, 
-        status: "available",
-        content: [
-          { 
-            id: "notes-1-1", 
-            title: "Chapter Summary", 
-            type: "pdf", 
-            size: "1.2 MB",
-            url: "https://tutorial.math.lamar.edu/pdf/Calculus_Cheat_Sheet_All.pdf",
-            pages: 4
-          },
-          { 
-            id: "notes-1-2", 
-            title: "Key Formulas", 
-            type: "pdf", 
-            size: "0.8 MB",
-            url: "https://www.math.ucdavis.edu/~kouba/CalcTwoDIRECTORY/integraltableDIRECTORY/IntegralTable.pdf",
-            pages: 6
-          },
-          { id: "notes-1-3", title: "Additional Resources", type: "pdf", size: "0.5 MB" }
-        ]
-      },
-      { 
-        id: "notes-2", 
-        title: "Derivatives Formula Sheet", 
-        size: "1.8 MB", 
-        downloadCount: 67, 
-        status: "available",
-        content: [
-          { id: "notes-2-1", title: "Basic Derivatives", type: "pdf", size: "0.9 MB" },
-          { id: "notes-2-2", title: "Advanced Derivatives", type: "pdf", size: "0.9 MB" }
-        ]
-      },
-      { 
-        id: "notes-3", 
-        title: "Practice Problems", 
-        size: "3.2 MB", 
-        downloadCount: 23, 
-        status: "available",
-        content: [
-          { id: "notes-3-1", title: "Easy Problems", type: "pdf", size: "1.0 MB" },
-          { id: "notes-3-2", title: "Medium Problems", type: "pdf", size: "1.1 MB" },
-          { id: "notes-3-3", title: "Hard Problems", type: "pdf", size: "1.1 MB" }
-        ]
+        estimatedTime: "4 hours", 
+        totalItems: 12,
+        completedItems: 0,
+        topics: []
       }
     ]
   }
 
-  const getContentIcon = (type: string) => {
-    switch (type) {
-      case "video": return <Video className="h-4 w-4" />
-      case "video-playlist": return <Video className="h-4 w-4" />
-      case "pdf-collection": return <FileText className="h-4 w-4" />
-      case "youtube": return <Youtube className="h-4 w-4" />
-      case "reading": return <BookOpen className="h-4 w-4" />
-      case "quiz": return <FileQuestion className="h-4 w-4" />
-      case "test": return <PenTool className="h-4 w-4" />
-      case "practice": return <Target className="h-4 w-4" />
-      case "pdf": return <FileText className="h-4 w-4" />
-      default: return <Circle className="h-4 w-4" />
-    }
+  const subjectData = {
+    name: subjectName,
+    progress: lmsData.overallProgress,
+    streak: 12,
+    score: 92,
+    nextClass: "Today, 10:00 AM"
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container max-w-6xl mx-auto p-6 space-y-6">
+      <div className="container max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Button 
               variant="ghost" 
               size="icon"
               onClick={() => navigate(-1)}
-              className="hover:bg-primary/10"
+              className="hover:bg-primary/10 h-12 w-12 sm:h-10 sm:w-10"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className={`text-3xl font-bold ${subjectColor.primary}`}>
+              <h1 className={`text-2xl sm:text-3xl font-bold ${subjectColor.primary}`}>
                 {subjectName}
               </h1>
-              <p className="text-muted-foreground">Continue your learning journey</p>
+              <p className="text-muted-foreground text-sm sm:text-base">Continue your learning journey</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -389,7 +289,7 @@ const SubjectPage = () => {
         </div>
 
         {/* Progress Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <Card className={`${subjectColor.bg} ${subjectColor.border} border-2`}>
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
@@ -421,7 +321,7 @@ const SubjectPage = () => {
             </CardContent>
           </Card>
 
-          <Card className={`${subjectColor.bg} ${subjectColor.border} border-2`}>
+          <Card className={`${subjectColor.bg} ${subjectColor.border} border-2 sm:col-span-2 lg:col-span-1`}>
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <Calendar className={`h-5 w-5 ${subjectColor.primary}`} />
@@ -439,171 +339,23 @@ const SubjectPage = () => {
 
         {/* Tabs for LMS, Exams, and Notes */}
         <Tabs defaultValue="lms" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="lms" className="flex items-center gap-2">
+          <TabsList className="grid w-full grid-cols-3 h-12">
+            <TabsTrigger value="lms" className="flex items-center gap-2 text-sm sm:text-base">
               <BookOpen className="h-4 w-4" />
-              LMS
+              <span className="hidden sm:inline">LMS</span>
             </TabsTrigger>
-            <TabsTrigger value="exams" className="flex items-center gap-2">
+            <TabsTrigger value="exams" className="flex items-center gap-2 text-sm sm:text-base">
               <GraduationCap className="h-4 w-4" />
-              Exams
+              <span className="hidden sm:inline">Exams</span>
             </TabsTrigger>
-            <TabsTrigger value="notes" className="flex items-center gap-2">
+            <TabsTrigger value="notes" className="flex items-center gap-2 text-sm sm:text-base">
               <FileText className="h-4 w-4" />
-              Notes
+              <span className="hidden sm:inline">Notes</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="lms" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl">Learning Management System</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {subjectData.lmsChapters.map((chapter) => (
-                    <Collapsible key={chapter.id}>
-                      <div className={`
-                        rounded-lg border-2 transition-all duration-300
-                        ${chapter.status === 'completed' 
-                          ? `${subjectColor.bg} ${subjectColor.border} opacity-80` 
-                          : chapter.status === 'current'
-                          ? `${subjectColor.bg} ${subjectColor.border}`
-                          : 'bg-muted border-muted-foreground/20 opacity-60'
-                        }
-                      `}>
-                        <CollapsibleTrigger 
-                          className="w-full p-4 cursor-pointer"
-                          onClick={() => toggleChapter(chapter.id)}
-                          disabled={chapter.status === 'locked'}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              {chapter.status === 'completed' ? (
-                                <CheckCircle2 className={`h-5 w-5 ${subjectColor.primary}`} />
-                              ) : chapter.status === 'current' ? (
-                                <Play className={`h-5 w-5 ${subjectColor.primary}`} />
-                              ) : (
-                                <Circle className="h-5 w-5 text-muted-foreground" />
-                              )}
-                              <div className="text-left">
-                                <h3 className="font-medium">{chapter.title}</h3>
-                                <p className="text-sm text-muted-foreground">
-                                  {chapter.progress}% Complete
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <Progress value={chapter.progress} className="w-24 h-2" />
-                              <Badge 
-                                variant={chapter.status === 'completed' ? 'default' : 'secondary'}
-                                className={
-                                  chapter.status === 'completed' 
-                                    ? `${subjectColor.primary} bg-current/10` 
-                                    : chapter.status === 'current'
-                                    ? `${subjectColor.primary} bg-current/10`
-                                    : ''
-                                }
-                              >
-                                {chapter.status}
-                              </Badge>
-                              {chapter.content.length > 0 && (
-                                expandedChapters.includes(chapter.id) ? (
-                                  <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                                ) : (
-                                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                                )
-                              )}
-                            </div>
-                          </div>
-                        </CollapsibleTrigger>
-                        
-                        {chapter.content.length > 0 && (
-                          <CollapsibleContent className="px-4 pb-4">
-                            <div className="space-y-2 ml-8">
-                              {chapter.content.map((item) => (
-                                <div key={item.id}>
-                                  {item.hasSubContent ? (
-                                    <Collapsible>
-                                      <div className="bg-white/50 rounded-lg">
-                                        <CollapsibleTrigger 
-                                          className="w-full p-3 cursor-pointer"
-                                          onClick={() => toggleContent(item.id)}
-                                        >
-                                          <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-3">
-                                              {getContentIcon(item.type)}
-                                              <div className="text-left">
-                                                <h4 className="font-medium text-sm">{item.title}</h4>
-                                                <p className="text-xs text-muted-foreground">{item.duration}</p>
-                                              </div>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                              <Badge variant="secondary" className="text-xs">
-                                                {item.subContent?.length} {item.type === 'video-playlist' ? 'videos' : 'files'}
-                                              </Badge>
-                                              {expandedContent.includes(item.id) ? (
-                                                <ChevronUp className="h-3 w-3 text-muted-foreground" />
-                                              ) : (
-                                                <ChevronDown className="h-3 w-3 text-muted-foreground" />
-                                              )}
-                                            </div>
-                                          </div>
-                                        </CollapsibleTrigger>
-                                        
-                                        <CollapsibleContent className="px-3 pb-3">
-                                          <div className="space-y-1 ml-6 mt-2">
-                                            {item.subContent?.map((subItem) => (
-                                              <div 
-                                                key={subItem.id} 
-                                                className="flex items-center justify-between p-2 bg-white/70 rounded-md hover:bg-white/90 transition-colors cursor-pointer group"
-                                                onClick={() => openMediaViewer(subItem)}
-                                              >
-                                                <div className="flex items-center gap-2">
-                                                  {getContentIcon(subItem.type)}
-                                                  <div>
-                                                    <h5 className="font-medium text-xs group-hover:text-blue-600 transition-colors">
-                                                      {subItem.title}
-                                                    </h5>
-                                                    <p className="text-xs text-muted-foreground">
-                                                      {subItem.duration || `${subItem.size} ${subItem.pages ? `• ${subItem.pages} pages` : ''}`}
-                                                    </p>
-                                                  </div>
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                  <Eye className="h-3 w-3 text-muted-foreground group-hover:text-blue-600 transition-colors" />
-                                                </div>
-                                              </div>
-                                            ))}
-                                          </div>
-                                        </CollapsibleContent>
-                                      </div>
-                                    </Collapsible>
-                                  ) : (
-                                    <div className="flex items-center justify-between p-3 bg-white/50 rounded-lg">
-                                      <div className="flex items-center gap-3">
-                                        {getContentIcon(item.type)}
-                                        <div>
-                                          <h4 className="font-medium text-sm">{item.title}</h4>
-                                          <p className="text-xs text-muted-foreground">{item.duration}</p>
-                                        </div>
-                                      </div>
-                                      <Button size="sm" variant="ghost" className="h-8">
-                                        <Play className="h-3 w-3" />
-                                      </Button>
-                                    </div>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          </CollapsibleContent>
-                        )}
-                      </div>
-                    </Collapsible>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <LMSContainer data={lmsData} subjectColor={subjectColor} />
           </TabsContent>
 
           <TabsContent value="exams" className="space-y-4">
@@ -612,79 +364,7 @@ const SubjectPage = () => {
                 <CardTitle className="text-xl">Exams & Assessments</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {subjectData.examChapters.map((exam) => (
-                    <Collapsible key={exam.id}>
-                      <div className={`
-                        rounded-lg border-2 transition-all duration-300
-                        ${exam.status === 'completed' 
-                          ? `${subjectColor.bg} ${subjectColor.border}` 
-                          : `bg-muted/50 border-muted-foreground/20`
-                        }
-                      `}>
-                        <CollapsibleTrigger 
-                          className="w-full p-4 cursor-pointer"
-                          onClick={() => toggleChapter(exam.id)}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <PenTool className={`h-5 w-5 ${exam.status === 'completed' ? subjectColor.primary : 'text-muted-foreground'}`} />
-                              <div className="text-left">
-                                <h3 className="font-medium">{exam.title}</h3>
-                                <p className="text-sm text-muted-foreground">
-                                  {exam.examType} • {exam.status === 'completed' ? `Score: ${exam.score}%` : 'Upcoming'}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              {exam.score && (
-                                <div className={`text-lg font-bold ${subjectColor.primary}`}>
-                                  {exam.score}%
-                                </div>
-                              )}
-                              <Badge 
-                                variant={exam.status === 'completed' ? 'default' : 'secondary'}
-                                className={exam.status === 'completed' ? `${subjectColor.primary} bg-current/10` : ''}
-                              >
-                                {exam.status}
-                              </Badge>
-                              {exam.content.length > 0 && (
-                                expandedChapters.includes(exam.id) ? (
-                                  <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                                ) : (
-                                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                                )
-                              )}
-                            </div>
-                          </div>
-                        </CollapsibleTrigger>
-                        
-                        {exam.content.length > 0 && (
-                          <CollapsibleContent className="px-4 pb-4">
-                            <div className="space-y-2 ml-8">
-                              {exam.content.map((item) => (
-                                <div key={item.id} className="flex items-center justify-between p-3 bg-white/50 rounded-lg">
-                                  <div className="flex items-center gap-3">
-                                    {getContentIcon(item.type)}
-                                    <div>
-                                      <h4 className="font-medium text-sm">{item.title}</h4>
-                                      <p className="text-xs text-muted-foreground">
-                                        {item.score ? `Score: ${item.score}%` : 'Not attempted'} • {item.attempts} attempts
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <Button size="sm" variant="ghost" className="h-8">
-                                    <Play className="h-3 w-3" />
-                                  </Button>
-                                </div>
-                              ))}
-                            </div>
-                          </CollapsibleContent>
-                        )}
-                      </div>
-                    </Collapsible>
-                  ))}
-                </div>
+                <p className="text-muted-foreground">Exams content will be implemented here.</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -695,100 +375,11 @@ const SubjectPage = () => {
                 <CardTitle className="text-xl">Study Notes & Materials</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {subjectData.notesChapters.map((note) => (
-                    <Collapsible key={note.id}>
-                      <div className={`
-                        rounded-lg border-2 transition-all duration-300
-                        ${note.status === 'available' 
-                          ? `${subjectColor.bg} ${subjectColor.border}` 
-                          : 'bg-muted/50 border-muted-foreground/20 opacity-60'
-                        }
-                      `}>
-                        <CollapsibleTrigger 
-                          className="w-full p-4 cursor-pointer"
-                          onClick={() => toggleChapter(note.id)}
-                          disabled={note.status !== 'available'}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <FileText className={`h-5 w-5 ${note.status === 'available' ? subjectColor.primary : 'text-muted-foreground'}`} />
-                              <div className="text-left">
-                                <h3 className="font-medium">{note.title}</h3>
-                                <p className="text-sm text-muted-foreground">
-                                  {note.size} • Downloaded {note.downloadCount} times
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              {note.status === 'available' ? (
-                                <Button size="sm" variant="outline" className={`hover:${subjectColor.bg} hover:${subjectColor.border}`}>
-                                  Download All
-                                </Button>
-                              ) : (
-                                <Badge variant="secondary">
-                                  Coming Soon
-                                </Badge>
-                              )}
-                              {note.content.length > 0 && note.status === 'available' && (
-                                expandedChapters.includes(note.id) ? (
-                                  <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                                ) : (
-                                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                                )
-                              )}
-                            </div>
-                          </div>
-                        </CollapsibleTrigger>
-                        
-                        {note.content.length > 0 && note.status === 'available' && (
-                          <CollapsibleContent className="px-4 pb-4">
-                            <div className="space-y-2 ml-8">
-                              {note.content.map((item) => (
-                                <div key={item.id} className="flex items-center justify-between p-3 bg-white/50 rounded-lg">
-                                  <div className="flex items-center gap-3">
-                                    {getContentIcon(item.type)}
-                                    <div>
-                                      <h4 className="font-medium text-sm">{item.title}</h4>
-                                      <p className="text-xs text-muted-foreground">
-                                        {item.size} {item.pages ? `• ${item.pages} pages` : ''}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    {item.url ? (
-                                      <Button 
-                                        size="sm" 
-                                        variant="ghost" 
-                                        className="h-8"
-                                        onClick={() => openMediaViewer(item)}
-                                      >
-                                        <Eye className="h-3 w-3" />
-                                      </Button>
-                                    ) : null}
-                                    <Button size="sm" variant="ghost" className="h-8">
-                                      <Download className="h-3 w-3" />
-                                    </Button>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </CollapsibleContent>
-                        )}
-                      </div>
-                    </Collapsible>
-                  ))}
-                </div>
+                <p className="text-muted-foreground">Notes content will be implemented here.</p>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
-
-        <MediaViewer
-          isOpen={mediaViewer.isOpen}
-          onClose={closeMediaViewer}
-          content={mediaViewer.content}
-        />
       </div>
     </div>
   )
