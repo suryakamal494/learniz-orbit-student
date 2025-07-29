@@ -1,8 +1,8 @@
 
-import React from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import React, { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Download, ExternalLink, X } from "lucide-react"
+import { Download, ExternalLink, AlertCircle } from "lucide-react"
 
 interface MediaViewerProps {
   isOpen: boolean
@@ -19,6 +19,8 @@ interface MediaViewerProps {
 }
 
 export const MediaViewer: React.FC<MediaViewerProps> = ({ isOpen, onClose, content }) => {
+  const [pdfError, setPdfError] = useState(false)
+
   if (!content) return null
 
   const getYouTubeEmbedUrl = (url: string) => {
@@ -31,6 +33,7 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ isOpen, onClose, conte
       const link = document.createElement('a')
       link.href = content.url
       link.download = content.title + '.pdf'
+      link.target = '_blank'
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
@@ -41,18 +44,22 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ isOpen, onClose, conte
     window.open(content.url, '_blank', 'noopener,noreferrer')
   }
 
+  const handlePdfError = () => {
+    setPdfError(true)
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl h-[90vh] flex flex-col p-0">
-        <DialogHeader className="p-6 pb-4 border-b">
+        <DialogHeader className="p-4 sm:p-6 pb-4 border-b">
           <div className="flex items-center justify-between">
             <div>
               <DialogTitle className="text-lg font-semibold">{content.title}</DialogTitle>
-              <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+              <DialogDescription className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                 {content.duration && <span>{content.duration}</span>}
                 {content.size && <span>{content.size}</span>}
                 {content.pages && <span>{content.pages} pages</span>}
-              </div>
+              </DialogDescription>
             </div>
             <div className="flex items-center gap-2">
               {content.type === 'pdf' && (
@@ -60,26 +67,26 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ isOpen, onClose, conte
                   variant="outline"
                   size="sm"
                   onClick={handleDownload}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 h-8 px-3 text-xs sm:h-9 sm:px-4 sm:text-sm"
                 >
-                  <Download className="h-4 w-4" />
-                  Download
+                  <Download className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Download</span>
                 </Button>
               )}
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleExternalOpen}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 h-8 px-3 text-xs sm:h-9 sm:px-4 sm:text-sm"
               >
-                <ExternalLink className="h-4 w-4" />
-                Open External
+                <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">Open External</span>
               </Button>
             </div>
           </div>
         </DialogHeader>
         
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-4 sm:p-6">
           {content.type === 'youtube' ? (
             <iframe
               src={getYouTubeEmbedUrl(content.url)}
@@ -90,12 +97,36 @@ export const MediaViewer: React.FC<MediaViewerProps> = ({ isOpen, onClose, conte
               title={content.title}
             />
           ) : content.type === 'pdf' ? (
-            <iframe
-              src={content.url}
-              className="w-full h-full rounded-lg border"
-              frameBorder="0"
-              title={content.title}
-            />
+            <>
+              {!pdfError ? (
+                <iframe
+                  src={content.url}
+                  className="w-full h-full rounded-lg border"
+                  frameBorder="0"
+                  title={content.title}
+                  onError={handlePdfError}
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-muted rounded-lg border">
+                  <AlertCircle className="h-12 w-12 text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Unable to display PDF</h3>
+                  <p className="text-sm text-muted-foreground mb-4 text-center max-w-md">
+                    This PDF cannot be displayed inline due to browser security restrictions. 
+                    Please use the buttons above to download or open in a new tab.
+                  </p>
+                  <div className="flex gap-2">
+                    <Button onClick={handleDownload} className="flex items-center gap-2">
+                      <Download className="h-4 w-4" />
+                      Download PDF
+                    </Button>
+                    <Button variant="outline" onClick={handleExternalOpen} className="flex items-center gap-2">
+                      <ExternalLink className="h-4 w-4" />
+                      Open in New Tab
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </>
           ) : null}
         </div>
       </DialogContent>
