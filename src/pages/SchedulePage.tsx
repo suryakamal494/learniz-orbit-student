@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
@@ -103,7 +102,7 @@ const SchedulePage = () => {
 
   const handleFiltersChange = (newFilters: Partial<ScheduleFiltersType>) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   };
 
   const handleSortChange = (field: string) => {
@@ -128,8 +127,8 @@ const SchedulePage = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full glass">
         <AppSidebar />
-        <SidebarInset className="flex-1">
-          <div className="flex-1 space-y-6 p-4 md:p-6 lg:p-8 glass-subtle">
+        <SidebarInset className="flex-1 min-w-0">
+          <div className="flex-1 space-y-6 p-4 md:p-6 lg:p-8 glass-subtle max-w-full overflow-hidden">
             <ScheduleHeader 
               searchQuery={filters.search}
               onSearchChange={(search) => handleFiltersChange({ search })}
@@ -142,17 +141,19 @@ const SchedulePage = () => {
               onClearAll={clearAllFilters}
             />
             
-            <ScheduleTable
-              data={paginatedData}
-              sort={sort}
-              onSortChange={handleSortChange}
-              currentPage={currentPage}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              totalItems={sortedData.length}
-              onPageChange={setCurrentPage}
-              onPageSizeChange={setPageSize}
-            />
+            <div className="w-full overflow-hidden">
+              <ScheduleTable
+                data={paginatedData}
+                sort={sort}
+                onSortChange={handleSortChange}
+                currentPage={currentPage}
+                pageSize={pageSize}
+                totalPages={totalPages}
+                totalItems={sortedData.length}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={setPageSize}
+              />
+            </div>
           </div>
         </SidebarInset>
       </div>

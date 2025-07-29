@@ -68,85 +68,89 @@ export function ScheduleTable({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       {/* Desktop Table View */}
-      <div className="hidden md:block glass rounded-lg border border-border/40 overflow-hidden">
-        <Table>
-          <TableHeader className="bg-muted/20">
-            <TableRow className="hover:bg-transparent border-border/40">
-              <SortableHeader field="date">Date</SortableHeader>
-              <SortableHeader field="time">Time</SortableHeader>
-              <SortableHeader field="class">Class</SortableHeader>
-              <SortableHeader field="batch">Batch</SortableHeader>
-              <SortableHeader field="subject">Subject</SortableHeader>
-              <SortableHeader field="topic">Topic</SortableHeader>
-              <SortableHeader field="faculty">Faculty</SortableHeader>
-              <TableHead className="min-w-[200px]">Resources</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((classItem, index) => (
-              <TableRow 
-                key={classItem.id} 
-                className="hover:bg-muted/30 transition-colors border-border/30"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <TableCell className="font-medium">
-                  <div className="space-y-1">
-                    <div>{format(parseISO(classItem.date), 'MMM dd, yyyy')}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {format(parseISO(classItem.date), 'EEEE')}
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="space-y-1">
-                    <div className="font-medium">{classItem.time}</div>
-                    <div className="text-xs text-muted-foreground">{classItem.duration}</div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="font-medium text-primary">{classItem.class}</div>
-                </TableCell>
-                <TableCell>
-                  <div className="text-sm">{classItem.batch}</div>
-                </TableCell>
-                <TableCell>
-                  <div className="font-medium">{classItem.subject}</div>
-                </TableCell>
-                <TableCell className="max-w-[250px]">
-                  <div className="text-sm line-clamp-2" title={classItem.topic}>
-                    {classItem.topic}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="text-sm">{classItem.faculty}</div>
-                </TableCell>
-                <TableCell>
-                  <ResourceLinks resources={classItem.resources} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+      <div className="hidden md:block w-full">
+        <div className="glass rounded-lg border border-border/40 overflow-hidden">
+          <div className="overflow-x-auto">
+            <Table className="w-full">
+              <TableHeader className="bg-muted/20">
+                <TableRow className="hover:bg-transparent border-border/40">
+                  <SortableHeader field="date">Date</SortableHeader>
+                  <SortableHeader field="time">Time</SortableHeader>
+                  <SortableHeader field="class">Class</SortableHeader>
+                  <SortableHeader field="batch">Batch</SortableHeader>
+                  <SortableHeader field="subject">Subject</SortableHeader>
+                  <SortableHeader field="topic">Topic</SortableHeader>
+                  <SortableHeader field="faculty">Faculty</SortableHeader>
+                  <TableHead className="w-48">Resources</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data.map((classItem, index) => (
+                  <TableRow 
+                    key={classItem.id} 
+                    className="hover:bg-muted/30 transition-colors border-border/30"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <TableCell className="font-medium whitespace-nowrap">
+                      <div className="space-y-1">
+                        <div>{format(parseISO(classItem.date), 'MMM dd, yyyy')}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {format(parseISO(classItem.date), 'EEEE')}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      <div className="space-y-1">
+                        <div className="font-medium">{classItem.time}</div>
+                        <div className="text-xs text-muted-foreground">{classItem.duration}</div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      <div className="font-medium text-primary">{classItem.class}</div>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      <div className="text-sm">{classItem.batch}</div>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      <div className="font-medium">{classItem.subject}</div>
+                    </TableCell>
+                    <TableCell className="min-w-0 max-w-xs">
+                      <div className="text-sm truncate" title={classItem.topic}>
+                        {classItem.topic}
+                      </div>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      <div className="text-sm">{classItem.faculty}</div>
+                    </TableCell>
+                    <TableCell className="w-48">
+                      <ResourceLinks resources={classItem.resources} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
       </div>
 
       {/* Mobile Card View */}
-      <div className="md:hidden space-y-4">
+      <div className="md:hidden space-y-4 w-full">
         {data.map((classItem, index) => (
           <div 
             key={classItem.id} 
-            className="glass rounded-lg border border-border/40 p-4 space-y-4 animate-fade-in"
+            className="glass rounded-lg border border-border/40 p-4 space-y-4 animate-fade-in w-full"
             style={{ animationDelay: `${index * 100}ms` }}
           >
             <div className="flex justify-between items-start">
-              <div className="space-y-1">
-                <div className="font-semibold text-primary text-lg">{classItem.subject}</div>
+              <div className="space-y-1 min-w-0 flex-1">
+                <div className="font-semibold text-primary text-lg truncate">{classItem.subject}</div>
                 <div className="text-sm text-muted-foreground">
                   {format(parseISO(classItem.date), 'MMM dd, yyyy')} • {classItem.time}
                 </div>
               </div>
-              <div className="text-xs bg-muted/50 px-2 py-1 rounded">
+              <div className="text-xs bg-muted/50 px-2 py-1 rounded ml-2 whitespace-nowrap">
                 {classItem.duration}
               </div>
             </div>
@@ -154,19 +158,19 @@ export function ScheduleTable({
             <div className="text-sm line-clamp-2">{classItem.topic}</div>
 
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
+              <div className="min-w-0">
                 <div className="text-muted-foreground">Class</div>
-                <div className="font-medium">{classItem.class}</div>
+                <div className="font-medium truncate">{classItem.class}</div>
               </div>
-              <div>
+              <div className="min-w-0">
                 <div className="text-muted-foreground">Batch</div>
-                <div className="font-medium">{classItem.batch}</div>
+                <div className="font-medium truncate">{classItem.batch}</div>
               </div>
             </div>
 
             <div>
               <div className="text-muted-foreground text-sm mb-1">Faculty</div>
-              <div className="font-medium">{classItem.faculty}</div>
+              <div className="font-medium truncate">{classItem.faculty}</div>
             </div>
 
             <div>
@@ -178,7 +182,7 @@ export function ScheduleTable({
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 w-full">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <span>Show</span>
           <Select

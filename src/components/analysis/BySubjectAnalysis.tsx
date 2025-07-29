@@ -12,7 +12,7 @@ export function BySubjectAnalysis() {
   const [activeSubTab, setActiveSubTab] = useState('marks')
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full max-w-full overflow-hidden">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -20,7 +20,7 @@ export function BySubjectAnalysis() {
             Subject-wise Analysis
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="w-full max-w-full overflow-hidden">
           <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="marks" className="flex items-center gap-2">
@@ -33,14 +33,18 @@ export function BySubjectAnalysis() {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="marks" className="mt-6 space-y-6">
+            <TabsContent value="marks" className="mt-6 space-y-6 w-full max-w-full overflow-hidden">
               <MarksTable />
-              <SubjectPieCharts />
+              <div className="w-full max-w-full overflow-hidden">
+                <SubjectPieCharts />
+              </div>
             </TabsContent>
 
-            <TabsContent value="time" className="mt-6 space-y-6">
+            <TabsContent value="time" className="mt-6 space-y-6 w-full max-w-full overflow-hidden">
               <TimeTable />
-              <TimeBarCharts />
+              <div className="w-full max-w-full overflow-hidden">
+                <TimeBarCharts />
+              </div>
             </TabsContent>
           </Tabs>
         </CardContent>
