@@ -1,4 +1,3 @@
-
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -25,7 +24,9 @@ import {
   ChevronUp,
   Video,
   FileQuestion,
-  Download
+  Download,
+  ExternalLink,
+  Youtube
 } from "lucide-react"
 import { useState } from "react"
 
@@ -35,6 +36,7 @@ const SubjectPage = () => {
   const navigate = useNavigate()
   const subjectName = location.state?.subjectName || "Subject"
   const [expandedChapters, setExpandedChapters] = useState<string[]>([])
+  const [expandedContent, setExpandedContent] = useState<string[]>([])
 
   const toggleChapter = (chapterId: string) => {
     setExpandedChapters(prev => 
@@ -42,6 +44,18 @@ const SubjectPage = () => {
         ? prev.filter(id => id !== chapterId)
         : [...prev, chapterId]
     )
+  }
+
+  const toggleContent = (contentId: string) => {
+    setExpandedContent(prev => 
+      prev.includes(contentId) 
+        ? prev.filter(id => id !== contentId)
+        : [...prev, contentId]
+    )
+  }
+
+  const openYouTubeVideo = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer')
   }
 
   const getSubjectColor = (name: string) => {
@@ -99,7 +113,36 @@ const SubjectPage = () => {
         progress: 100, 
         status: "completed",
         content: [
-          { id: "lms-1-1", title: "What is Calculus?", type: "video", duration: "15 min" },
+          { 
+            id: "lms-1-1", 
+            title: "What is Calculus?", 
+            type: "video-playlist", 
+            duration: "50 min total",
+            hasSubContent: true,
+            subContent: [
+              {
+                id: "lms-1-1-1",
+                title: "The essence of calculus",
+                type: "youtube",
+                url: "https://www.youtube.com/watch?v=UukVP7Mg3TU",
+                duration: "17 min"
+              },
+              {
+                id: "lms-1-1-2", 
+                title: "Introduction to Calculus",
+                type: "youtube",
+                url: "https://www.youtube.com/watch?v=YpYSEXAxMJ0",
+                duration: "15 min"
+              },
+              {
+                id: "lms-1-1-3",
+                title: "Calculus Fundamentals", 
+                type: "youtube",
+                url: "https://www.youtube.com/watch?v=jHGi1uVN1Uc",
+                duration: "18 min"
+              }
+            ]
+          },
           { id: "lms-1-2", title: "Basic Concepts", type: "reading", duration: "10 min" },
           { id: "lms-1-3", title: "Practice Quiz", type: "quiz", duration: "20 min" }
         ]
@@ -211,6 +254,8 @@ const SubjectPage = () => {
   const getContentIcon = (type: string) => {
     switch (type) {
       case "video": return <Video className="h-4 w-4" />
+      case "video-playlist": return <Video className="h-4 w-4" />
+      case "youtube": return <Youtube className="h-4 w-4" />
       case "reading": return <BookOpen className="h-4 w-4" />
       case "quiz": return <FileQuestion className="h-4 w-4" />
       case "test": return <PenTool className="h-4 w-4" />
@@ -387,17 +432,75 @@ const SubjectPage = () => {
                           <CollapsibleContent className="px-4 pb-4">
                             <div className="space-y-2 ml-8">
                               {chapter.content.map((item) => (
-                                <div key={item.id} className="flex items-center justify-between p-3 bg-white/50 rounded-lg">
-                                  <div className="flex items-center gap-3">
-                                    {getContentIcon(item.type)}
-                                    <div>
-                                      <h4 className="font-medium text-sm">{item.title}</h4>
-                                      <p className="text-xs text-muted-foreground">{item.duration}</p>
+                                <div key={item.id}>
+                                  {item.hasSubContent ? (
+                                    <Collapsible>
+                                      <div className="bg-white/50 rounded-lg">
+                                        <CollapsibleTrigger 
+                                          className="w-full p-3 cursor-pointer"
+                                          onClick={() => toggleContent(item.id)}
+                                        >
+                                          <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-3">
+                                              {getContentIcon(item.type)}
+                                              <div className="text-left">
+                                                <h4 className="font-medium text-sm">{item.title}</h4>
+                                                <p className="text-xs text-muted-foreground">{item.duration}</p>
+                                              </div>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                              <Badge variant="secondary" className="text-xs">
+                                                {item.subContent?.length} videos
+                                              </Badge>
+                                              {expandedContent.includes(item.id) ? (
+                                                <ChevronUp className="h-3 w-3 text-muted-foreground" />
+                                              ) : (
+                                                <ChevronDown className="h-3 w-3 text-muted-foreground" />
+                                              )}
+                                            </div>
+                                          </div>
+                                        </CollapsibleTrigger>
+                                        
+                                        <CollapsibleContent className="px-3 pb-3">
+                                          <div className="space-y-1 ml-6 mt-2">
+                                            {item.subContent?.map((subItem) => (
+                                              <div 
+                                                key={subItem.id} 
+                                                className="flex items-center justify-between p-2 bg-white/70 rounded-md hover:bg-white/90 transition-colors cursor-pointer group"
+                                                onClick={() => openYouTubeVideo(subItem.url)}
+                                              >
+                                                <div className="flex items-center gap-2">
+                                                  {getContentIcon(subItem.type)}
+                                                  <div>
+                                                    <h5 className="font-medium text-xs group-hover:text-red-600 transition-colors">
+                                                      {subItem.title}
+                                                    </h5>
+                                                    <p className="text-xs text-muted-foreground">{subItem.duration}</p>
+                                                  </div>
+                                                </div>
+                                                <div className="flex items-center gap-1">
+                                                  <ExternalLink className="h-3 w-3 text-muted-foreground group-hover:text-red-600 transition-colors" />
+                                                </div>
+                                              </div>
+                                            ))}
+                                          </div>
+                                        </CollapsibleContent>
+                                      </div>
+                                    </Collapsible>
+                                  ) : (
+                                    <div className="flex items-center justify-between p-3 bg-white/50 rounded-lg">
+                                      <div className="flex items-center gap-3">
+                                        {getContentIcon(item.type)}
+                                        <div>
+                                          <h4 className="font-medium text-sm">{item.title}</h4>
+                                          <p className="text-xs text-muted-foreground">{item.duration}</p>
+                                        </div>
+                                      </div>
+                                      <Button size="sm" variant="ghost" className="h-8">
+                                        <Play className="h-3 w-3" />
+                                      </Button>
                                     </div>
-                                  </div>
-                                  <Button size="sm" variant="ghost" className="h-8">
-                                    <Play className="h-3 w-3" />
-                                  </Button>
+                                  )}
                                 </div>
                               ))}
                             </div>
