@@ -1,9 +1,9 @@
 
 import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Clock, Users, AlertCircle, Zap } from "lucide-react"
+import { Zap, Clock } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import type { LiveQuizData } from '@/types/liveQuiz'
 
@@ -38,16 +38,15 @@ const formatTimeRemaining = (expiresAt: string) => {
   const seconds = Math.floor((remaining % (1000 * 60)) / 1000)
   
   if (minutes > 0) {
-    return `${minutes}m ${seconds}s left`
+    return `${minutes}m ${seconds}s`
   }
-  return `${seconds}s left`
+  return `${seconds}s`
 }
 
 export const LiveQuiz: React.FC<LiveQuizProps> = ({ data, isLoading = false }) => {
   const navigate = useNavigate()
 
   const handleTakeQuiz = (quizId: string, subjectId: string) => {
-    // Navigate to the live quiz page
     navigate(`/subject/${subjectId}/live-quiz/${quizId}`)
   }
 
@@ -59,20 +58,14 @@ export const LiveQuiz: React.FC<LiveQuizProps> = ({ data, isLoading = false }) =
           <div className="skeleton-premium h-7 w-32 rounded-lg"></div>
         </div>
         
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-          {Array.from({ length: 2 }).map((_, index) => (
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {Array.from({ length: 3 }).map((_, index) => (
             <Card key={index} className="border-0 shadow-premium">
-              <CardHeader className="pb-3">
-                <div className="skeleton-premium h-5 w-3/4 rounded-lg mb-2"></div>
-                <div className="skeleton-premium h-4 w-1/2 rounded-lg"></div>
-              </CardHeader>
-              <CardContent>
+              <CardContent className="p-4">
                 <div className="space-y-3">
-                  <div className="flex gap-2">
-                    <div className="skeleton-premium h-6 w-16 rounded-full"></div>
-                    <div className="skeleton-premium h-6 w-20 rounded-full"></div>
-                  </div>
-                  <div className="skeleton-premium h-10 w-full rounded-xl"></div>
+                  <div className="skeleton-premium h-4 w-3/4 rounded-lg"></div>
+                  <div className="skeleton-premium h-5 w-16 rounded-full"></div>
+                  <div className="skeleton-premium h-8 w-full rounded-lg"></div>
                 </div>
               </CardContent>
             </Card>
@@ -82,7 +75,6 @@ export const LiveQuiz: React.FC<LiveQuizProps> = ({ data, isLoading = false }) =
     )
   }
 
-  // If no active quizzes, don't render the section
   if (!data || data.quizzes.length === 0) {
     return null
   }
@@ -94,98 +86,71 @@ export const LiveQuiz: React.FC<LiveQuizProps> = ({ data, isLoading = false }) =
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Header */}
+    <div className="space-y-4 animate-fade-in">
+      {/* Compact Header */}
       <div className="flex items-center gap-3">
-        <div className="p-2 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl text-white shadow-lg">
-          <Zap className="h-5 w-5" />
+        <div className="p-1.5 bg-gradient-to-br from-red-500 to-pink-500 rounded-lg text-white shadow-md">
+          <Zap className="h-4 w-4" />
         </div>
         <div>
-          <h2 className="text-display-sm font-bold text-foreground">Live Quiz</h2>
-          <p className="text-body-sm text-muted-foreground">
-            {activeQuizzes.length} active quiz{activeQuizzes.length !== 1 ? 'es' : ''} • Join now!
+          <h2 className="text-lg font-bold text-foreground">Live Quiz</h2>
+          <p className="text-sm text-muted-foreground">
+            {activeQuizzes.length} active • Join now!
           </p>
         </div>
       </div>
 
-      {/* Quiz Cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+      {/* Compact Quiz Cards Grid */}
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {activeQuizzes.map((quiz) => (
           <Card 
             key={quiz.id} 
             className="
-              group border-0 shadow-lg bg-gradient-to-br from-background via-background to-accent/5
-              hover:shadow-xl hover:-translate-y-1 transition-all duration-300
-              border border-red-200/50 relative overflow-hidden
+              group relative overflow-hidden border border-red-100 bg-white/80 backdrop-blur-sm
+              hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover:border-red-200
+              min-w-[280px]
             "
           >
-            {/* Animated border */}
-            <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-pink-500/20 to-red-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            
-            {/* Pulsing live indicator */}
-            <div className="absolute top-3 right-3 flex items-center gap-2">
-              <div className="relative">
-                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                <div className="absolute inset-0 w-2 h-2 bg-red-500 rounded-full animate-ping opacity-75"></div>
-              </div>
-              <span className="text-xs font-medium text-red-600">LIVE</span>
+            {/* Live indicator */}
+            <div className="absolute top-2 right-2 flex items-center gap-1">
+              <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></div>
+              <span className="text-[10px] font-semibold text-red-600 uppercase tracking-wide">LIVE</span>
             </div>
 
-            <CardHeader className="pb-3 relative z-10">
-              <CardTitle className="text-lg font-bold text-foreground group-hover:text-red-600 transition-colors">
-                {quiz.title}
-              </CardTitle>
-              <div className="flex items-center gap-2">
+            <CardContent className="p-4 space-y-3">
+              {/* Quiz Title */}
+              <div className="pr-8">
+                <h3 className="text-sm font-semibold text-foreground line-clamp-2 leading-tight group-hover:text-red-600 transition-colors">
+                  {quiz.title}
+                </h3>
+              </div>
+
+              {/* Subject Badge */}
+              <div className="flex items-center justify-between">
                 <Badge 
                   variant="secondary" 
-                  className={`${getSubjectColor(quiz.subject)} border-0 font-medium`}
+                  className={`${getSubjectColor(quiz.subject)} text-xs px-2 py-1 font-medium`}
                 >
                   {quiz.subject}
                 </Badge>
-              </div>
-            </CardHeader>
-
-            <CardContent className="space-y-4 relative z-10">
-              {/* Quiz Info */}
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  <span>{quiz.duration} min</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Users className="h-4 w-4" />
-                  <span>{quiz.totalQuestions} questions</span>
+                <div className="flex items-center gap-1 text-xs text-amber-600">
+                  <Clock className="h-3 w-3" />
+                  <span className="font-medium">{formatTimeRemaining(quiz.expiresAt)}</span>
                 </div>
               </div>
-
-              {/* Time remaining */}
-              <div className="flex items-center gap-2 text-sm">
-                <AlertCircle className="h-4 w-4 text-amber-500" />
-                <span className="font-medium text-amber-600">
-                  {formatTimeRemaining(quiz.expiresAt)}
-                </span>
-              </div>
-
-              {/* Description */}
-              {quiz.description && (
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {quiz.description}
-                </p>
-              )}
 
               {/* Take Quiz Button */}
               <Button 
                 onClick={() => handleTakeQuiz(quiz.id, quiz.subjectId)}
                 className="
-                  w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600
-                  text-white font-semibold shadow-lg hover:shadow-xl
-                  transform hover:scale-[1.02] transition-all duration-300
-                  group-hover:animate-pulse
+                  w-full h-8 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600
+                  text-white font-medium shadow-md hover:shadow-lg text-xs
+                  transform hover:scale-[1.02] transition-all duration-200
                 "
-                size="lg"
+                size="sm"
               >
-                <Zap className="h-4 w-4 mr-2" />
-                Take Quiz Now
+                <Zap className="h-3 w-3 mr-1.5" />
+                Take Quiz
               </Button>
             </CardContent>
           </Card>
