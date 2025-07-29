@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +9,7 @@ import SubjectPage from "./pages/SubjectPage";
 import ExamInstructionsPage from "./pages/ExamInstructionsPage";
 import ExamPage from "./pages/ExamPage";
 import ExamResultsPage from "./pages/ExamResultsPage";
+import LiveQuizPage from "./pages/LiveQuizPage";
 import AnalysisPage from "./pages/AnalysisPage";
 import NotFound from "./pages/NotFound";
 import MessagesPage from "./pages/MessagesPage";
@@ -31,6 +31,7 @@ const App = () => (
             <Route path="/subject/:subjectId/exam/:examId/instructions" element={<ExamInstructionsPage />} />
             <Route path="/subject/:subjectId/exam/:examId" element={<ExamPage />} />
             <Route path="/subject/:subjectId/exam/:examId/results" element={<ExamResultsPage />} />
+            <Route path="/subject/:subjectId/live-quiz/:quizId" element={<LiveQuizPage />} />
             <Route path="/analysis" element={<AnalysisPage />} />
             <Route path="/schedule" element={<SchedulePage />} />
             <Route path="/messages" element={<MessagesPage />} />
