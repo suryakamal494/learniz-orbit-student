@@ -58,7 +58,7 @@ export const LiveQuiz: React.FC<LiveQuizProps> = ({ data, isLoading = false }) =
           <div className="skeleton-premium h-7 w-32 rounded-lg"></div>
         </div>
         
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {Array.from({ length: 3 }).map((_, index) => (
             <Card key={index} className="border-0 shadow-premium">
               <CardContent className="p-4">
@@ -100,15 +100,15 @@ export const LiveQuiz: React.FC<LiveQuizProps> = ({ data, isLoading = false }) =
         </div>
       </div>
 
-      {/* Compact Quiz Cards Grid */}
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      {/* Fixed Quiz Cards Grid - No overlapping */}
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {activeQuizzes.map((quiz) => (
           <Card 
             key={quiz.id} 
             className="
               group relative overflow-hidden border border-red-100 bg-white/80 backdrop-blur-sm
               hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover:border-red-200
-              min-w-[280px]
+              w-full
             "
           >
             {/* Live indicator */}

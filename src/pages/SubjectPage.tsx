@@ -5,6 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LMSContainer } from "@/components/lms/LMSContainer"
 import { ExamsContainer } from "@/components/exams/ExamsContainer"
 import { mockExamData } from "@/data/mockExams"
+import { NotesContainer } from "@/components/notes/NotesContainer"
+import { mockNotesData } from "@/data/mockNotes"
 import { 
   ArrowLeft, 
   BookOpen, 
@@ -292,14 +294,7 @@ const SubjectPage = () => {
           </TabsContent>
 
           <TabsContent value="notes" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-xl">Study Notes & Materials</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Notes content will be implemented here.</p>
-              </CardContent>
-            </Card>
+            <NotesContainer data={mockNotesData} subjectColor={subjectColor} />
           </TabsContent>
         </Tabs>
       </div>
