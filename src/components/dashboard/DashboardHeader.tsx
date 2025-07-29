@@ -1,8 +1,7 @@
 
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Bell, Search, User, Filter, Settings } from "lucide-react"
+import { Bell, User, Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 
 export function DashboardHeader() {
@@ -15,29 +14,10 @@ export function DashboardHeader() {
             <h1 className="text-2xl md:text-3xl font-bold text-gradient">
               Dashboard
             </h1>
-            <p className="text-muted-foreground text-sm mt-1">
-              Welcome back! Ready to continue your learning journey?
-            </p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Enhanced Search */}
-          <div className="relative hidden md:block group">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-hover:text-primary" />
-            <Input
-              placeholder="Search courses, topics, assignments..."
-              className="pl-10 w-64 lg:w-80 glass border-border/40 focus:border-primary/40 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30"
-            />
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 p-0 hover:bg-primary/10"
-            >
-              <Filter className="h-3 w-3" />
-            </Button>
-          </div>
-
           {/* Quick Actions */}
           <div className="flex items-center gap-2">
             <Button
