@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import SubjectPage from "./pages/SubjectPage";
 import NotFound from "./pages/NotFound";
+import MessagesPage from "./pages/MessagesPage";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +21,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/subject/:subjectId" element={<SubjectPage />} />
+            <Route path="/messages" element={<MessagesPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
