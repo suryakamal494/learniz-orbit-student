@@ -205,7 +205,32 @@ const SubjectPage = () => {
         content: [
           { id: "lms-2-1", title: "Understanding Limits", type: "video", duration: "25 min" },
           { id: "lms-2-2", title: "Continuity Explained", type: "video", duration: "20 min" },
-          { id: "lms-2-3", title: "Worked Examples", type: "reading", duration: "15 min" }
+          { id: "lms-2-3", title: "Worked Examples", type: "reading", duration: "15 min" },
+          { 
+            id: "lms-2-4", 
+            title: "Limits and Continuity Reference Materials", 
+            type: "pdf-collection",
+            duration: "Study materials",
+            hasSubContent: true,
+            subContent: [
+              {
+                id: "lms-2-4-1",
+                title: "Sample PDF Document",
+                type: "pdf",
+                url: "https://www.aeee.in/wp-content/uploads/2020/08/Sample-pdf.pdf",
+                size: "1.2 MB",
+                pages: 10
+              },
+              {
+                id: "lms-2-4-2",
+                title: "Basic Link PDF Sample",
+                type: "pdf", 
+                url: "https://www.antennahouse.com/hubfs/xsl-fo-sample/pdf/basic-link-1.pdf",
+                size: "0.8 MB",
+                pages: 5
+              }
+            ]
+          }
         ]
       },
       { 
