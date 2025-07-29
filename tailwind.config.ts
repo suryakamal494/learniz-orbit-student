@@ -27,7 +27,9 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					light: 'hsl(var(--primary-light))',
+					dark: 'hsl(var(--primary-dark))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -43,7 +45,12 @@ export default {
 				},
 				accent: {
 					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					foreground: 'hsl(var(--accent-foreground))',
+					teal: 'hsl(var(--accent-teal))',
+					'teal-light': 'hsl(var(--accent-teal-light))',
+					orange: 'hsl(var(--accent-orange))',
+					'orange-light': 'hsl(var(--accent-orange-light))',
+					'orange-dark': 'hsl(var(--accent-orange-dark))'
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
@@ -62,6 +69,21 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					light: 'hsl(var(--success-light))',
+					bg: 'hsl(var(--success-bg))'
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					light: 'hsl(var(--warning-light))',
+					bg: 'hsl(var(--warning-bg))'
+				},
+				error: {
+					DEFAULT: 'hsl(var(--error))',
+					light: 'hsl(var(--error-light))',
+					bg: 'hsl(var(--error-bg))'
 				}
 			},
 			borderRadius: {
