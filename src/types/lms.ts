@@ -2,7 +2,7 @@
 export interface ContentItem {
   id: string
   title: string
-  type: 'youtube' | 'pdf' | 'quiz' | 'reading' | 'video-playlist' | 'pdf-collection'
+  type: 'youtube' | 'pdf' | 'quiz' | 'reading' | 'video' | 'video-playlist' | 'pdf-collection'
   url?: string
   duration?: string
   size?: string
