@@ -2,28 +2,32 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Clock, BookOpen, Calendar, Users, Bell } from "lucide-react"
-import { TodayClassCard } from "./TodayClassCard"
 
 interface TodayClass {
   id: string
   subject: string
-  title: string
   time: string
   teacher: string
-  type: 'live' | 'lab' | 'discussion'
   status: 'upcoming' | 'ongoing' | 'completed'
   studentsJoined?: number
   totalStudents?: number
+}
+
+interface Update {
+  id: string
+  title: string
+  description: string
+  time: string
+  type: 'assignment' | 'announcement' | 'grade' | 'material'
+  subject?: string
 }
 
 const todayClasses: TodayClass[] = [
   {
     id: "class-1",
     subject: "Mathematics",
-    title: "Advanced Calculus - Integration by Parts",
     time: "09:00 AM",
     teacher: "Dr. Smith",
-    type: "live",
     status: "completed",
     studentsJoined: 28,
     totalStudents: 30
@@ -31,10 +35,8 @@ const todayClasses: TodayClass[] = [
   {
     id: "class-2",
     subject: "Physics", 
-    title: "Quantum Mechanics Lab - Wave Functions",
     time: "11:00 AM",
     teacher: "Prof. Johnson",
-    type: "lab",
     status: "ongoing",
     studentsJoined: 25,
     totalStudents: 30
@@ -42,52 +44,10 @@ const todayClasses: TodayClass[] = [
   {
     id: "class-3",
     subject: "Chemistry",
-    title: "Organic Chemistry Discussion - Reaction Mechanisms",
     time: "02:00 PM", 
     teacher: "Dr. Wilson",
-    type: "discussion",
     status: "upcoming",
     totalStudents: 30
-  },
-  {
-    id: "class-4",
-    subject: "Biology",
-    title: "Cell Biology - Mitosis and Meiosis",
-    time: "04:00 PM",
-    teacher: "Dr. Brown",
-    type: "live",
-    status: "upcoming",
-    totalStudents: 28
-  },
-  {
-    id: "class-5",
-    subject: "Mathematics",
-    title: "Statistics Lab - Probability Distributions",
-    time: "05:30 PM",
-    teacher: "Prof. Davis",
-    type: "lab",
-    status: "upcoming",
-    totalStudents: 25
-  },
-  {
-    id: "class-6",
-    subject: "Physics",
-    title: "Electromagnetism - Maxwell's Equations",
-    time: "07:00 PM",
-    teacher: "Dr. Anderson",
-    type: "live",
-    status: "upcoming",
-    totalStudents: 30
-  },
-  {
-    id: "class-7",
-    subject: "Chemistry",
-    title: "Physical Chemistry Lab - Thermodynamics",
-    time: "08:30 PM",
-    teacher: "Prof. Martinez",
-    type: "lab",
-    status: "upcoming",
-    totalStudents: 26
   }
 ]
 
@@ -130,56 +90,20 @@ const updates: Update[] = [
     description: "Mid-term examination dates have been announced",
     time: "2 days ago", 
     type: "announcement"
-  },
-  {
-    id: "6",
-    title: "Lab Report Submitted",
-    description: "Your Chemistry lab report has been successfully submitted",
-    time: "3 days ago",
-    type: "material",
-    subject: "Chemistry"
-  },
-  {
-    id: "7",
-    title: "New Quiz Available",
-    description: "Mathematics Quiz 4 is now open for attempts",
-    time: "4 days ago",
-    type: "assignment",
-    subject: "Mathematics"
-  },
-  {
-    id: "8",
-    title: "Assignment Deadline",
-    description: "Physics Assignment 2 deadline extended to next week",
-    time: "5 days ago",
-    type: "announcement",
-    subject: "Physics"
-  },
-  {
-    id: "9",
-    title: "New Video Lecture",
-    description: "Organic Chemistry video lectures now available",
-    time: "6 days ago",
-    type: "material",
-    subject: "Chemistry"
-  },
-  {
-    id: "10",
-    title: "Test Results",
-    description: "Biology unit test results have been published",
-    time: "1 week ago",
-    type: "grade",
-    subject: "Biology"
   }
 ]
 
-interface Update {
-  id: string
-  title: string
-  description: string
-  time: string
-  type: 'assignment' | 'announcement' | 'grade' | 'material'
-  subject?: string
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case 'completed':
+      return 'bg-green-100 text-green-800'
+    case 'ongoing':
+      return 'bg-blue-100 text-blue-800'
+    case 'upcoming':
+      return 'bg-orange-100 text-orange-800'
+    default:
+      return 'bg-gray-100 text-gray-800'
+  }
 }
 
 const getTypeIcon = (type: string) => {
@@ -201,57 +125,78 @@ export function LatestUpdates() {
   return (
     <div className="space-y-6">
       {/* Today's Classes */}
-      <Card className="shadow-md">
+      <Card>
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Calendar className="h-5 w-5 text-primary" />
             Today's Classes
           </CardTitle>
         </CardHeader>
-        <CardContent className="h-96 overflow-y-auto custom-scrollbar">
-          <div className="space-y-3 pr-2">
-            {todayClasses.map((classItem) => (
-              <TodayClassCard key={classItem.id} classItem={classItem} />
-            ))}
-          </div>
+        <CardContent className="space-y-3">
+          {todayClasses.map((classItem) => (
+            <div
+              key={classItem.id}
+              className="flex items-center justify-between p-3 rounded-lg border bg-card/50 hover:bg-card/80 transition-colors"
+            >
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h4 className="font-medium text-sm">{classItem.subject}</h4>
+                  <Badge variant="secondary" className={`text-xs ${getStatusColor(classItem.status)}`}>
+                    {classItem.status}
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    <span>{classItem.time}</span>
+                  </div>
+                  <span>{classItem.teacher}</span>
+                  {classItem.studentsJoined && (
+                    <div className="flex items-center gap-1">
+                      <Users className="h-3 w-3" />
+                      <span>{classItem.studentsJoined}/{classItem.totalStudents}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </CardContent>
       </Card>
 
       {/* Latest Updates */}
-      <Card className="shadow-md">
+      <Card>
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Bell className="h-5 w-5 text-primary" />
             Latest Updates
           </CardTitle>
         </CardHeader>
-        <CardContent className="h-96 overflow-y-auto custom-scrollbar">
-          <div className="space-y-3 pr-2">
-            {updates.map((update) => (
-              <div
-                key={update.id}
-                className="flex items-start gap-3 p-3 rounded-lg border bg-white hover:bg-card/80 transition-colors cursor-pointer"
-              >
-                <div className="flex-shrink-0 p-1.5 rounded-full bg-primary/10 text-primary mt-0.5">
-                  {getTypeIcon(update.type)}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-medium text-sm truncate">{update.title}</h4>
-                    {update.subject && (
-                      <Badge variant="outline" className="text-xs px-1.5 py-0.5">
-                        {update.subject}
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground line-clamp-2 mb-1">
-                    {update.description}
-                  </p>
-                  <span className="text-xs text-muted-foreground">{update.time}</span>
-                </div>
+        <CardContent className="space-y-3">
+          {updates.map((update) => (
+            <div
+              key={update.id}
+              className="flex items-start gap-3 p-3 rounded-lg border bg-card/50 hover:bg-card/80 transition-colors cursor-pointer"
+            >
+              <div className="flex-shrink-0 p-1.5 rounded-full bg-primary/10 text-primary mt-0.5">
+                {getTypeIcon(update.type)}
               </div>
-            ))}
-          </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <h4 className="font-medium text-sm truncate">{update.title}</h4>
+                  {update.subject && (
+                    <Badge variant="outline" className="text-xs px-1.5 py-0.5">
+                      {update.subject}
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground line-clamp-2 mb-1">
+                  {update.description}
+                </p>
+                <span className="text-xs text-muted-foreground">{update.time}</span>
+              </div>
+            </div>
+          ))}
         </CardContent>
       </Card>
     </div>
