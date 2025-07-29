@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { mockExamData } from '@/data/mockExams'
 import { 
@@ -26,14 +25,13 @@ const ExamPage = () => {
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false)
 
   useEffect(() => {
-    // Find the exam from mock data
     const foundExam = mockExamData.chapters
       .flatMap(chapter => chapter.exams)
       .find(e => e.id === examId)
     
     if (foundExam) {
       setExam(foundExam)
-      setTimeRemaining(foundExam.duration * 60) // Convert to seconds
+      setTimeRemaining(foundExam.duration * 60)
     }
   }, [examId])
 
@@ -54,7 +52,6 @@ const ExamPage = () => {
   }, [timeRemaining])
 
   const handleAutoSubmit = () => {
-    // Auto-submit when time runs out
     handleSubmitExam()
   }
 
@@ -65,8 +62,13 @@ const ExamPage = () => {
     }))
   }
 
+  const handleSaveAndNext = () => {
+    if (currentQuestion < (exam?.questions?.length || 0) - 1) {
+      setCurrentQuestion(currentQuestion + 1)
+    }
+  }
+
   const handleSubmitExam = () => {
-    // Calculate score (simplified logic)
     const totalQuestions = exam?.questions?.length || 0
     const correctAnswers = exam?.questions?.reduce((count, question) => {
       return answers[question.id] === question.correctAnswer ? count + 1 : count
@@ -75,7 +77,6 @@ const ExamPage = () => {
     const score = Math.round((correctAnswers / totalQuestions) * (exam?.totalMarks || 0))
     const percentage = Math.round((score / (exam?.totalMarks || 1)) * 100)
     
-    // Navigate to results page with score data
     navigate(`/subject/${subjectId}/exam/${examId}/results`, {
       state: {
         score,
@@ -93,17 +94,12 @@ const ExamPage = () => {
     return `${minutes}:${secs.toString().padStart(2, '0')}`
   }
 
-  const getProgressPercentage = () => {
-    const totalQuestions = exam?.questions?.length || 1
-    return Math.round((Object.keys(answers).length / totalQuestions) * 100)
-  }
-
   const isAnswered = (questionId: string) => answers.hasOwnProperty(questionId)
 
   if (!exam || !exam.questions) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-        <div className="container max-w-4xl mx-auto p-4">
+        <div className="container max-w-6xl mx-auto p-4">
           <div className="text-center py-8">
             <p>Loading exam...</p>
           </div>
@@ -116,8 +112,8 @@ const ExamPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container max-w-4xl mx-auto p-4 space-y-6">
-        {/* Header */}
+      <div className="container max-w-6xl mx-auto p-4 space-y-6">
+        {/* Header with Timer */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Button 
@@ -141,101 +137,106 @@ const ExamPage = () => {
           </div>
         </div>
 
-        {/* Progress */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Progress</span>
-                <span>{getProgressPercentage()}% completed</span>
-              </div>
-              <Progress value={getProgressPercentage()} />
-            </div>
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Main Content - Question */}
+          <div className="lg:col-span-3 space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-start justify-between">
+                  <span className="text-lg">Q{currentQuestion + 1}. {currentQ.question}</span>
+                  <Badge variant="outline">{currentQ.marks} marks</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {currentQ.options.map((option, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleAnswerSelect(currentQ.id, index)}
+                      className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
+                        answers[currentQ.id] === index
+                          ? 'border-primary bg-primary/5 text-primary'
+                          : 'border-border hover:border-border/60 hover:bg-accent/50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        {answers[currentQ.id] === index ? (
+                          <CheckCircle2 className="h-5 w-5 text-primary" />
+                        ) : (
+                          <Circle className="h-5 w-5 text-muted-foreground" />
+                        )}
+                        <span className="font-medium mr-2">
+                          {String.fromCharCode(65 + index)}.
+                        </span>
+                        <span>{option}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
-        {/* Question */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-start justify-between">
-              <span className="text-lg">Q{currentQuestion + 1}. {currentQ.question}</span>
-              <Badge variant="outline">{currentQ.marks} marks</Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {currentQ.options.map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleAnswerSelect(currentQ.id, index)}
-                  className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
-                    answers[currentQ.id] === index
-                      ? 'border-primary bg-primary/5 text-primary'
-                      : 'border-border hover:border-border/60 hover:bg-accent/50'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    {answers[currentQ.id] === index ? (
-                      <CheckCircle2 className="h-5 w-5 text-primary" />
-                    ) : (
-                      <Circle className="h-5 w-5 text-muted-foreground" />
-                    )}
-                    <span className="font-medium mr-2">
-                      {String.fromCharCode(65 + index)}.
-                    </span>
-                    <span>{option}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Question Navigation */}
-        <div className="grid grid-cols-8 sm:grid-cols-12 gap-2">
-          {exam.questions.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentQuestion(index)}
-              className={`h-10 rounded-lg border-2 text-sm font-medium transition-all ${
-                index === currentQuestion
-                  ? 'border-primary bg-primary text-primary-foreground'
-                  : isAnswered(exam.questions[index].id)
-                  ? 'border-green-200 bg-green-50 text-green-700'
-                  : 'border-border bg-background hover:bg-accent'
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-
-        {/* Navigation Buttons */}
-        <div className="flex justify-between items-center">
-          <Button
-            variant="outline"
-            onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
-            disabled={currentQuestion === 0}
-          >
-            Previous
-          </Button>
-
-          <div className="flex gap-2">
-            {currentQuestion < exam.questions.length - 1 ? (
+            {/* Bottom Controls */}
+            <div className="flex justify-center items-center gap-4">
               <Button
-                onClick={() => setCurrentQuestion(Math.min(exam.questions.length - 1, currentQuestion + 1))}
+                onClick={handleSaveAndNext}
+                disabled={currentQuestion >= exam.questions.length - 1}
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
               >
-                Next
+                Save & Next
               </Button>
-            ) : (
+
               <Button
                 onClick={() => setShowSubmitConfirm(true)}
                 className="bg-gradient-to-r from-green-500 to-emerald-500 text-white"
               >
                 <AlertTriangle className="h-4 w-4 mr-2" />
-                Submit Exam
+                Submit
               </Button>
-            )}
+            </div>
+          </div>
+
+          {/* Right Panel - Question Navigation */}
+          <div className="lg:col-span-1">
+            <Card className="sticky top-4">
+              <CardHeader>
+                <CardTitle className="text-lg">Questions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-4 lg:grid-cols-3 gap-2">
+                  {exam.questions.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentQuestion(index)}
+                      className={`h-10 rounded-lg border-2 text-sm font-medium transition-all ${
+                        index === currentQuestion
+                          ? 'border-primary bg-primary text-primary-foreground'
+                          : isAnswered(exam.questions[index].id)
+                          ? 'border-green-200 bg-green-50 text-green-700'
+                          : 'border-border bg-background hover:bg-accent'
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </div>
+                
+                <div className="mt-4 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-3 h-3 rounded bg-primary"></div>
+                    <span>Current</span>
+                  </div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-3 h-3 rounded bg-green-200"></div>
+                    <span>Answered</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded border border-border bg-background"></div>
+                    <span>Not Answered</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
 

@@ -1,21 +1,13 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LMSContainer } from "@/components/lms/LMSContainer"
 import { ExamsContainer } from "@/components/exams/ExamsContainer"
 import { mockExamData } from "@/data/mockExams"
 import { 
   ArrowLeft, 
-  Calendar, 
-  Clock, 
   BookOpen, 
-  Trophy,
-  Star,
-  TrendingUp,
-  Target,
   GraduationCap,
   FileText,
 } from "lucide-react"
@@ -69,7 +61,6 @@ const SubjectPage = () => {
 
   const subjectColor = getSubjectColor(subjectName)
 
-  // Enhanced LMS data structure
   const lmsData: LMSData = {
     overallProgress: 78,
     chapters: [
@@ -248,14 +239,6 @@ const SubjectPage = () => {
     ]
   }
 
-  const subjectData = {
-    name: subjectName,
-    progress: lmsData.overallProgress,
-    streak: 12,
-    score: 92,
-    nextClass: "Today, 10:00 AM"
-  }
-
   // Get initial tab from URL params
   const urlParams = new URLSearchParams(location.search)
   const initialTab = urlParams.get('tab') || 'lms'
@@ -281,65 +264,6 @@ const SubjectPage = () => {
               <p className="text-muted-foreground text-sm sm:text-base">Continue your learning journey</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-green-500" />
-              <span className="text-sm font-medium">{subjectData.streak} day streak</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span className="text-sm font-medium">{subjectData.score}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Progress Overview */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <Card className={`${subjectColor.bg} ${subjectColor.border} border-2`}>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Target className={`h-5 w-5 ${subjectColor.primary}`} />
-                Overall Progress
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Completion</span>
-                  <span className="font-medium">{subjectData.progress}%</span>
-                </div>
-                <Progress value={subjectData.progress} className="h-2" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className={`${subjectColor.bg} ${subjectColor.border} border-2`}>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Trophy className={`h-5 w-5 ${subjectColor.primary}`} />
-                Performance
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className={`text-2xl font-bold ${subjectColor.primary}`}>{subjectData.score}%</div>
-              <p className="text-sm text-muted-foreground">Average Score</p>
-            </CardContent>
-          </Card>
-
-          <Card className={`${subjectColor.bg} ${subjectColor.border} border-2 sm:col-span-2 lg:col-span-1`}>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Calendar className={`h-5 w-5 ${subjectColor.primary}`} />
-                Next Class
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2">
-                <Clock className={`h-4 w-4 ${subjectColor.primary}`} />
-                <span className="font-medium">{subjectData.nextClass}</span>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Tabs for LMS, Exams, and Notes */}

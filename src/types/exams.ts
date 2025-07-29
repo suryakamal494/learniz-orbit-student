@@ -34,6 +34,7 @@ export interface Exam {
   result?: ExamResult
   allowRetake: boolean
   passingScore: number
+  instructions?: string
 }
 
 export interface ExamChapter {

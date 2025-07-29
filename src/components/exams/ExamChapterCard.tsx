@@ -54,9 +54,6 @@ export const ExamChapterCard: React.FC<ExamChapterCardProps> = ({
                   <h3 className={`text-lg font-semibold ${subjectColor.primary}`}>
                     {chapter.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {chapter.description}
-                  </p>
                   <div className="flex items-center gap-4 text-sm">
                     <span className={getStatusColor(chapter.progress)}>
                       {chapter.completedExams}/{chapter.totalExams} completed
