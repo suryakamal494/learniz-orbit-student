@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -218,18 +217,30 @@ const ExamPage = () => {
                 </p>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-4 gap-2 mb-4">
+                {/* Fixed Grid Layout for Question Numbers */}
+                <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-4">
                   {exam.questions.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => handleQuestionJump(index)}
-                      className={`h-12 w-12 rounded-lg text-sm font-semibold transition-all ${
-                        index === currentQuestion
-                          ? 'bg-primary text-primary-foreground ring-2 ring-primary/20'
+                      className={`
+                        aspect-square 
+                        min-h-[44px] 
+                        min-w-[44px] 
+                        rounded-lg 
+                        text-sm 
+                        font-semibold 
+                        transition-all 
+                        flex 
+                        items-center 
+                        justify-center
+                        ${index === currentQuestion
+                          ? 'bg-primary text-primary-foreground ring-2 ring-primary/20 scale-105'
                           : isAnswered(index)
                           ? 'bg-green-100 text-green-700 border border-green-200 hover:bg-green-200'
                           : 'bg-background border border-border hover:bg-accent hover:border-accent-foreground/20'
-                      }`}
+                        }
+                      `}
                     >
                       {index + 1}
                     </button>
