@@ -1,32 +1,27 @@
 
 import type { ExamSection, ExamChapter, Exam, ExamQuestion, ExamResult } from '@/types/exams'
 
-const sampleQuestions: ExamQuestion[] = [
-  {
-    id: "q1",
-    question: "What is the derivative of x²?",
-    options: ["2x", "x", "2", "x²"],
-    correctAnswer: 0,
-    explanation: "The derivative of x² is 2x using the power rule.",
-    marks: 2
-  },
-  {
-    id: "q2", 
-    question: "What is the limit of (x²-1)/(x-1) as x approaches 1?",
-    options: ["0", "1", "2", "∞"],
-    correctAnswer: 2,
-    explanation: "Using L'Hôpital's rule or factoring: (x+1)(x-1)/(x-1) = x+1, so limit is 2.",
-    marks: 3
-  },
-  {
-    id: "q3",
-    question: "What is the integral of 2x dx?",
-    options: ["x² + C", "2x² + C", "x²/2 + C", "2x + C"],
-    correctAnswer: 0,
-    explanation: "∫2x dx = x² + C using the power rule for integration.",
-    marks: 2
+const createSampleQuestions = (count: number, subject: string): ExamQuestion[] => {
+  const questions: ExamQuestion[] = []
+  
+  for (let i = 1; i <= count; i++) {
+    questions.push({
+      id: `q${i}`,
+      question: `Sample question ${i} for ${subject}`,
+      options: [
+        `Option A for question ${i}`,
+        `Option B for question ${i}`,
+        `Option C for question ${i}`,
+        `Option D for question ${i}`
+      ],
+      correctAnswer: Math.floor(Math.random() * 4),
+      explanation: `Explanation for question ${i}`,
+      marks: Math.ceil(Math.random() * 3) + 1
+    })
   }
-]
+  
+  return questions
+}
 
 const sampleResult: ExamResult = {
   id: "result-1",
@@ -61,7 +56,7 @@ export const mockExamData: ExamSection = {
           difficulty: "easy",
           status: "completed",
           chapterId: "chapter-1-exams",
-          questions: sampleQuestions,
+          questions: createSampleQuestions(5, "Basic Derivatives"),
           result: sampleResult,
           allowRetake: true,
           passingScore: 60,
@@ -77,6 +72,7 @@ export const mockExamData: ExamSection = {
           difficulty: "medium",
           status: "not-started",
           chapterId: "chapter-1-exams",
+          questions: createSampleQuestions(8, "Limits and Continuity"),
           allowRetake: true,
           passingScore: 60,
           instructions: "This test covers limits and continuity concepts. Make sure you understand the fundamental theorems before attempting. Calculator is not allowed for this test. Show your work clearly for partial credit."
@@ -91,6 +87,7 @@ export const mockExamData: ExamSection = {
           difficulty: "medium",
           status: "not-started",
           chapterId: "chapter-1-exams",
+          questions: createSampleQuestions(10, "Integration"),
           allowRetake: false,
           passingScore: 70,
           instructions: "This comprehensive test covers all integration techniques studied so far. You may use the provided formula sheet. Ensure all final answers are simplified. Partial credit will be awarded for correct methods."
@@ -115,6 +112,7 @@ export const mockExamData: ExamSection = {
           difficulty: "hard",
           status: "not-started",
           chapterId: "chapter-2-exams",
+          questions: createSampleQuestions(12, "Multivariable Calculus"),
           allowRetake: true,
           passingScore: 70,
           instructions: "Advanced test on functions of multiple variables. Graphing calculator is permitted. Take your time to visualize the problems. Partial derivatives and optimization problems require careful attention to detail."
@@ -129,6 +127,7 @@ export const mockExamData: ExamSection = {
           difficulty: "hard",
           status: "not-started",
           chapterId: "chapter-2-exams",
+          questions: createSampleQuestions(15, "Vector Calculus"),
           allowRetake: false,
           passingScore: 75,
           instructions: "Final comprehensive exam covering vector fields, line integrals, and surface integrals. This is a closed-book exam. Review all theorems and their applications. Time management is crucial for success."
@@ -153,6 +152,7 @@ export const mockExamData: ExamSection = {
           difficulty: "medium",
           status: "not-started",
           chapterId: "chapter-3-exams",
+          questions: createSampleQuestions(10, "Optimization"),
           allowRetake: true,
           passingScore: 65,
           instructions: "Real-world optimization problems require setting up equations correctly. Read each problem statement twice. Clearly define your variables and constraints. Check your solutions for reasonableness."
@@ -167,6 +167,7 @@ export const mockExamData: ExamSection = {
           difficulty: "medium",
           status: "not-started",
           chapterId: "chapter-3-exams",
+          questions: createSampleQuestions(9, "Statistics and Probability"),
           allowRetake: true,
           passingScore: 65,
           instructions: "Statistical concepts test with probability distributions. Formula sheet is provided. Round final answers to 3 decimal places unless otherwise specified. Show all calculation steps clearly."

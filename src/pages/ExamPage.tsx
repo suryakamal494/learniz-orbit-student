@@ -3,14 +3,15 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
 import { mockExamData } from '@/data/mockExams'
 import { 
   ArrowLeft, 
   Clock, 
-  AlertTriangle, 
-  CheckCircle2,
-  Circle
+  AlertTriangle,
+  ChevronRight,
+  Save
 } from 'lucide-react'
 import type { Exam, ExamQuestion } from '@/types/exams'
 
@@ -23,15 +24,17 @@ const ExamPage = () => {
   const [answers, setAnswers] = useState<Record<string, number>>({})
   const [timeRemaining, setTimeRemaining] = useState(0)
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const foundExam = mockExamData.chapters
       .flatMap(chapter => chapter.exams)
       .find(e => e.id === examId)
     
-    if (foundExam) {
+    if (foundExam && foundExam.questions) {
       setExam(foundExam)
       setTimeRemaining(foundExam.duration * 60)
+      setIsLoading(false)
     }
   }, [examId])
 
@@ -55,17 +58,24 @@ const ExamPage = () => {
     handleSubmitExam()
   }
 
-  const handleAnswerSelect = (questionId: string, optionIndex: number) => {
-    setAnswers(prev => ({
-      ...prev,
-      [questionId]: optionIndex
-    }))
+  const handleAnswerSelect = (value: string) => {
+    const questionId = exam?.questions?.[currentQuestion]?.id
+    if (questionId) {
+      setAnswers(prev => ({
+        ...prev,
+        [questionId]: parseInt(value)
+      }))
+    }
   }
 
   const handleSaveAndNext = () => {
     if (currentQuestion < (exam?.questions?.length || 0) - 1) {
       setCurrentQuestion(currentQuestion + 1)
     }
+  }
+
+  const handleQuestionJump = (questionIndex: number) => {
+    setCurrentQuestion(questionIndex)
   }
 
   const handleSubmitExam = () => {
@@ -94,9 +104,17 @@ const ExamPage = () => {
     return `${minutes}:${secs.toString().padStart(2, '0')}`
   }
 
-  const isAnswered = (questionId: string) => answers.hasOwnProperty(questionId)
+  const isAnswered = (questionIndex: number) => {
+    const questionId = exam?.questions?.[questionIndex]?.id
+    return questionId ? answers.hasOwnProperty(questionId) : false
+  }
 
-  if (!exam || !exam.questions) {
+  const getCurrentAnswer = () => {
+    const questionId = exam?.questions?.[currentQuestion]?.id
+    return questionId && answers[questionId] !== undefined ? answers[questionId].toString() : ""
+  }
+
+  if (isLoading || !exam || !exam.questions) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
         <div className="container max-w-6xl mx-auto p-4">
@@ -109,12 +127,13 @@ const ExamPage = () => {
   }
 
   const currentQ = exam.questions[currentQuestion]
+  const isTimeRunningLow = timeRemaining <= 300 // 5 minutes
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container max-w-6xl mx-auto p-4 space-y-6">
+      <div className="container max-w-7xl mx-auto p-4">
         {/* Header with Timer */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
             <Button 
               variant="ghost" 
@@ -125,73 +144,66 @@ const ExamPage = () => {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">{exam.title}</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-foreground">{exam.title}</h1>
               <p className="text-muted-foreground">Question {currentQuestion + 1} of {exam.questions.length}</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <Badge variant="outline" className="text-red-600 border-red-200 bg-red-50">
-              <Clock className="h-4 w-4 mr-1" />
-              {formatTime(timeRemaining)}
-            </Badge>
+          
+          {/* Prominent Timer */}
+          <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 ${
+            isTimeRunningLow ? 'border-red-500 bg-red-50 text-red-700' : 'border-orange-200 bg-orange-50 text-orange-700'
+          }`}>
+            <Clock className="h-5 w-5" />
+            <span className="text-lg font-bold">{formatTime(timeRemaining)}</span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Main Content - Question */}
-          <div className="lg:col-span-3 space-y-6">
-            <Card>
+          {/* Main Content - Single Question */}
+          <div className="lg:col-span-3">
+            <Card className="mb-6">
               <CardHeader>
-                <CardTitle className="flex items-start justify-between">
-                  <span className="text-lg">Q{currentQuestion + 1}. {currentQ.question}</span>
-                  <Badge variant="outline">{currentQ.marks} marks</Badge>
+                <CardTitle className="flex items-start justify-between text-lg">
+                  <span>Q{currentQuestion + 1}. {currentQ.question}</span>
+                  <span className="text-sm font-normal bg-primary/10 text-primary px-2 py-1 rounded">
+                    {currentQ.marks} marks
+                  </span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
+                <RadioGroup value={getCurrentAnswer()} onValueChange={handleAnswerSelect} className="space-y-3">
                   {currentQ.options.map((option, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleAnswerSelect(currentQ.id, index)}
-                      className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
-                        answers[currentQ.id] === index
-                          ? 'border-primary bg-primary/5 text-primary'
-                          : 'border-border hover:border-border/60 hover:bg-accent/50'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        {answers[currentQ.id] === index ? (
-                          <CheckCircle2 className="h-5 w-5 text-primary" />
-                        ) : (
-                          <Circle className="h-5 w-5 text-muted-foreground" />
-                        )}
-                        <span className="font-medium mr-2">
-                          {String.fromCharCode(65 + index)}.
-                        </span>
-                        <span>{option}</span>
-                      </div>
-                    </button>
+                    <div key={index} className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent/50 cursor-pointer">
+                      <RadioGroupItem value={index.toString()} id={`option-${index}`} />
+                      <Label htmlFor={`option-${index}`} className="flex-1 cursor-pointer">
+                        <span className="font-semibold mr-3">{String.fromCharCode(65 + index)}.</span>
+                        {option}
+                      </Label>
+                    </div>
                   ))}
-                </div>
+                </RadioGroup>
               </CardContent>
             </Card>
 
             {/* Bottom Controls */}
-            <div className="flex justify-center items-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button
                 onClick={handleSaveAndNext}
                 disabled={currentQuestion >= exam.questions.length - 1}
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:scale-105 transition-all"
               >
+                <Save className="h-4 w-4 mr-2" />
                 Save & Next
+                <ChevronRight className="h-4 w-4 ml-2" />
               </Button>
 
               <Button
                 onClick={() => setShowSubmitConfirm(true)}
-                className="bg-gradient-to-r from-green-500 to-emerald-500 text-white"
+                variant="outline"
+                className="border-green-500 text-green-600 hover:bg-green-50 hover:scale-105 transition-all"
               >
                 <AlertTriangle className="h-4 w-4 mr-2" />
-                Submit
+                Submit Test
               </Button>
             </div>
           </div>
@@ -201,19 +213,22 @@ const ExamPage = () => {
             <Card className="sticky top-4">
               <CardHeader>
                 <CardTitle className="text-lg">Questions</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  {Object.keys(answers).length} of {exam.questions.length} answered
+                </p>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-4 lg:grid-cols-3 gap-2">
+                <div className="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-4 gap-2 mb-4">
                   {exam.questions.map((_, index) => (
                     <button
                       key={index}
-                      onClick={() => setCurrentQuestion(index)}
-                      className={`h-10 rounded-lg border-2 text-sm font-medium transition-all ${
+                      onClick={() => handleQuestionJump(index)}
+                      className={`h-12 w-12 rounded-lg text-sm font-semibold transition-all ${
                         index === currentQuestion
-                          ? 'border-primary bg-primary text-primary-foreground'
-                          : isAnswered(exam.questions[index].id)
-                          ? 'border-green-200 bg-green-50 text-green-700'
-                          : 'border-border bg-background hover:bg-accent'
+                          ? 'bg-primary text-primary-foreground ring-2 ring-primary/20'
+                          : isAnswered(index)
+                          ? 'bg-green-100 text-green-700 border border-green-200 hover:bg-green-200'
+                          : 'bg-background border border-border hover:bg-accent hover:border-accent-foreground/20'
                       }`}
                     >
                       {index + 1}
@@ -221,17 +236,18 @@ const ExamPage = () => {
                   ))}
                 </div>
                 
-                <div className="mt-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-3 h-3 rounded bg-primary"></div>
+                {/* Legend */}
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-primary"></div>
                     <span>Current</span>
                   </div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-3 h-3 rounded bg-green-200"></div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-green-100 border border-green-200"></div>
                     <span>Answered</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded border border-border bg-background"></div>
+                    <div className="w-4 h-4 rounded bg-background border border-border"></div>
                     <span>Not Answered</span>
                   </div>
                 </div>
@@ -253,7 +269,8 @@ const ExamPage = () => {
               <CardContent>
                 <p className="mb-4">
                   Are you sure you want to submit this exam? You have answered{' '}
-                  {Object.keys(answers).length} out of {exam.questions.length} questions.
+                  <span className="font-semibold">{Object.keys(answers).length}</span> out of{' '}
+                  <span className="font-semibold">{exam.questions.length}</span> questions.
                 </p>
                 <div className="flex gap-2 justify-end">
                   <Button
