@@ -63,87 +63,96 @@ export const ContentItemRow: React.FC<ContentItemRowProps> = ({
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden">
-      {/* Mobile-First Layout */}
-      <div className="p-3 sm:p-4">
-        {/* Top Row - Index, Icon, and Action Buttons */}
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex items-start gap-3 flex-1 min-w-0">
+      <div className="p-4 sm:p-5">
+        {/* Top Section - Number and Title */}
+        <div className="mb-4">
+          <div className="flex items-start gap-3 mb-2">
             {/* Index Badge */}
-            <div className="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-100 flex items-center justify-center">
-              <span className="text-xs sm:text-sm font-medium text-gray-700">{index}</span>
+            <div className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-100 flex items-center justify-center">
+              <span className="text-sm sm:text-base font-semibold text-blue-700">{index}</span>
             </div>
             
-            {/* Content Icon */}
-            <div className="flex-shrink-0 pt-0.5">
-              {getContentIcon(item.type)}
-            </div>
-            
-            {/* Title - Full width, multi-line */}
+            {/* Title - Prominent and Clear */}
             <div className="flex-1 min-w-0">
-              <h5 className="font-medium text-sm sm:text-base text-gray-900 leading-relaxed break-words">
+              <h5 className="font-semibold text-base sm:text-lg text-gray-900 leading-relaxed break-words mb-1">
                 {item.title}
               </h5>
             </div>
           </div>
-          
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            {/* Completion Status */}
-            {item.completed ? (
-              <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 flex-shrink-0" />
-            ) : (
-              <Circle className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 flex-shrink-0" />
-            )}
-            
-            {/* Action Button */}
-            {canPreview ? (
-              <Button
-                size="sm"
-                variant="ghost"
-                className="h-8 w-8 sm:h-9 sm:w-9 p-0 hover:bg-blue-50 hover:text-blue-600 rounded-full transition-colors flex-shrink-0"
-                onClick={() => onOpenMedia(item)}
-              >
-                <Eye className="h-4 w-4" />
-              </Button>
-            ) : (
-              <Button
-                size="sm"
-                variant="ghost"
-                className="h-8 w-8 sm:h-9 sm:w-9 p-0 hover:bg-green-50 hover:text-green-600 rounded-full transition-colors flex-shrink-0"
-              >
-                <Play className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
         </div>
         
-        {/* Bottom Row - Metadata */}
-        <div className="flex items-center justify-between gap-3 ml-9 sm:ml-10">
-          <div className="flex items-center gap-2 flex-wrap">
-            {/* Type Badge */}
-            <Badge variant="outline" className="text-xs px-2 py-1 bg-gray-50 text-gray-700 border-gray-300 font-medium flex-shrink-0">
-              {getTypeLabel(item.type)}
-            </Badge>
+        {/* Bottom Section - Icons, Badges, and Actions */}
+        <div className="space-y-3">
+          {/* Content Type and Metadata Row */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              {/* Content Type Icon */}
+              <div className="flex items-center gap-2">
+                {getContentIcon(item.type)}
+                <Badge variant="outline" className="text-xs px-2 py-1 bg-gray-50 text-gray-700 border-gray-300 font-medium">
+                  {getTypeLabel(item.type)}
+                </Badge>
+              </div>
+            </div>
+            
+            {/* Metadata Info */}
+            <div className="flex items-center gap-3 text-xs text-gray-500">
+              {item.duration && (
+                <span className="whitespace-nowrap font-medium bg-gray-100 px-2 py-1 rounded">{item.duration}</span>
+              )}
+              {item.size && (
+                <span className="whitespace-nowrap font-medium bg-gray-100 px-2 py-1 rounded">{item.size}</span>
+              )}
+              {item.pages && (
+                <span className="whitespace-nowrap font-medium bg-gray-100 px-2 py-1 rounded">{item.pages} pages</span>
+              )}
+            </div>
           </div>
           
-          {/* Metadata Info */}
-          <div className="flex items-center gap-3 text-xs text-gray-500 flex-shrink-0">
-            {item.duration && (
-              <span className="whitespace-nowrap font-medium">{item.duration}</span>
-            )}
-            {item.size && (
-              <span className="whitespace-nowrap font-medium">{item.size}</span>
-            )}
-            {item.pages && (
-              <span className="whitespace-nowrap font-medium">{item.pages} pages</span>
-            )}
+          {/* Action Buttons Row */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {/* Completion Status */}
+              <div className="flex items-center gap-2">
+                {item.completed ? (
+                  <div className="flex items-center gap-1 text-green-600">
+                    <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <span className="text-xs font-medium">Completed</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1 text-gray-400">
+                    <Circle className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <span className="text-xs font-medium">Pending</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            {/* Action Button */}
+            <div className="flex items-center gap-2">
+              {canPreview ? (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-9 px-4 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition-colors"
+                  onClick={() => onOpenMedia(item)}
+                >
+                  <Eye className="h-4 w-4 mr-2" />
+                  <span className="text-xs font-medium">Preview</span>
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-9 px-4 hover:bg-green-50 hover:text-green-600 hover:border-green-300 transition-colors"
+                >
+                  <Play className="h-4 w-4 mr-2" />
+                  <span className="text-xs font-medium">Start</span>
+                </Button>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      
-      {/* Desktop Enhancement - Hidden on mobile, enhanced on larger screens */}
-      <div className="hidden lg:block">
-        {/* Optional: Add any desktop-specific enhancements here */}
       </div>
     </div>
   )
