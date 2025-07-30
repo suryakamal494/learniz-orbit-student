@@ -62,60 +62,61 @@ export default function SubjectPage() {
   const subjectColor = getSubjectColor(subjectName, subjectId || '1')
 
   return (
-    <div className="space-y-6 p-4 md:p-8 max-w-full overflow-hidden">
-      {/* Header with Back Button */}
-      <div className="flex items-center gap-4 mb-6">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={handleBack}
-          className="h-10 w-10 hover:bg-muted/50 transition-colors"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
-        
-        <div className="flex items-center gap-3">
-          <div className={`p-3 rounded-xl bg-gradient-to-br ${subjectColor.gradient} text-white shadow-md`}>
-            <BookOpen className="h-6 w-6" />
-          </div>
+    <div className="w-full max-w-full overflow-hidden">
+      <div className="space-y-6 p-4 md:p-8 max-w-full overflow-hidden">
+        {/* Header with Back Button */}
+        <div className="flex items-center gap-4 mb-6">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleBack}
+            className="h-10 w-10 hover:bg-muted/50 transition-colors shrink-0"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
           
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">{subjectName}</h1>
-            <p className="text-muted-foreground">Explore course materials and assessments</p>
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className={`p-3 rounded-xl bg-gradient-to-br ${subjectColor.gradient} text-white shadow-md shrink-0`}>
+              <BookOpen className="h-6 w-6" />
+            </div>
+            
+            <div className="min-w-0">
+              <h1 className="text-xl md:text-2xl font-bold text-foreground break-words">{subjectName}</h1>
+              <p className="text-muted-foreground text-sm md:text-base break-words">Explore course materials and assessments</p>
+            </div>
           </div>
         </div>
+
+        {/* Subject Content Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 w-full overflow-hidden">
+          <TabsList className="grid w-full grid-cols-3 glass border-border/40">
+            <TabsTrigger value="lms" className="text-xs md:text-sm font-medium">Learning Materials</TabsTrigger>
+            <TabsTrigger value="exams" className="text-xs md:text-sm font-medium">Assessments</TabsTrigger>
+            <TabsTrigger value="notes" className="text-xs md:text-sm font-medium">Study Notes</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="lms" className="space-y-4 animate-fade-in w-full overflow-hidden">
+            <LMSContainer 
+              data={mockLMSData} 
+              subjectColor={subjectColor}
+            />
+          </TabsContent>
+
+          <TabsContent value="exams" className="space-y-4 animate-fade-in w-full overflow-hidden">
+            <ExamsContainer 
+              data={mockExamData} 
+              subjectColor={subjectColor}
+            />
+          </TabsContent>
+
+          <TabsContent value="notes" className="space-y-4 animate-fade-in w-full overflow-hidden">
+            <NotesContainer 
+              data={mockNotesData} 
+              subjectColor={subjectColor}
+            />
+          </TabsContent>
+        </Tabs>
       </div>
-
-      {/* Subject Content Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 lg:w-96 glass border-border/40">
-          <TabsTrigger value="lms" className="text-sm font-medium">Learning Materials</TabsTrigger>
-          <TabsTrigger value="exams" className="text-sm font-medium">Assessments</TabsTrigger>
-          <TabsTrigger value="notes" className="text-sm font-medium">Study Notes</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="lms" className="space-y-4 animate-fade-in">
-          <LMSContainer 
-            data={mockLMSData} 
-            subjectColor={subjectColor}
-          />
-        </TabsContent>
-
-        <TabsContent value="exams" className="space-y-4 animate-fade-in">
-          <ExamsContainer 
-            data={mockExamData} 
-            subjectColor={subjectColor}
-          />
-        </TabsContent>
-
-        <TabsContent value="notes" className="space-y-4 animate-fade-in">
-          <NotesContainer 
-            data={mockNotesData} 
-            subjectColor={subjectColor}
-          />
-        </TabsContent>
-      </Tabs>
     </div>
   )
 }
-

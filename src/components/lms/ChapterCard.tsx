@@ -60,7 +60,7 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
   return (
     <Collapsible>
       <div className={`
-        rounded-lg border-2 transition-all duration-300 animate-fade-in
+        rounded-lg border-2 transition-all duration-300 animate-fade-in w-full overflow-hidden
         ${chapter.status === 'completed' 
           ? `${subjectColor.bg} ${subjectColor.border} opacity-80` 
           : chapter.status === 'current'
@@ -69,11 +69,51 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
         }
       `}>
         <CollapsibleTrigger 
-          className="w-full p-6 cursor-pointer hover:bg-white/20 transition-colors"
+          className="w-full p-4 md:p-6 cursor-pointer hover:bg-white/20 transition-colors"
           onClick={onToggleChapter}
           disabled={chapter.status === 'locked'}
         >
-          <div className="flex items-center justify-between">
+          {/* Mobile Layout */}
+          <div className="flex flex-col gap-4 md:hidden">
+            <div className="flex items-start gap-3">
+              {getStatusIcon()}
+              <div className="text-left flex-1 min-w-0">
+                <h3 className="font-semibold text-base md:text-lg mb-1 break-words">
+                  {chapter.title}
+                </h3>
+                <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                  <span className="whitespace-nowrap">{chapter.progress}% Complete</span>
+                  {chapter.estimatedTime && (
+                    <div className="flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      <span className="whitespace-nowrap">{chapter.estimatedTime}</span>
+                    </div>
+                  )}
+                </div>
+                {chapter.totalItems && (
+                  <div className="text-sm text-muted-foreground mt-1">
+                    <span>{chapter.completedItems || 0}/{chapter.totalItems} items</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                {getStatusBadge()}
+                {chapter.topics.length > 0 && (
+                  isExpanded ? (
+                    <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                  )
+                )}
+              </div>
+            </div>
+            <div className="w-full">
+              <Progress value={chapter.progress} className="w-full h-2" />
+            </div>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden md:flex items-center justify-between">
             <div className="flex items-center gap-4">
               {getStatusIcon()}
               <div className="text-left">
@@ -108,7 +148,7 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
         
         {chapter.topics.length > 0 && (
           <CollapsibleContent className="animate-accordion-down">
-            <div className="px-6 pb-6">
+            <div className="px-4 md:px-6 pb-4 md:pb-6">
               <TopicList
                 topics={chapter.topics}
                 expandedTopics={expandedTopics}
