@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { ArrowLeft, BookOpen } from 'lucide-react'
@@ -9,7 +10,7 @@ import { ExamsContainer } from '@/components/exams/ExamsContainer'
 import { NotesContainer } from '@/components/notes/NotesContainer'
 
 import { mockLMSData } from '@/data/mockLMS'
-import { mockExamsData } from '@/data/mockExams'
+import { mockExamData } from '@/data/mockExams'
 import { mockNotesData } from '@/data/mockNotes'
 
 export default function SubjectPage() {
@@ -101,7 +102,7 @@ export default function SubjectPage() {
 
         <TabsContent value="exams" className="space-y-4 animate-fade-in">
           <ExamsContainer 
-            data={mockExamsData} 
+            data={mockExamData} 
             subjectColor={subjectColor}
           />
         </TabsContent>
