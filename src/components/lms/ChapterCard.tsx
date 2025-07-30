@@ -34,11 +34,11 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
   const getStatusIcon = () => {
     switch (chapter.status) {
       case 'completed':
-        return <CheckCircle2 className={`h-5 w-5 ${subjectColor.primary}`} />
+        return <CheckCircle2 className={`h-5 w-5 ${subjectColor.primary} flex-shrink-0`} />
       case 'current':
-        return <Play className={`h-5 w-5 ${subjectColor.primary}`} />
+        return <Play className={`h-5 w-5 ${subjectColor.primary} flex-shrink-0`} />
       default:
-        return <Circle className="h-5 w-5 text-muted-foreground" />
+        return <Circle className="h-5 w-5 text-muted-foreground flex-shrink-0" />
     }
   }
 
@@ -50,7 +50,7 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
     return (
       <Badge 
         variant={chapter.status === 'completed' ? 'default' : 'secondary'}
-        className={baseClasses}
+        className={`${baseClasses} text-xs px-2 py-1 flex-shrink-0`}
       >
         {chapter.status}
       </Badge>
@@ -60,7 +60,7 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
   return (
     <Collapsible>
       <div className={`
-        rounded-lg border-2 transition-all duration-300 animate-fade-in
+        rounded-lg border-2 transition-all duration-300 animate-fade-in overflow-hidden
         ${chapter.status === 'completed' 
           ? `${subjectColor.bg} ${subjectColor.border} opacity-80` 
           : chapter.status === 'current'
@@ -69,11 +69,57 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
         }
       `}>
         <CollapsibleTrigger 
-          className="w-full p-6 cursor-pointer hover:bg-white/20 transition-colors"
+          className="w-full p-4 md:p-6 cursor-pointer hover:bg-white/20 transition-colors"
           onClick={onToggleChapter}
           disabled={chapter.status === 'locked'}
         >
-          <div className="flex items-center justify-between">
+          {/* Mobile Layout */}
+          <div className="block md:hidden">
+            <div className="flex items-start gap-3 mb-3">
+              {getStatusIcon()}
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-base md:text-lg mb-1 text-left break-words">
+                  {chapter.title}
+                </h3>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {getStatusBadge()}
+                {chapter.topics.length > 0 && (
+                  isExpanded ? (
+                    <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                  )
+                )}
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">
+                  {chapter.progress}% Complete
+                </span>
+                <Progress value={chapter.progress} className="w-20 h-2" />
+              </div>
+              
+              <div className="flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
+                {chapter.estimatedTime && (
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    <span className="whitespace-nowrap">{chapter.estimatedTime}</span>
+                  </div>
+                )}
+                {chapter.totalItems && (
+                  <span className="whitespace-nowrap">
+                    {chapter.completedItems || 0}/{chapter.totalItems} items
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden md:flex items-center justify-between">
             <div className="flex items-center gap-4">
               {getStatusIcon()}
               <div className="text-left">
@@ -108,7 +154,7 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
         
         {chapter.topics.length > 0 && (
           <CollapsibleContent className="animate-accordion-down">
-            <div className="px-6 pb-6">
+            <div className="px-4 md:px-6 pb-4 md:pb-6">
               <TopicList
                 topics={chapter.topics}
                 expandedTopics={expandedTopics}
