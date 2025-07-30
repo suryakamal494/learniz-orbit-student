@@ -58,8 +58,8 @@ export function AppSidebar() {
         </Button>
       )}
       
-      <Sidebar className="border-r-0 glass shadow-modern-lg z-50">
-        <SidebarHeader className="border-b border-border/40 p-6 glass-strong">
+      <Sidebar className="border-r-0 bg-white shadow-modern-lg z-50 [&[data-mobile=true]]:bg-white">
+        <SidebarHeader className="border-b border-border/40 p-6 bg-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
@@ -72,10 +72,10 @@ export function AppSidebar() {
               {!isCollapsed && (
                 <div className="flex flex-col animate-fade-in">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl font-bold text-foreground">Learniz</span>
+                    <span className="text-xl font-bold text-gray-900">Learniz</span>
                     <Badge variant="secondary" className="bg-primary/10 text-primary text-xs">Pro</Badge>
                   </div>
-                  <span className="text-xs text-muted-foreground">Student Portal</span>
+                  <span className="text-xs text-gray-600">Student Portal</span>
                 </div>
               )}
             </div>
@@ -85,7 +85,7 @@ export function AppSidebar() {
                 variant="ghost"
                 size="icon"
                 onClick={toggleSidebar}
-                className="h-8 w-8 hover:bg-muted/50 transition-colors group"
+                className="h-8 w-8 hover:bg-gray-100 transition-colors group"
               >
                 <X className="h-4 w-4 transition-transform group-hover:rotate-90" />
               </Button>
@@ -93,9 +93,9 @@ export function AppSidebar() {
           </div>
         </SidebarHeader>
 
-        <SidebarContent className="px-4 py-6 glass">
+        <SidebarContent className="px-4 py-6 bg-white">
           <SidebarGroup>
-            <SidebarGroupLabel className="text-muted-foreground font-semibold mb-4 px-2 flex items-center gap-2">
+            <SidebarGroupLabel className="text-gray-600 font-semibold mb-4 px-2 flex items-center gap-2">
               {!isCollapsed && (
                 <>
                   <Zap className="h-4 w-4" />
@@ -115,7 +115,7 @@ export function AppSidebar() {
                         group h-12 border border-transparent backdrop-blur-sm
                         ${isActive(item.url) 
                           ? 'bg-primary/15 text-primary border-primary/30 shadow-modern font-semibold' 
-                          : 'text-foreground hover:text-primary hover:border-border/50'
+                          : 'text-gray-700 hover:text-primary hover:border-border/50'
                         }
                       `}
                       style={{ animationDelay: `${index * 50}ms` }}
@@ -133,7 +133,7 @@ export function AppSidebar() {
                         
                         {!isCollapsed && (
                           <div className="flex items-center justify-between w-full">
-                            <span className="font-semibold text-base md:text-sm text-foreground group-hover:text-primary">
+                            <span className="font-semibold text-base md:text-sm text-gray-800 group-hover:text-primary">
                               {item.title}
                             </span>
                             
