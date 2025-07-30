@@ -6,7 +6,13 @@ import {
   FlaskConical, 
   Microscope,
   ArrowUpRight,
-  BookOpen
+  BookOpen,
+  Globe,
+  Languages,
+  Music,
+  Palette,
+  Heart,
+  Zap
 } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
@@ -22,37 +28,33 @@ interface SubjectsGridProps {
 }
 
 const defaultSubjects: Subject[] = [
-  {
-    id: 1,
-    name: "Mathematics",
-    progress: 78
-  },
-  {
-    id: 2,
-    name: "Physics",
-    progress: 65
-  },
-  {
-    id: 3,
-    name: "Chemistry",
-    progress: 82
-  },
-  {
-    id: 4,
-    name: "Biology",
-    progress: 71
-  }
+  { id: 1, name: "Mathematics", progress: 78 },
+  { id: 2, name: "Physics", progress: 65 },
+  { id: 3, name: "Chemistry", progress: 82 },
+  { id: 4, name: "Biology", progress: 71 },
+  { id: 5, name: "English", progress: 88 },
+  { id: 6, name: "Social Studies", progress: 76 },
+  { id: 7, name: "Hindi", progress: 84 },
+  { id: 8, name: "Telugu", progress: 79 }
 ]
 
 const iconMap: { [key: string]: any } = {
   mathematics: Calculator,
   physics: Atom,
   chemistry: FlaskConical,
-  biology: Microscope
+  biology: Microscope,
+  english: Languages,
+  social: Globe,
+  hindi: Languages,
+  telugu: Languages,
+  music: Music,
+  art: Palette,
+  science: Heart,
+  default: BookOpen
 }
 
 const getSubjectConfig = (name: string, index: number) => {
-  const key = name.toLowerCase()
+  const key = name.toLowerCase().replace(/\s+/g, '')
   
   const configs = [
     {
@@ -90,11 +92,47 @@ const getSubjectConfig = (name: string, index: number) => {
       progressBg: "bg-orange-100",
       progressColor: "bg-gradient-to-r from-orange-500 to-red-500",
       hoverShadow: "hover:shadow-orange-200/50"
+    },
+    {
+      // Pink - English/Languages
+      iconBg: "bg-gradient-to-br from-pink-500 to-rose-600",
+      cardBg: "bg-gradient-to-br from-pink-50 via-pink-50/80 to-rose-100/60",
+      textColor: "text-pink-700",
+      progressBg: "bg-pink-100",
+      progressColor: "bg-gradient-to-r from-pink-500 to-rose-600",
+      hoverShadow: "hover:shadow-pink-200/50"
+    },
+    {
+      // Cyan - Social Studies
+      iconBg: "bg-gradient-to-br from-cyan-500 to-blue-600",
+      cardBg: "bg-gradient-to-br from-cyan-50 via-cyan-50/80 to-blue-100/60",
+      textColor: "text-cyan-700",
+      progressBg: "bg-cyan-100",
+      progressColor: "bg-gradient-to-r from-cyan-500 to-blue-600",
+      hoverShadow: "hover:shadow-cyan-200/50"
+    },
+    {
+      // Amber - Additional subjects
+      iconBg: "bg-gradient-to-br from-amber-500 to-yellow-600",
+      cardBg: "bg-gradient-to-br from-amber-50 via-amber-50/80 to-yellow-100/60",
+      textColor: "text-amber-700",
+      progressBg: "bg-amber-100",
+      progressColor: "bg-gradient-to-r from-amber-500 to-yellow-600",
+      hoverShadow: "hover:shadow-amber-200/50"
+    },
+    {
+      // Violet - More subjects
+      iconBg: "bg-gradient-to-br from-violet-500 to-purple-600",
+      cardBg: "bg-gradient-to-br from-violet-50 via-violet-50/80 to-purple-100/60",
+      textColor: "text-violet-700",
+      progressBg: "bg-violet-100",
+      progressColor: "bg-gradient-to-r from-violet-500 to-purple-600",
+      hoverShadow: "hover:shadow-violet-200/50"
     }
   ]
 
   return {
-    icon: iconMap[key] || BookOpen,
+    icon: iconMap[key] || iconMap.default,
     ...configs[index % configs.length]
   }
 }
@@ -113,8 +151,8 @@ export function SubjectsGrid({ subjects = defaultSubjects, isLoading = false }: 
           <div className="skeleton-premium h-8 w-48 rounded-xl"></div>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-          {Array.from({ length: 4 }).map((_, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
+          {Array.from({ length: 6 }).map((_, index) => (
             <Card key={index} className="border-0 shadow-premium">
               <CardContent className="p-6">
                 <div className="skeleton-premium h-12 w-12 rounded-xl mb-4"></div>
@@ -164,7 +202,7 @@ export function SubjectsGrid({ subjects = defaultSubjects, isLoading = false }: 
         </div>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
         {subjects.map((subject, index) => {
           const config = getSubjectConfig(subject.name, index)
           const IconComponent = config.icon

@@ -3,7 +3,7 @@ import React from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Zap, Clock } from "lucide-react"
+import { Zap } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import type { LiveQuizData } from '@/types/liveQuiz'
 
@@ -27,27 +27,12 @@ const getSubjectColor = (subject: string) => {
   }
 }
 
-const formatTimeRemaining = (expiresAt: string) => {
-  const now = new Date().getTime()
-  const expires = new Date(expiresAt).getTime()
-  const remaining = expires - now
-  
-  if (remaining <= 0) return "Expired"
-  
-  const minutes = Math.floor(remaining / (1000 * 60))
-  const seconds = Math.floor((remaining % (1000 * 60)) / 1000)
-  
-  if (minutes > 0) {
-    return `${minutes}m ${seconds}s`
-  }
-  return `${seconds}s`
-}
-
 export const LiveQuiz: React.FC<LiveQuizProps> = ({ data, isLoading = false }) => {
   const navigate = useNavigate()
 
   const handleTakeQuiz = (quizId: string, subjectId: string) => {
-    navigate(`/subject/${subjectId}/live-quiz/${quizId}`)
+    // Navigate to exam instructions page instead of direct quiz
+    navigate(`/subject/${subjectId}/exam/${quizId}/instructions`)
   }
 
   if (isLoading) {
@@ -124,18 +109,14 @@ export const LiveQuiz: React.FC<LiveQuizProps> = ({ data, isLoading = false }) =
                 </h3>
               </div>
 
-              {/* Subject Badge and Timer */}
-              <div className="flex items-center justify-between">
+              {/* Subject Badge - Removed Timer */}
+              <div className="flex items-center">
                 <Badge 
                   variant="secondary" 
                   className={`${getSubjectColor(quiz.subject)} text-xs px-3 py-1 font-medium`}
                 >
                   {quiz.subject}
                 </Badge>
-                <div className="flex items-center gap-1 text-xs text-amber-600">
-                  <Clock className="h-3 w-3" />
-                  <span className="font-medium">{formatTimeRemaining(quiz.expiresAt)}</span>
-                </div>
               </div>
 
               {/* Take Quiz Button */}

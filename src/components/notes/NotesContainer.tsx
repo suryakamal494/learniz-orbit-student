@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ChevronDown, ChevronUp, FileText, Download, ExternalLink, Calendar } from "lucide-react"
+import { ChevronDown, ChevronUp, FileText, ExternalLink, Calendar } from "lucide-react"
 import type { NotesData, Note } from '@/types/notes'
 
 interface NotesContainerProps {
@@ -122,7 +122,8 @@ export const NotesContainer: React.FC<NotesContainerProps> = ({ data, subjectCol
                       {chapter.notes.map((note) => (
                         <div 
                           key={note.id}
-                          className="bg-white/60 rounded-lg border border-white/80 p-4 hover:bg-white/80 transition-colors group"
+                          className="bg-white/60 rounded-lg border border-white/80 p-4 hover:bg-white/80 transition-colors group cursor-pointer"
+                          onClick={() => openNote(note)}
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -150,19 +151,13 @@ export const NotesContainer: React.FC<NotesContainerProps> = ({ data, subjectCol
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => openNote(note)}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  openNote(note)
+                                }}
                                 className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
                               >
                                 <ExternalLink className="h-4 w-4" />
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => openNote(note)}
-                                className="h-8 px-3 text-xs"
-                              >
-                                <Download className="h-3 w-3 mr-1" />
-                                Open
                               </Button>
                             </div>
                           </div>

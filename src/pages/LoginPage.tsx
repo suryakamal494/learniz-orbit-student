@@ -17,15 +17,20 @@ export default function LoginPage() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Simulate login and redirect to dashboard
-    navigate("/");
+    navigate("/dashboard");
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-primary/10 flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-display-sm font-bold text-gradient-primary">
+          <div className="flex justify-center mb-4">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-primary to-primary/80 shadow-premium">
+              <GraduationCap className="h-8 w-8 text-white" />
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
             Welcome Back
           </h1>
           <p className="text-body-md text-muted-foreground">
@@ -41,15 +46,15 @@ export default function LoginPage() {
             onValueChange={(value) => {
               if (value) setUserType(value as "student" | "teacher");
             }}
-            className="grid w-full grid-cols-2 bg-muted/50 p-1 rounded-xl"
+            className="grid w-full grid-cols-2 bg-muted/50 p-1 rounded-xl border border-border/40"
           >
             <ToggleGroupItem
               value="student"
               className={`
-                flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-body-sm font-medium transition-premium
+                flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-body-sm font-medium transition-all duration-300
                 ${userType === "student" 
-                  ? "bg-background shadow-premium text-foreground" 
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-primary text-white shadow-premium" 
+                  : "text-muted-foreground hover:text-foreground hover:bg-background/50"
                 }
               `}
             >
@@ -59,10 +64,10 @@ export default function LoginPage() {
             <ToggleGroupItem
               value="teacher"
               className={`
-                flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-body-sm font-medium transition-premium
+                flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-body-sm font-medium transition-all duration-300
                 ${userType === "teacher" 
-                  ? "bg-background shadow-premium text-foreground" 
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-primary text-white shadow-premium" 
+                  : "text-muted-foreground hover:text-foreground hover:bg-background/50"
                 }
               `}
             >
@@ -73,9 +78,9 @@ export default function LoginPage() {
         </div>
 
         {/* Login Form */}
-        <Card className="border-0 shadow-premium-lg backdrop-blur-sm bg-card/95">
+        <Card className="border-border/40 shadow-premium-lg backdrop-blur-sm bg-card/95">
           <CardHeader className="space-y-1 pb-4">
-            <CardTitle className="text-xl font-semibold text-center">
+            <CardTitle className="text-xl font-semibold text-center text-foreground">
               {userType === "student" ? "Student Portal" : "Teacher Portal"}
             </CardTitle>
             <CardDescription className="text-center">
@@ -89,7 +94,7 @@ export default function LoginPage() {
             {userType === "student" ? (
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="username" className="text-label-md">
+                  <Label htmlFor="username" className="text-label-md font-medium text-foreground">
                     Username
                   </Label>
                   <Input
@@ -98,13 +103,13 @@ export default function LoginPage() {
                     placeholder="Enter your username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="h-12 px-4 rounded-xl border-border/50 focus:border-primary/50 transition-premium"
+                    className="h-12 px-4 rounded-xl border-border/50 focus:border-primary/60 focus:ring-primary/20 transition-all duration-300"
                     required
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-label-md">
+                  <Label htmlFor="password" className="text-label-md font-medium text-foreground">
                     Password
                   </Label>
                   <Input
@@ -113,14 +118,14 @@ export default function LoginPage() {
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="h-12 px-4 rounded-xl border-border/50 focus:border-primary/50 transition-premium"
+                    className="h-12 px-4 rounded-xl border-border/50 focus:border-primary/60 focus:ring-primary/20 transition-all duration-300"
                     required
                   />
                 </div>
 
                 <Button 
                   type="submit" 
-                  className="w-full h-12 mt-6 text-label-md font-semibold rounded-xl"
+                  className="w-full h-12 mt-6 text-label-md font-semibold rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-premium hover:shadow-premium-lg transition-all duration-300"
                   size="lg"
                 >
                   Sign In to Student Portal
@@ -129,13 +134,13 @@ export default function LoginPage() {
                 <div className="flex flex-col space-y-3 pt-4 border-t border-border/50">
                   <button
                     type="button"
-                    className="text-body-sm text-primary hover:text-primary-light transition-premium text-center"
+                    className="text-body-sm text-primary hover:text-primary/80 transition-all duration-300 text-center font-medium"
                   >
                     Forgot Password?
                   </button>
                   <button
                     type="button"
-                    className="text-body-sm text-primary hover:text-primary-light transition-premium text-center"
+                    className="text-body-sm text-primary hover:text-primary/80 transition-all duration-300 text-center font-medium"
                   >
                     Create New Account
                   </button>
@@ -147,7 +152,7 @@ export default function LoginPage() {
                   <User className="h-8 w-8 text-muted-foreground" />
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-lg font-semibold">Coming Soon</h3>
+                  <h3 className="text-lg font-semibold text-foreground">Coming Soon</h3>
                   <p className="text-body-sm text-muted-foreground max-w-sm mx-auto">
                     Teacher portal is under development. Please check back later for access to teacher dashboard and features.
                   </p>
@@ -160,7 +165,7 @@ export default function LoginPage() {
         {/* Footer */}
         <p className="text-center text-body-xs text-muted-foreground">
           Need help? Contact{" "}
-          <button className="text-primary hover:text-primary-light transition-premium">
+          <button className="text-primary hover:text-primary/80 transition-all duration-300 font-medium">
             support@platform.com
           </button>
         </p>

@@ -29,7 +29,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 const navigationItems = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard, badge: null },
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard, badge: null },
   { title: "Academic Schedule", url: "/schedule", icon: Calendar, badge: "3" },
   { title: "Analysis", url: "/analysis", icon: BarChart3, badge: null },
   { title: "Messages", url: "/messages", icon: MessageCircle, badge: "12" },
@@ -111,10 +111,10 @@ export function AppSidebar() {
                     <SidebarMenuButton 
                       asChild 
                       className={`
-                        relative rounded-xl transition-all duration-300 hover:bg-muted/50
+                        relative rounded-xl transition-all duration-300 hover:bg-primary/10
                         group h-12 border border-transparent backdrop-blur-sm
                         ${isActive(item.url) 
-                          ? 'bg-primary/10 text-primary border-primary/20 shadow-modern font-semibold' 
+                          ? 'bg-primary/15 text-primary border-primary/30 shadow-modern font-semibold' 
                           : 'text-foreground hover:text-primary hover:border-border/50'
                         }
                       `}
@@ -124,8 +124,8 @@ export function AppSidebar() {
                         <div className={`
                           p-2 rounded-lg transition-all duration-300
                           ${isActive(item.url) 
-                            ? 'bg-primary/20 text-primary' 
-                            : 'group-hover:bg-muted/50'
+                            ? 'bg-primary/25 text-primary' 
+                            : 'group-hover:bg-primary/15 group-hover:text-primary'
                           }
                         `}>
                           <item.icon className="h-5 w-5" />
@@ -139,7 +139,7 @@ export function AppSidebar() {
                               {item.badge && (
                                 <Badge 
                                   variant="secondary" 
-                                  className="bg-primary/10 text-primary text-xs h-5 min-w-5 flex items-center justify-center"
+                                  className="bg-primary/15 text-primary text-xs h-5 min-w-5 flex items-center justify-center"
                                 >
                                   {item.badge}
                                 </Badge>
