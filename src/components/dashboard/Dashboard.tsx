@@ -11,23 +11,28 @@ export function Dashboard() {
       <DashboardHeader />
       
       <div className="flex-1 overflow-y-auto">
-        <div className="p-4 md:p-6 space-y-6">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6 max-w-7xl">
           {/* Main Content Grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
-            <div className="xl:col-span-2 space-y-6">
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 md:gap-6">
+            {/* Main Content Area */}
+            <div className="xl:col-span-3 space-y-4 md:space-y-6">
               {/* Live Quiz Section */}
-              <div className="animate-slide-up stagger-1">
+              <section className="animate-slide-up stagger-1" aria-label="Live Quiz">
                 <LiveQuiz data={mockLiveQuizData} />
-              </div>
+              </section>
               
               {/* Subjects Grid */}
-              <div className="animate-slide-up stagger-2">
+              <section className="animate-slide-up stagger-2" aria-label="Subjects">
                 <SubjectsGrid />
+              </section>
+            </div>
+
+            {/* Sidebar Content */}
+            <aside className="xl:col-span-1 animate-slide-up stagger-3">
+              <div className="sticky top-6">
+                <LatestUpdates />
               </div>
-            </div>
-            <div className="xl:col-span-1 animate-slide-up stagger-3">
-              <LatestUpdates />
-            </div>
+            </aside>
           </div>
         </div>
       </div>
