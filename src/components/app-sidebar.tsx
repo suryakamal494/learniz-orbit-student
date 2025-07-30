@@ -133,13 +133,15 @@ export function AppSidebar() {
                         
                         {!isCollapsed && (
                           <div className="flex items-center justify-between w-full">
-                            <span className="font-medium">{item.title}</span>
+                            <span className="font-semibold text-base md:text-sm text-foreground group-hover:text-primary">
+                              {item.title}
+                            </span>
                             
                             <div className="flex items-center gap-2">
                               {item.badge && (
                                 <Badge 
                                   variant="secondary" 
-                                  className="bg-primary/15 text-primary text-xs h-5 min-w-5 flex items-center justify-center"
+                                  className="bg-primary/15 text-primary text-xs h-5 min-w-5 flex items-center justify-center font-semibold"
                                 >
                                   {item.badge}
                                 </Badge>

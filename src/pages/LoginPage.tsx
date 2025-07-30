@@ -125,10 +125,10 @@ export default function LoginPage() {
 
                 <Button 
                   type="submit" 
-                  className="w-full h-12 mt-6 text-label-md font-semibold rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-premium hover:shadow-premium-lg transition-all duration-300"
+                  className="w-full h-12 mt-6 text-label-md font-semibold rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-premium hover:shadow-premium-lg transition-all duration-300 text-white"
                   size="lg"
                 >
-                  Sign In to Student Portal
+                  Sign In
                 </Button>
 
                 <div className="flex flex-col space-y-3 pt-4 border-t border-border/50">

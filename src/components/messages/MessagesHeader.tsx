@@ -24,18 +24,26 @@ export function MessagesHeader({ activeTab, onTabChange, unreadCount }: Messages
         
         <div className="flex gap-2">
           <Button
-            variant={activeTab === 'inbox' ? 'default' : 'ghost'}
+            variant={activeTab === 'inbox' ? 'default' : 'outline'}
             onClick={() => onTabChange('inbox')}
-            className="flex items-center gap-2 h-10"
+            className={`flex items-center gap-2 h-10 ${
+              activeTab === 'inbox' 
+                ? 'bg-primary text-white hover:bg-primary/90' 
+                : 'border-primary/30 text-primary hover:bg-primary/10'
+            }`}
           >
             <Mail className="h-4 w-4" />
             <span className="hidden sm:inline">Inbox</span>
           </Button>
           
           <Button
-            variant={activeTab === 'compose' ? 'default' : 'ghost'}
+            variant={activeTab === 'compose' ? 'default' : 'outline'}
             onClick={() => onTabChange('compose')}
-            className="flex items-center gap-2 h-10"
+            className={`flex items-center gap-2 h-10 ${
+              activeTab === 'compose' 
+                ? 'bg-primary text-white hover:bg-primary/90' 
+                : 'border-primary/30 text-primary hover:bg-primary/10'
+            }`}
           >
             <Edit3 className="h-4 w-4" />
             <span className="hidden sm:inline">Compose</span>

@@ -95,10 +95,10 @@ export default function SubjectPage() {
           <div className="overflow-x-auto">
             <TabsList className="grid w-full grid-cols-3 min-w-[300px] md:w-96 glass border-border/40">
               <TabsTrigger value="lms" className="text-xs md:text-sm font-medium px-2 md:px-4">
-                Learning Materials
+                LMS
               </TabsTrigger>
               <TabsTrigger value="exams" className="text-xs md:text-sm font-medium px-2 md:px-4">
-                Assessments
+                Exams
               </TabsTrigger>
               <TabsTrigger value="notes" className="text-xs md:text-sm font-medium px-2 md:px-4">
                 Study Notes
