@@ -14,7 +14,7 @@ import {
   FileText,
   Zap,
   BookOpen,
-  PresentationChart
+  Presentation
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 import {
@@ -39,7 +39,7 @@ const navigationItems = [
   { title: "Live Quizzes", url: "/teacher/quizzes", icon: Zap, badge: null },
   { title: "LMS", url: "/teacher/lms", icon: BookOpen, badge: null },
   { title: "Academic Schedule", url: "/teacher/schedule", icon: Calendar, badge: "2" },
-  { title: "Reports", url: "/teacher/reports", icon: PresentationChart, badge: null },
+  { title: "Reports", url: "/teacher/reports", icon: Presentation, badge: null },
   { title: "Notifications", url: "/teacher/notifications", icon: Bell, badge: "3" },
   { title: "Messages", url: "/teacher/messages", icon: MessageCircle, badge: "7" },
 ]
