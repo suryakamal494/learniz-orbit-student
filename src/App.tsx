@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { TeacherLayout } from "@/components/teacher/layout/TeacherLayout";
 import Index from "./pages/Index";
 import SubjectPage from "./pages/SubjectPage";
 import ExamInstructionsPage from "./pages/ExamInstructionsPage";
@@ -18,6 +18,7 @@ import MessagesPage from "./pages/MessagesPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import SchedulePage from "./pages/SchedulePage";
 import LoginPage from "./pages/LoginPage";
+import TeacherDashboardPage from "./pages/teacher/TeacherDashboard";
 
 const queryClient = new QueryClient();
 
@@ -41,7 +42,7 @@ const App = () => (
             <Route path="/subject/:subjectId/exam/:examId/results" element={<ExamResultsPage />} />
             <Route path="/subject/:subjectId/live-quiz/:quizId" element={<LiveQuizPage />} />
             
-            {/* Routes with global layout (sidebar) */}
+            {/* Student routes with global layout (sidebar) */}
             <Route path="/dashboard" element={
               <AppLayout>
                 <Index />
@@ -72,6 +73,14 @@ const App = () => (
                 <NotificationsPage />
               </AppLayout>
             } />
+
+            {/* Teacher routes with teacher layout */}
+            <Route path="/teacher/dashboard" element={
+              <TeacherLayout>
+                <TeacherDashboardPage />
+              </TeacherLayout>
+            } />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

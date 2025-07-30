@@ -16,8 +16,12 @@ export default function LoginPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login and redirect to dashboard
-    navigate("/dashboard");
+    // Simulate login and redirect based on user type
+    if (userType === "student") {
+      navigate("/dashboard");
+    } else {
+      navigate("/teacher/dashboard");
+    }
   };
 
   return (
@@ -86,79 +90,65 @@ export default function LoginPage() {
             <CardDescription className="text-center">
               {userType === "student" 
                 ? "Access your courses and assignments"
-                : "Coming soon - Teacher dashboard access"
+                : "Manage classes and student progress"
               }
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {userType === "student" ? (
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="username" className="text-label-md font-medium text-foreground">
-                    Username
-                  </Label>
-                  <Input
-                    id="username"
-                    type="text"
-                    placeholder="Enter your username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="h-12 px-4 rounded-xl border-border/50 focus:border-primary/60 focus:ring-primary/20 transition-all duration-300"
-                    required
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-label-md font-medium text-foreground">
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="h-12 px-4 rounded-xl border-border/50 focus:border-primary/60 focus:ring-primary/20 transition-all duration-300"
-                    required
-                  />
-                </div>
-
-                <Button 
-                  type="submit" 
-                  className="w-full h-12 mt-6 text-label-md font-semibold rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-premium hover:shadow-premium-lg transition-all duration-300 text-white"
-                  size="lg"
-                >
-                  Sign In
-                </Button>
-
-                <div className="flex flex-col space-y-3 pt-4 border-t border-border/50">
-                  <button
-                    type="button"
-                    className="text-body-sm text-primary hover:text-primary/80 transition-all duration-300 text-center font-medium"
-                  >
-                    Forgot Password?
-                  </button>
-                  <button
-                    type="button"
-                    className="text-body-sm text-primary hover:text-primary/80 transition-all duration-300 text-center font-medium"
-                  >
-                    Create New Account
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <div className="py-8 text-center space-y-4">
-                <div className="w-16 h-16 mx-auto bg-muted/50 rounded-full flex items-center justify-center">
-                  <User className="h-8 w-8 text-muted-foreground" />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-foreground">Coming Soon</h3>
-                  <p className="text-body-sm text-muted-foreground max-w-sm mx-auto">
-                    Teacher portal is under development. Please check back later for access to teacher dashboard and features.
-                  </p>
-                </div>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="username" className="text-label-md font-medium text-foreground">
+                  Username
+                </Label>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="h-12 px-4 rounded-xl border-border/50 focus:border-primary/60 focus:ring-primary/20 transition-all duration-300"
+                  required
+                />
               </div>
-            )}
+              
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-label-md font-medium text-foreground">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-12 px-4 rounded-xl border-border/50 focus:border-primary/60 focus:ring-primary/20 transition-all duration-300"
+                  required
+                />
+              </div>
+
+              <Button 
+                type="submit" 
+                className="w-full h-12 mt-6 text-label-md font-semibold rounded-xl bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-premium hover:shadow-premium-lg transition-all duration-300 text-white"
+                size="lg"
+              >
+                Sign In to {userType === "student" ? "Student" : "Teacher"} Portal
+              </Button>
+
+              <div className="flex flex-col space-y-3 pt-4 border-t border-border/50">
+                <button
+                  type="button"
+                  className="text-body-sm text-primary hover:text-primary/80 transition-all duration-300 text-center font-medium"
+                >
+                  Forgot Password?
+                </button>
+                <button
+                  type="button"
+                  className="text-body-sm text-primary hover:text-primary/80 transition-all duration-300 text-center font-medium"
+                >
+                  Create New Account
+                </button>
+              </div>
+            </form>
           </CardContent>
         </Card>
 
