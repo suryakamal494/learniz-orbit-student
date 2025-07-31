@@ -1,5 +1,5 @@
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { 
   LayoutDashboard, 
   Calendar, 
@@ -31,26 +31,68 @@ import {
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { SidebarHoverMenu } from "./sidebar/SidebarHoverMenu"
 
 const navigationItems = [
   { title: "Dashboard", url: "/teacher/dashboard", icon: LayoutDashboard, badge: null },
   { title: "Student Batches", url: "/teacher/batches", icon: Users, badge: "8" },
-  { title: "Exams", url: "/teacher/exams", icon: FileText, badge: null },
+  { title: "Exams", url: "/teacher/exams", icon: FileText, badge: null, hasHover: true },
   { title: "Live Quizzes", url: "/teacher/quizzes", icon: Zap, badge: null },
-  { title: "LMS", url: "/teacher/lms", icon: BookOpen, badge: null },
+  { title: "LMS", url: "/teacher/lms", icon: BookOpen, badge: null, hasHover: true },
   { title: "Academic Schedule", url: "/teacher/schedule", icon: Calendar, badge: "2" },
-  { title: "Reports", url: "/teacher/reports", icon: Presentation, badge: null },
+  { title: "Reports", url: "/teacher/reports", icon: Presentation, badge: null, hasHover: true },
   { title: "Notifications", url: "/teacher/notifications", icon: Bell, badge: "3" },
   { title: "Messages", url: "/teacher/messages", icon: MessageCircle, badge: "7" },
 ]
+
+const hoverMenuItems = {
+  "Exams": [
+    { title: "Question Bank", url: "/teacher/exams/question-bank", emoji: "❓" },
+    { title: "Directory", url: "/teacher/exams/directory", emoji: "🔀" },
+    { title: "Exams", url: "/teacher/exams", emoji: "⏱️" },
+    { title: "Instructions", url: "/teacher/exams/instructions", emoji: "📂" },
+  ],
+  "LMS": [
+    { title: "Content", url: "/teacher/lms/content" },
+    { title: "Series", url: "/teacher/lms/series" },
+    { title: "Content Library", url: "/teacher/lms/library" },
+    { title: "Directory", url: "/teacher/lms/directory" },
+    { title: "Notes", url: "/teacher/lms/notes" },
+  ],
+  "Reports": [
+    { title: "Attendance", url: "/teacher/reports/attendance" },
+    { title: "Batch Reports", url: "/teacher/reports/batch" },
+  ]
+}
 
 export function TeacherSidebar() {
   const { state, toggleSidebar } = useSidebar()
   const location = useLocation()
   const currentPath = location.pathname
   const isCollapsed = state === "collapsed"
+  
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 })
+  const sidebarRef = useRef<HTMLDivElement>(null)
 
   const isActive = (path: string) => currentPath === path
+
+  const handleMouseEnter = (item: any, event: React.MouseEvent) => {
+    if (item.hasHover && hoverMenuItems[item.title as keyof typeof hoverMenuItems]) {
+      const rect = event.currentTarget.getBoundingClientRect()
+      const sidebarRect = sidebarRef.current?.getBoundingClientRect()
+      
+      setMenuPosition({
+        x: (sidebarRect?.right || 0) + 8,
+        y: rect.top
+      })
+      setHoveredItem(item.title)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    setHoveredItem(null)
+  }
   
   return (
     <>
@@ -66,7 +108,10 @@ export function TeacherSidebar() {
         </Button>
       )}
       
-      <Sidebar className="border-r-0 bg-white shadow-modern-lg z-50 [&[data-mobile=true]]:bg-white">
+      <Sidebar 
+        ref={sidebarRef}
+        className="border-r-0 bg-white shadow-modern-lg z-50 [&[data-mobile=true]]:bg-white"
+      >
         <SidebarHeader className="border-b border-border/40 p-6 bg-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -127,6 +172,8 @@ export function TeacherSidebar() {
                         }
                       `}
                       style={{ animationDelay: `${index * 50}ms` }}
+                      onMouseEnter={(e) => handleMouseEnter(item, e)}
+                      onMouseLeave={handleMouseLeave}
                     >
                       <NavLink to={item.url} className="flex items-center gap-3 w-full animate-fade-in">
                         <div className={`
@@ -170,6 +217,15 @@ export function TeacherSidebar() {
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
+
+      {/* Hover Menu */}
+      {hoveredItem && hoverMenuItems[hoveredItem as keyof typeof hoverMenuItems] && (
+        <SidebarHoverMenu
+          items={hoverMenuItems[hoveredItem as keyof typeof hoverMenuItems]}
+          isVisible={!!hoveredItem}
+          position={menuPosition}
+        />
+      )}
     </>
   )
 }

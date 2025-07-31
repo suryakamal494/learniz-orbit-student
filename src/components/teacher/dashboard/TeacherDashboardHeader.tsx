@@ -1,6 +1,6 @@
 
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Bell, Settings, Plus, Calendar } from "lucide-react"
+import { Bell, Settings, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -15,24 +15,12 @@ export function TeacherDashboardHeader() {
             <h1 className="text-display-sm font-bold bg-gradient-to-r from-primary to-accent-orange bg-clip-text text-transparent">
               Teacher Dashboard
             </h1>
-            <p className="text-body-sm text-muted-foreground">
-              Welcome back! Manage your classes and students.
-            </p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           {/* Quick Actions */}
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="hidden sm:flex items-center gap-2 hover:bg-primary/10 transition-colors"
-            >
-              <Plus className="h-4 w-4" />
-              New Class
-            </Button>
-            
             <Button
               variant="ghost"
               size="icon"
