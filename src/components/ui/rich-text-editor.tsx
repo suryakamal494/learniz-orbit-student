@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import 'katex/dist/katex.min.css'
-import katex from 'katex'
 import { cn } from '@/lib/utils'
 
 interface RichTextEditorProps {
@@ -28,7 +27,40 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
 
   useEffect(() => {
     setMounted(true)
-  }, [])
+    
+    // Inject styles for Quill editor theming
+    const styleId = 'rich-text-editor-styles'
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement('style')
+      style.id = styleId
+      style.textContent = `
+        .rich-text-editor .ql-editor {
+          min-height: ${minHeight};
+          font-size: 14px;
+          line-height: 1.5;
+        }
+        .rich-text-editor .ql-toolbar {
+          border-top: 1px solid hsl(var(--border));
+          border-left: 1px solid hsl(var(--border));
+          border-right: 1px solid hsl(var(--border));
+          border-bottom: none;
+          background: hsl(var(--background));
+        }
+        .rich-text-editor .ql-container {
+          border: 1px solid hsl(var(--border));
+          background: hsl(var(--background));
+          color: hsl(var(--foreground));
+        }
+        .rich-text-editor .ql-editor.ql-blank::before {
+          color: hsl(var(--muted-foreground));
+        }
+        .katex {
+          font-size: 1em;
+        }
+      `
+      document.head.appendChild(style)
+    }
+  }, [minHeight])
 
   const modules = {
     toolbar: [
@@ -92,31 +124,6 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           minHeight: minHeight
         }}
       />
-      <style jsx global>{`
-        .rich-text-editor .ql-editor {
-          min-height: ${minHeight};
-          font-size: 14px;
-          line-height: 1.5;
-        }
-        .rich-text-editor .ql-toolbar {
-          border-top: 1px solid hsl(var(--border));
-          border-left: 1px solid hsl(var(--border));
-          border-right: 1px solid hsl(var(--border));
-          border-bottom: none;
-          background: hsl(var(--background));
-        }
-        .rich-text-editor .ql-container {
-          border: 1px solid hsl(var(--border));
-          background: hsl(var(--background));
-          color: hsl(var(--foreground));
-        }
-        .rich-text-editor .ql-editor.ql-blank::before {
-          color: hsl(var(--muted-foreground));
-        }
-        .katex {
-          font-size: 1em;
-        }
-      `}</style>
     </div>
   )
 }
