@@ -172,7 +172,7 @@ export default function AddBatchPage() {
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {formData.startDate ? format(formData.startDate, "PPP") : "Pick start date"}
+                        {formData.startDate ? format(formData.startDate, "PPP") : <span>Pick start date</span>}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
@@ -202,7 +202,7 @@ export default function AddBatchPage() {
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {formData.endDate ? format(formData.endDate, "PPP") : "Pick end date"}
+                        {formData.endDate ? format(formData.endDate, "PPP") : <span>Pick end date</span>}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
