@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -33,6 +32,7 @@ import ExamsMainPage from "./pages/teacher/exams/ExamsMainPage";
 import CreateExamPage from "./pages/teacher/exams/CreateExamPage";
 import BatchListingPage from "./pages/teacher/batches/BatchListingPage";
 import AddBatchPage from "./pages/teacher/batches/AddBatchPage";
+import ViewStudentsPage from "./pages/teacher/batches/ViewStudentsPage";
 import AssignLMSPage from "./pages/teacher/batches/AssignLMSPage";
 import BatchNotesAssignmentPage from "./pages/teacher/batches/BatchNotesAssignmentPage";
 
@@ -115,6 +115,11 @@ const App = () => (
           <Route path="/teacher/batches/add" element={
             <TeacherLayout>
               <AddBatchPage />
+            </TeacherLayout>
+          } />
+          <Route path="/teacher/batches/:batchId/students" element={
+            <TeacherLayout>
+              <ViewStudentsPage />
             </TeacherLayout>
           } />
           <Route path="/teacher/batches/:batchId/assign-lms" element={
