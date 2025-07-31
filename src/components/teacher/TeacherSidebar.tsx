@@ -1,5 +1,5 @@
 
-import { useState, useRef } from "react"
+import { useState, useRef, useCallback } from "react"
 import { 
   LayoutDashboard, 
   Calendar, 
@@ -53,15 +53,15 @@ const hoverMenuItems = {
     { title: "Instructions", url: "/teacher/exams/instructions", emoji: "📂" },
   ],
   "LMS": [
-    { title: "Content", url: "/teacher/lms/content" },
-    { title: "Series", url: "/teacher/lms/series" },
-    { title: "Content Library", url: "/teacher/lms/library" },
-    { title: "Directory", url: "/teacher/lms/directory" },
-    { title: "Notes", url: "/teacher/lms/notes" },
+    { title: "Content", url: "/teacher/lms/content", emoji: "📚" },
+    { title: "Series", url: "/teacher/lms/series", emoji: "📖" },
+    { title: "Content Library", url: "/teacher/lms/library", emoji: "🗂️" },
+    { title: "Directory", url: "/teacher/lms/directory", emoji: "📁" },
+    { title: "Notes", url: "/teacher/lms/notes", emoji: "📝" },
   ],
   "Reports": [
-    { title: "Attendance", url: "/teacher/reports/attendance" },
-    { title: "Batch Reports", url: "/teacher/reports/batch" },
+    { title: "Attendance", url: "/teacher/reports/attendance", emoji: "📊" },
+    { title: "Batch Reports", url: "/teacher/reports/batch", emoji: "📈" },
   ]
 }
 
@@ -74,11 +74,21 @@ export function TeacherSidebar() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 })
   const sidebarRef = useRef<HTMLDivElement>(null)
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const isActive = (path: string) => currentPath === path
 
-  const handleMouseEnter = (item: any, event: React.MouseEvent) => {
+  const clearHoverTimeout = useCallback(() => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current)
+      hoverTimeoutRef.current = null
+    }
+  }, [])
+
+  const handleMouseEnter = useCallback((item: any, event: React.MouseEvent) => {
     if (item.hasHover && hoverMenuItems[item.title as keyof typeof hoverMenuItems]) {
+      clearHoverTimeout()
+      
       const rect = event.currentTarget.getBoundingClientRect()
       const sidebarRect = sidebarRef.current?.getBoundingClientRect()
       
@@ -88,11 +98,30 @@ export function TeacherSidebar() {
       })
       setHoveredItem(item.title)
     }
-  }
+  }, [clearHoverTimeout])
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setHoveredItem(null)
+    }, 150) // 150ms delay to allow mouse to reach hover panel
+  }, [])
+
+  const handleHoverMenuMouseEnter = useCallback(() => {
+    clearHoverTimeout()
+  }, [clearHoverTimeout])
+
+  const handleHoverMenuMouseLeave = useCallback(() => {
     setHoveredItem(null)
-  }
+  }, [])
+
+  // Cleanup timeout on unmount
+  useState(() => {
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current)
+      }
+    }
+  })
   
   return (
     <>
@@ -110,25 +139,25 @@ export function TeacherSidebar() {
       
       <Sidebar 
         ref={sidebarRef}
-        className="border-r-0 bg-white shadow-modern-lg z-50 [&[data-mobile=true]]:bg-white"
+        className="border-r-0 bg-background shadow-modern-lg z-50 [&[data-mobile=true]]:bg-background"
       >
-        <SidebarHeader className="border-b border-border/40 p-6 bg-white">
+        <SidebarHeader className="border-b border-border/40 p-6 bg-background">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-primary to-primary/80 shadow-modern">
-                  <GraduationCap className="h-6 w-6 text-white" />
+                  <GraduationCap className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-background animate-pulse"></div>
               </div>
               
               {!isCollapsed && (
                 <div className="flex flex-col animate-fade-in">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl font-bold text-gray-900">Learniz</span>
-                    <Badge variant="secondary" className="bg-accent-orange/10 text-accent-orange text-xs">Teacher</Badge>
+                    <span className="text-xl font-bold text-foreground">Learniz</span>
+                    <Badge variant="secondary" className="bg-accent/10 text-accent text-xs">Teacher</Badge>
                   </div>
-                  <span className="text-xs text-gray-600">Teacher Portal</span>
+                  <span className="text-xs text-muted-foreground">Teacher Portal</span>
                 </div>
               )}
             </div>
@@ -138,7 +167,7 @@ export function TeacherSidebar() {
                 variant="ghost"
                 size="icon"
                 onClick={toggleSidebar}
-                className="h-8 w-8 hover:bg-gray-100 transition-colors group"
+                className="h-8 w-8 hover:bg-muted transition-colors group"
               >
                 <X className="h-4 w-4 transition-transform group-hover:rotate-90" />
               </Button>
@@ -146,9 +175,9 @@ export function TeacherSidebar() {
           </div>
         </SidebarHeader>
 
-        <SidebarContent className="px-4 py-6 bg-white">
+        <SidebarContent className="px-4 py-6 bg-background">
           <SidebarGroup>
-            <SidebarGroupLabel className="text-gray-600 font-semibold mb-4 px-2 flex items-center gap-2">
+            <SidebarGroupLabel className="text-muted-foreground font-semibold mb-4 px-2 flex items-center gap-2">
               {!isCollapsed && (
                 <>
                   <Zap className="h-4 w-4" />
@@ -168,7 +197,7 @@ export function TeacherSidebar() {
                         group h-12 border border-transparent backdrop-blur-sm
                         ${isActive(item.url) 
                           ? 'bg-primary/15 text-primary border-primary/30 shadow-modern font-semibold' 
-                          : 'text-gray-700 hover:text-primary hover:border-border/50'
+                          : 'text-foreground/80 hover:text-primary hover:border-border/50'
                         }
                       `}
                       style={{ animationDelay: `${index * 50}ms` }}
@@ -188,7 +217,7 @@ export function TeacherSidebar() {
                         
                         {!isCollapsed && (
                           <div className="flex items-center justify-between w-full">
-                            <span className="font-semibold text-base md:text-sm text-gray-800 group-hover:text-primary">
+                            <span className="font-semibold text-base md:text-sm text-foreground group-hover:text-primary">
                               {item.title}
                             </span>
                             
@@ -224,6 +253,8 @@ export function TeacherSidebar() {
           items={hoverMenuItems[hoveredItem as keyof typeof hoverMenuItems]}
           isVisible={!!hoveredItem}
           position={menuPosition}
+          onMouseEnter={handleHoverMenuMouseEnter}
+          onMouseLeave={handleHoverMenuMouseLeave}
         />
       )}
     </>

@@ -1,5 +1,5 @@
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { TeacherMessagesHeader } from "@/components/teacher/messages/TeacherMessagesHeader"
@@ -12,8 +12,29 @@ import { Message, MessageThread } from "@/types/messages"
 export default function TeacherMessagesPage() {
   const [activeTab, setActiveTab] = useState<'inbox' | 'compose'>('inbox')
   const [selectedThread, setSelectedThread] = useState<MessageThread | null>(null)
-  const [messages] = useState<Message[]>(mockTeacherMessages)
+  const [messages, setMessages] = useState<Message[]>([])
   const [threads] = useState<MessageThread[]>(mockTeacherThreads)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  // Simulate API call
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        setLoading(true)
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        setMessages(mockTeacherMessages)
+        setError(null)
+      } catch (err) {
+        setError('Failed to load messages. Please try again.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchMessages()
+  }, [])
 
   const handleMessageClick = (message: Message) => {
     const thread = threads.find(t => t.id === message.threadId)
@@ -70,6 +91,8 @@ export default function TeacherMessagesPage() {
           faculty={mockTeacherFaculty}
           onMessageClick={handleMessageClick}
           onComposeClick={handleComposeMessage}
+          loading={loading}
+          error={error}
         />
       ) : (
         <TeacherComposeForm 
