@@ -16,11 +16,17 @@ import type { QuestionFormData } from '@/types/questionBank'
 import { toast } from 'sonner'
 
 export default function UpdateQuestionsPage() {
+  console.log('UpdateQuestionsPage: Component is rendering')
+  
   const { examId } = useParams<{ examId: string }>()
   const navigate = useNavigate()
   
+  console.log('UpdateQuestionsPage: examId from params:', examId)
+  console.log('UpdateQuestionsPage: mockExamsData:', mockExamsData)
+  
   // Find exam data
   const exam = mockExamsData.find(e => e.id === examId)
+  console.log('UpdateQuestionsPage: Found exam:', exam)
   
   // State management
   const [selectedQuestions, setSelectedQuestions] = useState<Question[]>([])
@@ -35,9 +41,19 @@ export default function UpdateQuestionsPage() {
   const [previewQuestion, setPreviewQuestion] = useState<QuestionFormData | null>(null)
   const [isPreviewOpen, setIsPreviewOpen] = useState(false)
 
+  console.log('UpdateQuestionsPage: mockQuestions length:', mockQuestions?.length || 'undefined')
+  console.log('UpdateQuestionsPage: Initial state set successfully')
+
   // Filter questions based on current filters
   const filteredQuestions = useMemo(() => {
-    return mockQuestions.filter(question => {
+    console.log('UpdateQuestionsPage: Filtering questions with filters:', filters, 'and searchTerm:', searchTerm)
+    
+    if (!mockQuestions || !Array.isArray(mockQuestions)) {
+      console.error('UpdateQuestionsPage: mockQuestions is not an array:', mockQuestions)
+      return []
+    }
+    
+    const filtered = mockQuestions.filter(question => {
       const matchesSearch = !searchTerm || 
         question.questionContent.text.toLowerCase().includes(searchTerm.toLowerCase()) ||
         question.chapter.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -50,6 +66,9 @@ export default function UpdateQuestionsPage() {
       
       return matchesSearch && matchesChapter && matchesCategory && matchesDifficulty && matchesTopic
     })
+    
+    console.log('UpdateQuestionsPage: Filtered questions count:', filtered.length)
+    return filtered
   }, [filters, searchTerm])
 
   // Calculate total marks
@@ -59,6 +78,7 @@ export default function UpdateQuestionsPage() {
 
   // Handle adding question to selected list
   const handleAddQuestion = (question: Question) => {
+    console.log('UpdateQuestionsPage: Adding question:', question.id)
     if (selectedQuestions.find(q => q.id === question.id)) {
       toast.error('Question already added to the exam')
       return
@@ -70,12 +90,14 @@ export default function UpdateQuestionsPage() {
 
   // Handle removing question from selected list
   const handleRemoveQuestion = (questionId: string) => {
+    console.log('UpdateQuestionsPage: Removing question:', questionId)
     setSelectedQuestions(prev => prev.filter(q => q.id !== questionId))
     toast.success('Question removed from exam')
   }
 
   // Handle preview question
   const handlePreviewQuestion = (question: Question) => {
+    console.log('UpdateQuestionsPage: Previewing question:', question.id)
     // Convert Question to QuestionFormData for preview
     const previewData: QuestionFormData = {
       questionBankType: 'neet', // Default value
@@ -99,6 +121,7 @@ export default function UpdateQuestionsPage() {
 
   // Handle updating exam with selected questions
   const handleUpdateExam = () => {
+    console.log('UpdateQuestionsPage: Updating exam with questions:', selectedQuestions.length)
     if (selectedQuestions.length === 0) {
       toast.error('Please select at least one question')
       return
@@ -112,7 +135,10 @@ export default function UpdateQuestionsPage() {
     navigate('/teacher/exams')
   }
 
+  console.log('UpdateQuestionsPage: About to check if exam exists')
+
   if (!exam) {
+    console.log('UpdateQuestionsPage: Exam not found, rendering not found message')
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
@@ -125,6 +151,8 @@ export default function UpdateQuestionsPage() {
       </div>
     )
   }
+
+  console.log('UpdateQuestionsPage: Exam found, rendering main content')
 
   return (
     <div className="container mx-auto px-4 py-6">

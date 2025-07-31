@@ -31,6 +31,9 @@ export function SelectedQuestionsPanel({
   onPreviewQuestion
 }: SelectedQuestionsPanelProps) {
   
+  console.log('SelectedQuestionsPanel: Component is rendering with', selectedQuestions?.length || 0, 'selected questions')
+  console.log('SelectedQuestionsPanel: Total marks:', totalMarks)
+  
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'easy':

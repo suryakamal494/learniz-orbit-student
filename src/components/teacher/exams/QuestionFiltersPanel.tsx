@@ -21,11 +21,15 @@ export function QuestionFiltersPanel({
   onSearchChange 
 }: QuestionFiltersPanelProps) {
   
+  console.log('QuestionFiltersPanel: Component is rendering with filters:', filters)
+  
   const updateFilter = (key: keyof QuestionBankFilters, value: string) => {
+    console.log('QuestionFiltersPanel: Updating filter', key, 'to', value)
     onFiltersChange({ ...filters, [key]: value })
   }
 
   const clearFilters = () => {
+    console.log('QuestionFiltersPanel: Clearing all filters')
     onFiltersChange({
       questionBankType: '',
       chapter: '',

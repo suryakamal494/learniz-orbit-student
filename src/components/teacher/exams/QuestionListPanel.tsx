@@ -21,6 +21,9 @@ export function QuestionListPanel({
   onPreviewQuestion
 }: QuestionListPanelProps) {
   
+  console.log('QuestionListPanel: Component is rendering with', questions?.length || 0, 'questions')
+  console.log('QuestionListPanel: Selected question IDs:', selectedQuestionIds)
+  
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'easy':
@@ -44,11 +47,11 @@ export function QuestionListPanel({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <BookOpen className="h-5 w-5" />
-          Available Questions ({questions.length})
+          Available Questions ({questions?.length || 0})
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {questions.length === 0 ? (
+        {!questions || questions.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
             <BookOpen className="h-12 w-12 mx-auto mb-4 text-gray-300" />
             <p>No questions match your current filters</p>
