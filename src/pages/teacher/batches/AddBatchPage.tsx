@@ -26,16 +26,16 @@ export default function AddBatchPage() {
     endTime: ''
   })
 
-  const [errors, setErrors] = useState<Partial<BatchFormData>>({})
+  const [errors, setErrors] = useState<Partial<Record<keyof BatchFormData, string>>>({})
 
   const validateForm = () => {
-    const newErrors: Partial<BatchFormData> = {}
+    const newErrors: Partial<Record<keyof BatchFormData, string>> = {}
     
     if (!formData.name.trim()) newErrors.name = 'Batch name is required'
     if (!formData.class) newErrors.class = 'Class is required'
     if (!formData.course) newErrors.course = 'Course is required'
-    if (!formData.startDate) newErrors.startDate = 'Start date is required' as any
-    if (!formData.endDate) newErrors.endDate = 'End date is required' as any
+    if (!formData.startDate) newErrors.startDate = 'Start date is required'
+    if (!formData.endDate) newErrors.endDate = 'End date is required'
     
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
