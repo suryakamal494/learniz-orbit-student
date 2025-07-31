@@ -46,7 +46,7 @@ export default function ViewStudentsPage() {
   const currentBatch = mockBatches.find(batch => batch.id === batchId)
   
   // State management
-  const [filters, setFilters] = useState<StudentFilters>({ search: '', class: '' })
+  const [filters, setFilters] = useState<StudentFilters>({ search: '', class: 'all' })
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [isLoading, setIsLoading] = useState(false)
@@ -68,7 +68,7 @@ export default function ViewStudentsPage() {
     return mockStudents.filter(student => {
       const matchesSearch = student.name.toLowerCase().includes(filters.search.toLowerCase()) ||
                           student.rollNumber.toLowerCase().includes(filters.search.toLowerCase())
-      const matchesClass = !filters.class || student.class === filters.class
+      const matchesClass = filters.class === 'all' || student.class === filters.class
       return matchesSearch && matchesClass
     })
   }, [filters])
@@ -224,7 +224,7 @@ export default function ViewStudentsPage() {
                 <SelectValue placeholder="Filter by class" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Classes</SelectItem>
+                <SelectItem value="all">All Classes</SelectItem>
                 {getAvailableClasses().map(className => (
                   <SelectItem key={className} value={className}>
                     {className}
@@ -232,11 +232,11 @@ export default function ViewStudentsPage() {
                 ))}
               </SelectContent>
             </Select>
-            {(filters.search || filters.class) && (
+            {(filters.search || filters.class !== 'all') && (
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setFilters({ search: '', class: '' })}
+                onClick={() => setFilters({ search: '', class: 'all' })}
                 className="flex items-center gap-2"
               >
                 <X className="h-4 w-4" />
