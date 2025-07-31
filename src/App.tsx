@@ -24,6 +24,10 @@ import TeacherNotificationsPage from "./pages/teacher/TeacherNotificationsPage";
 import QuestionBankMainPage from "./pages/teacher/exams/QuestionBankMainPage";
 import QuestionBankViewPage from "./pages/teacher/exams/QuestionBankViewPage";
 import QuestionBankAddPage from "./pages/teacher/exams/QuestionBankAddPage";
+import DirectoryPage from "./pages/teacher/exams/DirectoryPage";
+import InstructionsPage from "./pages/teacher/exams/InstructionsPage";
+import CreateInstructionPage from "./pages/teacher/exams/CreateInstructionPage";
+import EditInstructionPage from "./pages/teacher/exams/EditInstructionPage";
 import BatchListingPage from "./pages/teacher/batches/BatchListingPage";
 import AddBatchPage from "./pages/teacher/batches/AddBatchPage";
 import AssignLMSPage from "./pages/teacher/batches/AssignLMSPage";
@@ -135,6 +139,28 @@ const App = () => (
           <Route path="/teacher/exams/question-bank/add/:subjectId" element={
             <TeacherLayout>
               <QuestionBankAddPage />
+            </TeacherLayout>
+          } />
+          
+          {/* Teacher Exams - Directory and Instructions routes */}
+          <Route path="/teacher/exams/directory" element={
+            <TeacherLayout>
+              <DirectoryPage />
+            </TeacherLayout>
+          } />
+          <Route path="/teacher/exams/instructions" element={
+            <TeacherLayout>
+              <InstructionsPage />
+            </TeacherLayout>
+          } />
+          <Route path="/teacher/exams/instructions/create" element={
+            <TeacherLayout>
+              <CreateInstructionPage />
+            </TeacherLayout>
+          } />
+          <Route path="/teacher/exams/instructions/edit/:instructionId" element={
+            <TeacherLayout>
+              <EditInstructionPage />
             </TeacherLayout>
           } />
           
