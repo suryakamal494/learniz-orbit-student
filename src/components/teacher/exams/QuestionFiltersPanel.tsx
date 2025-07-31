@@ -25,7 +25,9 @@ export function QuestionFiltersPanel({
   
   const updateFilter = (key: keyof QuestionBankFilters, value: string) => {
     console.log('QuestionFiltersPanel: Updating filter', key, 'to', value)
-    onFiltersChange({ ...filters, [key]: value })
+    // Convert "all" back to empty string for internal logic
+    const actualValue = value === 'all' ? '' : value
+    onFiltersChange({ ...filters, [key]: actualValue })
   }
 
   const clearFilters = () => {
@@ -38,6 +40,11 @@ export function QuestionFiltersPanel({
       difficulty: 'easy'
     })
     onSearchChange('')
+  }
+
+  // Helper function to get display value for selects
+  const getSelectValue = (filterValue: string) => {
+    return filterValue === '' ? 'all' : filterValue
   }
 
   return (
@@ -77,14 +84,14 @@ export function QuestionFiltersPanel({
           <div>
             <label className="text-sm font-medium mb-1 block">Question Bank Type</label>
             <Select
-              value={filters.questionBankType}
+              value={getSelectValue(filters.questionBankType)}
               onValueChange={(value) => updateFilter('questionBankType', value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="neet">NEET</SelectItem>
                 <SelectItem value="jee">JEE</SelectItem>
                 <SelectItem value="boards">Board Exams</SelectItem>
@@ -96,14 +103,14 @@ export function QuestionFiltersPanel({
           <div>
             <label className="text-sm font-medium mb-1 block">Chapter</label>
             <Select
-              value={filters.chapter}
+              value={getSelectValue(filters.chapter)}
               onValueChange={(value) => updateFilter('chapter', value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select chapter" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Chapters</SelectItem>
+                <SelectItem value="all">All Chapters</SelectItem>
                 <SelectItem value="Wave Optics">Wave Optics</SelectItem>
                 <SelectItem value="Limits and Continuity">Limits and Continuity</SelectItem>
                 <SelectItem value="Rotational Motion">Rotational Motion</SelectItem>
@@ -122,14 +129,14 @@ export function QuestionFiltersPanel({
           <div>
             <label className="text-sm font-medium mb-1 block">Topic</label>
             <Select
-              value={filters.topic}
+              value={getSelectValue(filters.topic)}
               onValueChange={(value) => updateFilter('topic', value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select topic" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Topics</SelectItem>
+                <SelectItem value="all">All Topics</SelectItem>
                 <SelectItem value="Light Properties">Light Properties</SelectItem>
                 <SelectItem value="Advanced Limits">Advanced Limits</SelectItem>
                 <SelectItem value="Moment of Inertia">Moment of Inertia</SelectItem>
@@ -148,14 +155,14 @@ export function QuestionFiltersPanel({
           <div>
             <label className="text-sm font-medium mb-1 block">Category</label>
             <Select
-              value={filters.category}
+              value={getSelectValue(filters.category)}
               onValueChange={(value) => updateFilter('category', value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
                 <SelectItem value="Physics Constants">Physics Constants</SelectItem>
                 <SelectItem value="Calculus">Calculus</SelectItem>
                 <SelectItem value="Mechanics">Mechanics</SelectItem>
@@ -181,14 +188,14 @@ export function QuestionFiltersPanel({
           <div>
             <label className="text-sm font-medium mb-1 block">Difficulty</label>
             <Select
-              value={filters.difficulty}
+              value={getSelectValue(filters.difficulty)}
               onValueChange={(value) => updateFilter('difficulty', value as 'easy' | 'medium' | 'hard')}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select difficulty" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Levels</SelectItem>
+                <SelectItem value="all">All Levels</SelectItem>
                 <SelectItem value="easy">Easy</SelectItem>
                 <SelectItem value="medium">Medium</SelectItem>
                 <SelectItem value="hard">Hard</SelectItem>
@@ -200,7 +207,7 @@ export function QuestionFiltersPanel({
           <div>
             <label className="text-sm font-medium mb-1 block">Question Type</label>
             <Select
-              value=""
+              value="all"
               onValueChange={(value) => {
                 // Handle question type filter - this would need to be added to the filters interface
                 console.log('Question type filter:', value)
@@ -210,7 +217,7 @@ export function QuestionFiltersPanel({
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="single">Single Choice</SelectItem>
                 <SelectItem value="multiple">Multiple Choice</SelectItem>
                 <SelectItem value="fillInBlanks">Fill in Blanks</SelectItem>
