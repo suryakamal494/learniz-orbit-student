@@ -27,6 +27,7 @@ import QuestionBankAddPage from "./pages/teacher/exams/QuestionBankAddPage";
 import BatchListingPage from "./pages/teacher/batches/BatchListingPage";
 import AddBatchPage from "./pages/teacher/batches/AddBatchPage";
 import AssignLMSPage from "./pages/teacher/batches/AssignLMSPage";
+import BatchNotesAssignmentPage from "./pages/teacher/batches/BatchNotesAssignmentPage";
 
 const queryClient = new QueryClient();
 
@@ -112,6 +113,11 @@ const App = () => (
           <Route path="/teacher/batches/:batchId/assign-lms" element={
             <TeacherLayout>
               <AssignLMSPage />
+            </TeacherLayout>
+          } />
+          <Route path="/teacher/batches/:batchId/assign-notes" element={
+            <TeacherLayout>
+              <BatchNotesAssignmentPage />
             </TeacherLayout>
           } />
           

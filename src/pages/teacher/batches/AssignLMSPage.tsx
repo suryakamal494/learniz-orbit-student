@@ -20,6 +20,7 @@ import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
+import { SchedulePagination } from '@/components/schedule/SchedulePagination'
 import { mockLMSAssignments } from '@/data/mockLMSAssignments'
 import { LMSAssignmentItem } from '@/types/batch'
 
@@ -30,6 +31,8 @@ export default function AssignLMSPage() {
   const [selectedSubject, setSelectedSubject] = useState('all')
   const [selectedType, setSelectedType] = useState('all')
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set())
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
 
   const filteredAssignments = useMemo(() => {
     return mockLMSAssignments.filter(item => {
@@ -41,6 +44,12 @@ export default function AssignLMSPage() {
       return matchesSearch && matchesSubject && matchesType
     })
   }, [searchQuery, selectedSubject, selectedType])
+
+  const totalPages = Math.ceil(filteredAssignments.length / pageSize)
+  const paginatedAssignments = filteredAssignments.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  )
 
   const subjects = Array.from(new Set(mockLMSAssignments.map(item => item.subject)))
   const types = Array.from(new Set(mockLMSAssignments.map(item => item.type)))
@@ -86,10 +95,10 @@ export default function AssignLMSPage() {
   }
 
   const handleSelectAll = () => {
-    if (selectedItems.size === filteredAssignments.length) {
+    if (selectedItems.size === paginatedAssignments.length) {
       setSelectedItems(new Set())
     } else {
-      setSelectedItems(new Set(filteredAssignments.map(item => item.id)))
+      setSelectedItems(new Set(paginatedAssignments.map(item => item.id)))
     }
   }
 
@@ -97,6 +106,17 @@ export default function AssignLMSPage() {
     console.log('Assigning items:', Array.from(selectedItems))
     // Future: API call to assign selected items to batch
     navigate('/teacher/batches')
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    setSelectedItems(new Set()) // Clear selections when changing pages
+  }
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size)
+    setCurrentPage(1)
+    setSelectedItems(new Set()) // Clear selections when changing page size
   }
 
   return (
@@ -163,31 +183,36 @@ export default function AssignLMSPage() {
           </CardContent>
         </Card>
 
-        {/* Actions Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        {/* Summary Bar */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-lg border">
+          <div className="flex items-center gap-4 text-sm text-gray-600">
+            <span>Showing {paginatedAssignments.length} of {filteredAssignments.length} items</span>
+            <span>•</span>
+            <span>Page {currentPage} of {totalPages}</span>
+          </div>
           <div className="flex items-center gap-4">
             <Checkbox
               id="select-all"
-              checked={selectedItems.size === filteredAssignments.length && filteredAssignments.length > 0}
+              checked={selectedItems.size === paginatedAssignments.length && paginatedAssignments.length > 0}
               onCheckedChange={handleSelectAll}
             />
             <Label htmlFor="select-all" className="text-sm font-medium">
-              Select All ({selectedItems.size} of {filteredAssignments.length})
+              Select All on Page ({selectedItems.size} selected)
             </Label>
+            <Button
+              onClick={handleAssignSelected}
+              disabled={selectedItems.size === 0}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Assign Selected ({selectedItems.size})
+            </Button>
           </div>
-          <Button
-            onClick={handleAssignSelected}
-            disabled={selectedItems.size === 0}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Assign Selected ({selectedItems.size})
-          </Button>
         </div>
 
         {/* Content Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAssignments.map((item) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+          {paginatedAssignments.map((item) => (
             <Card key={item.id} className={`cursor-pointer transition-all hover:shadow-lg ${
               selectedItems.has(item.id) ? 'ring-2 ring-blue-500 bg-blue-50' : ''
             } ${item.isAssigned ? 'opacity-60' : ''}`}>
@@ -239,6 +264,7 @@ export default function AssignLMSPage() {
           ))}
         </div>
 
+        {/* Empty State */}
         {filteredAssignments.length === 0 && (
           <div className="text-center py-12">
             <BookOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -247,6 +273,18 @@ export default function AssignLMSPage() {
               Try adjusting your search criteria or filters to find more content.
             </p>
           </div>
+        )}
+
+        {/* Pagination */}
+        {filteredAssignments.length > 0 && (
+          <SchedulePagination
+            currentPage={currentPage}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            totalItems={filteredAssignments.length}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
+          />
         )}
       </div>
     </div>
