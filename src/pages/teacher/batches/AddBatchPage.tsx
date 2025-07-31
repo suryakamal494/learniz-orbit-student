@@ -183,7 +183,7 @@ export default function AddBatchPage() {
                       <Calendar
                         mode="single"
                         selected={formData.startDate}
-                        onSelect={(date) => setFormData({ ...formData, startDate: date })}
+                        onSelect={(date: Date | undefined) => setFormData({ ...formData, startDate: date })}
                         initialFocus
                         className="p-3 pointer-events-auto"
                       />
@@ -217,7 +217,7 @@ export default function AddBatchPage() {
                       <Calendar
                         mode="single"
                         selected={formData.endDate}
-                        onSelect={(date) => setFormData({ ...formData, endDate: date })}
+                        onSelect={(date: Date | undefined) => setFormData({ ...formData, endDate: date })}
                         initialFocus
                         className="p-3 pointer-events-auto"
                       />
