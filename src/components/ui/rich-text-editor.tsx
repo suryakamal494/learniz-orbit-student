@@ -5,6 +5,9 @@ import 'react-quill/dist/quill.snow.css'
 import 'katex/dist/katex.min.css'
 import { cn } from '@/lib/utils'
 
+// Import KaTeX and register it with Quill
+import katex from 'katex'
+
 interface RichTextEditorProps {
   value?: string
   onChange?: (value: string) => void
@@ -24,8 +27,14 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
 }) => {
   const quillRef = useRef<ReactQuill>(null)
   const [mounted, setMounted] = useState(false)
+  const [quillReady, setQuillReady] = useState(false)
 
   useEffect(() => {
+    // Register KaTeX with window object so Quill can access it
+    if (typeof window !== 'undefined') {
+      (window as any).katex = katex
+    }
+    
     setMounted(true)
     
     // Inject styles for Quill editor theming
@@ -60,6 +69,13 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
       `
       document.head.appendChild(style)
     }
+
+    // Set a small delay to ensure everything is loaded
+    const timer = setTimeout(() => {
+      setQuillReady(true)
+    }, 100)
+
+    return () => clearTimeout(timer)
   }, [minHeight])
 
   const modules = {
@@ -95,7 +111,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     }
   }
 
-  if (!mounted) {
+  if (!mounted || !quillReady) {
     return (
       <div 
         className={cn(
