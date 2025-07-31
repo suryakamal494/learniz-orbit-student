@@ -55,7 +55,7 @@ const CreateExamPage: React.FC = () => {
       totalMarks: 10,
       passPercentage: 60,
       negativeMark: 0,
-      instructionId: '',
+      instructionId: 'none',
       startDate: format(new Date(), 'yyyy-MM-dd'),
       endDate: format(new Date(), 'yyyy-MM-dd'),
       startTime: '09:00',
@@ -295,7 +295,7 @@ const CreateExamPage: React.FC = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="">No specific instructions</SelectItem>
+                          <SelectItem value="none">No specific instructions</SelectItem>
                           {mockInstructions.map(instruction => (
                             <SelectItem key={instruction.id} value={instruction.id}>
                               {instruction.title}
