@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -11,9 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { RichTextEditor } from '@/components/ui/rich-text-editor'
-import { ArrowLeft, Plus, Minus, Save, X } from 'lucide-react'
+import { ArrowLeft, Plus, Minus, Save, X, Eye } from 'lucide-react'
 import type { QuestionFormData } from '@/types/questionBank'
 import { useToast } from '@/hooks/use-toast'
+import QuestionPreviewModal from '@/components/teacher/exams/QuestionPreviewModal'
 
 const questionSchema = z.object({
   questionBankType: z.string().min(1, 'Question bank type is required'),
@@ -51,6 +51,7 @@ const QuestionBankAddPage: React.FC = () => {
   const { subjectId } = useParams()
   const { toast } = useToast()
   const [numberOfOptions, setNumberOfOptions] = useState(4)
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false)
 
   const form = useForm<QuestionFormData>({
     resolver: zodResolver(questionSchema),
@@ -114,6 +115,10 @@ const QuestionBankAddPage: React.FC = () => {
 
   const handleCancel = () => {
     navigate(`/teacher/exams/question-bank/view/${subjectId}`)
+  }
+
+  const handlePreview = () => {
+    setIsPreviewOpen(true)
   }
 
   return (
@@ -438,6 +443,10 @@ const QuestionBankAddPage: React.FC = () => {
               <Save className="h-4 w-4 mr-2" />
               Create Question
             </Button>
+            <Button type="button" variant="outline" onClick={handlePreview}>
+              <Eye className="h-4 w-4 mr-2" />
+              Preview Question
+            </Button>
             <Button type="button" variant="outline" onClick={handleCancel}>
               <X className="h-4 w-4 mr-2" />
               Cancel
@@ -445,6 +454,13 @@ const QuestionBankAddPage: React.FC = () => {
           </div>
         </form>
       </Form>
+
+      {/* Preview Modal */}
+      <QuestionPreviewModal
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        questionData={form.getValues()}
+      />
     </div>
   )
 }
