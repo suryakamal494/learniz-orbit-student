@@ -53,15 +53,6 @@ export default function BatchListingPage() {
   const startIndex = (currentPage - 1) * pageSize
   const paginatedBatches = filteredBatches.slice(startIndex, startIndex + pageSize)
 
-  const getStatusBadge = (status: Batch['status']) => {
-    const variants = {
-      active: 'bg-green-100 text-green-800',
-      inactive: 'bg-yellow-100 text-yellow-800',
-      completed: 'bg-gray-100 text-gray-800'
-    }
-    return variants[status] || variants.active
-  }
-
   const handleExport = (type: string) => {
     console.log(`Exporting as ${type}`)
     // Future implementation for export functionality
@@ -78,7 +69,7 @@ export default function BatchListingPage() {
           </div>
           <Button 
             onClick={() => navigate('/teacher/batches/add')}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium"
           >
             <Plus className="h-4 w-4" />
             Create Batch
@@ -128,8 +119,6 @@ export default function BatchListingPage() {
                 <TableHead className="font-semibold">Name</TableHead>
                 <TableHead className="font-semibold">Class & Course</TableHead>
                 <TableHead className="font-semibold">Students</TableHead>
-                <TableHead className="font-semibold">Schedule</TableHead>
-                <TableHead className="font-semibold">Status</TableHead>
                 <TableHead className="font-semibold text-center">Assign LMS</TableHead>
                 <TableHead className="font-semibold text-center">Assign Notes</TableHead>
                 <TableHead className="font-semibold text-center">Exam Report</TableHead>
@@ -156,19 +145,6 @@ export default function BatchListingPage() {
                       <Users className="h-4 w-4 text-gray-400" />
                       <span>{batch.currentStudents}/{batch.capacity}</span>
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <div className="text-sm">{batch.startTime} - {batch.endTime}</div>
-                      <div className="text-xs text-gray-500">
-                        {batch.startDate} to {batch.endDate}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge className={getStatusBadge(batch.status)}>
-                      {batch.status}
-                    </Badge>
                   </TableCell>
                   <TableCell className="text-center">
                     <Button

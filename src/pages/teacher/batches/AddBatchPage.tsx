@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Calendar as CalendarIcon, Clock } from 'lucide-react'
+import { ArrowLeft, Calendar as CalendarIcon } from 'lucide-react'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -268,7 +268,7 @@ export default function AddBatchPage() {
                 <Button 
                   type="submit" 
                   disabled={!isFormValid()}
-                  className="w-full md:w-auto"
+                  className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium"
                 >
                   Create Batch
                 </Button>
