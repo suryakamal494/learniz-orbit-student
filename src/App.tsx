@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -24,6 +25,8 @@ import TeacherNotificationsPage from "./pages/teacher/TeacherNotificationsPage";
 import QuestionBankMainPage from "./pages/teacher/exams/QuestionBankMainPage";
 import QuestionBankViewPage from "./pages/teacher/exams/QuestionBankViewPage";
 import QuestionBankAddPage from "./pages/teacher/exams/QuestionBankAddPage";
+import BatchListingPage from "./pages/teacher/batches/BatchListingPage";
+import AddBatchPage from "./pages/teacher/batches/AddBatchPage";
 
 const queryClient = new QueryClient();
 
@@ -92,6 +95,18 @@ const App = () => (
           <Route path="/teacher/notifications" element={
             <TeacherLayout>
               <TeacherNotificationsPage />
+            </TeacherLayout>
+          } />
+          
+          {/* Teacher Batches routes */}
+          <Route path="/teacher/batches" element={
+            <TeacherLayout>
+              <BatchListingPage />
+            </TeacherLayout>
+          } />
+          <Route path="/teacher/batches/add" element={
+            <TeacherLayout>
+              <AddBatchPage />
             </TeacherLayout>
           } />
           
