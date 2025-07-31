@@ -1,7 +1,6 @@
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
@@ -31,93 +30,91 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {/* Default root redirects to login */}
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            
-            {/* Login page - standalone */}
-            <Route path="/login" element={<LoginPage />} />
-            
-            {/* Routes that need full screen (exams, quizzes) */}
-            <Route path="/subject/:subjectId/exam/:examId/instructions" element={<ExamInstructionsPage />} />
-            <Route path="/subject/:subjectId/exam/:examId" element={<ExamPage />} />
-            <Route path="/subject/:subjectId/exam/:examId/results" element={<ExamResultsPage />} />
-            <Route path="/subject/:subjectId/live-quiz/:quizId" element={<LiveQuizPage />} />
-            
-            {/* Student routes with global layout (sidebar) */}
-            <Route path="/dashboard" element={
-              <AppLayout>
-                <Index />
-              </AppLayout>
-            } />
-            <Route path="/subject/:subjectId" element={
-              <AppLayout>
-                <SubjectPage />
-              </AppLayout>
-            } />
-            <Route path="/analysis" element={
-              <AppLayout>
-                <AnalysisPage />
-              </AppLayout>
-            } />
-            <Route path="/schedule" element={
-              <AppLayout>
-                <SchedulePage />
-              </AppLayout>
-            } />
-            <Route path="/messages" element={
-              <AppLayout>
-                <MessagesPage />
-              </AppLayout>
-            } />
-            <Route path="/notifications" element={
-              <AppLayout>
-                <NotificationsPage />
-              </AppLayout>
-            } />
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          {/* Default root redirects to login */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          
+          {/* Login page - standalone */}
+          <Route path="/login" element={<LoginPage />} />
+          
+          {/* Routes that need full screen (exams, quizzes) */}
+          <Route path="/subject/:subjectId/exam/:examId/instructions" element={<ExamInstructionsPage />} />
+          <Route path="/subject/:subjectId/exam/:examId" element={<ExamPage />} />
+          <Route path="/subject/:subjectId/exam/:examId/results" element={<ExamResultsPage />} />
+          <Route path="/subject/:subjectId/live-quiz/:quizId" element={<LiveQuizPage />} />
+          
+          {/* Student routes with global layout (sidebar) */}
+          <Route path="/dashboard" element={
+            <AppLayout>
+              <Index />
+            </AppLayout>
+          } />
+          <Route path="/subject/:subjectId" element={
+            <AppLayout>
+              <SubjectPage />
+            </AppLayout>
+          } />
+          <Route path="/analysis" element={
+            <AppLayout>
+              <AnalysisPage />
+            </AppLayout>
+          } />
+          <Route path="/schedule" element={
+            <AppLayout>
+              <SchedulePage />
+            </AppLayout>
+          } />
+          <Route path="/messages" element={
+            <AppLayout>
+              <MessagesPage />
+            </AppLayout>
+          } />
+          <Route path="/notifications" element={
+            <AppLayout>
+              <NotificationsPage />
+            </AppLayout>
+          } />
 
-            {/* Teacher routes with teacher layout */}
-            <Route path="/teacher/dashboard" element={
-              <TeacherLayout>
-                <TeacherDashboardPage />
-              </TeacherLayout>
-            } />
-            <Route path="/teacher/messages" element={
-              <TeacherLayout>
-                <TeacherMessagesPage />
-              </TeacherLayout>
-            } />
-            <Route path="/teacher/notifications" element={
-              <TeacherLayout>
-                <TeacherNotificationsPage />
-              </TeacherLayout>
-            } />
-            
-            {/* Teacher Exams - Question Bank routes */}
-            <Route path="/teacher/exams/question-bank" element={
-              <TeacherLayout>
-                <QuestionBankMainPage />
-              </TeacherLayout>
-            } />
-            <Route path="/teacher/exams/question-bank/view/:subjectId" element={
-              <TeacherLayout>
-                <QuestionBankViewPage />
-              </TeacherLayout>
-            } />
-            <Route path="/teacher/exams/question-bank/add/:subjectId" element={
-              <TeacherLayout>
-                <QuestionBankAddPage />
-              </TeacherLayout>
-            } />
-            
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+          {/* Teacher routes with teacher layout */}
+          <Route path="/teacher/dashboard" element={
+            <TeacherLayout>
+              <TeacherDashboardPage />
+            </TeacherLayout>
+          } />
+          <Route path="/teacher/messages" element={
+            <TeacherLayout>
+              <TeacherMessagesPage />
+            </TeacherLayout>
+          } />
+          <Route path="/teacher/notifications" element={
+            <TeacherLayout>
+              <TeacherNotificationsPage />
+            </TeacherLayout>
+          } />
+          
+          {/* Teacher Exams - Question Bank routes */}
+          <Route path="/teacher/exams/question-bank" element={
+            <TeacherLayout>
+              <QuestionBankMainPage />
+            </TeacherLayout>
+          } />
+          <Route path="/teacher/exams/question-bank/view/:subjectId" element={
+            <TeacherLayout>
+              <QuestionBankViewPage />
+            </TeacherLayout>
+          } />
+          <Route path="/teacher/exams/question-bank/add/:subjectId" element={
+            <TeacherLayout>
+              <QuestionBankAddPage />
+            </TeacherLayout>
+          } />
+          
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   </QueryClientProvider>
 );
