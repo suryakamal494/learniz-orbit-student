@@ -61,7 +61,7 @@ const CreateInstructionPage: React.FC = () => {
         </div>
       </div>
 
-      <Card>
+      <Card className="max-w-4xl">
         <CardHeader>
           <CardTitle>Instruction Details</CardTitle>
         </CardHeader>
@@ -97,7 +97,7 @@ const CreateInstructionPage: React.FC = () => {
                         value={field.value}
                         onChange={field.onChange}
                         placeholder="Enter instruction content..."
-                        minHeight="200px"
+                        minHeight="300px"
                         className="border-input"
                       />
                     </FormControl>
@@ -106,8 +106,8 @@ const CreateInstructionPage: React.FC = () => {
                 )}
               />
 
-              <div className="flex items-center gap-3 pt-4">
-                <Button type="submit" disabled={form.formState.isSubmitting}>
+              <div className="flex items-center gap-3 pt-6 border-t">
+                <Button type="submit" disabled={form.formState.isSubmitting} className="bg-blue-600 hover:bg-blue-700">
                   <Save className="h-4 w-4 mr-2" />
                   Create Instruction
                 </Button>

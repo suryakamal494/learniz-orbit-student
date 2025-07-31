@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -28,6 +29,8 @@ import DirectoryPage from "./pages/teacher/exams/DirectoryPage";
 import InstructionsPage from "./pages/teacher/exams/InstructionsPage";
 import CreateInstructionPage from "./pages/teacher/exams/CreateInstructionPage";
 import EditInstructionPage from "./pages/teacher/exams/EditInstructionPage";
+import ExamsMainPage from "./pages/teacher/exams/ExamsMainPage";
+import CreateExamPage from "./pages/teacher/exams/CreateExamPage";
 import BatchListingPage from "./pages/teacher/batches/BatchListingPage";
 import AddBatchPage from "./pages/teacher/batches/AddBatchPage";
 import AssignLMSPage from "./pages/teacher/batches/AssignLMSPage";
@@ -122,6 +125,18 @@ const App = () => (
           <Route path="/teacher/batches/:batchId/assign-notes" element={
             <TeacherLayout>
               <BatchNotesAssignmentPage />
+            </TeacherLayout>
+          } />
+          
+          {/* Teacher Exams - Main Exams routes */}
+          <Route path="/teacher/exams" element={
+            <TeacherLayout>
+              <ExamsMainPage />
+            </TeacherLayout>
+          } />
+          <Route path="/teacher/exams/create" element={
+            <TeacherLayout>
+              <CreateExamPage />
             </TeacherLayout>
           } />
           
