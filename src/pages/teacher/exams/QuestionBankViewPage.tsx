@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -38,6 +37,7 @@ import {
 import { mockQuestions } from '@/data/mockQuestionBank'
 import type { Question } from '@/types/questionBank'
 import { useToast } from '@/hooks/use-toast'
+import QuestionPreviewModal from '@/components/teacher/exams/QuestionPreviewModal'
 
 const ITEMS_PER_PAGE = 10
 
@@ -51,6 +51,8 @@ const QuestionBankViewPage: React.FC = () => {
   const [difficultyFilter, setDifficultyFilter] = useState<string>('all')
   const [categoryFilter, setCategoryFilter] = useState<string>('all')
   const [currentPage, setCurrentPage] = useState(1)
+  const [previewQuestion, setPreviewQuestion] = useState<Question | null>(null)
+  const [showPreview, setShowPreview] = useState(false)
 
   // Filter questions based on search and filters
   const filteredQuestions = questions.filter(question => {
@@ -75,11 +77,16 @@ const QuestionBankViewPage: React.FC = () => {
   }
 
   const handleViewQuestion = (questionId: string) => {
-    console.log('View question:', questionId)
-    toast({
-      title: "Question Details",
-      description: "Opening question details view",
-    })
+    const question = questions.find(q => q.id === questionId)
+    if (question) {
+      setPreviewQuestion(question)
+      setShowPreview(true)
+    }
+  }
+
+  const handleClosePreview = () => {
+    setShowPreview(false)
+    setPreviewQuestion(null)
   }
 
   const handleEditQuestion = (questionId: string) => {
@@ -396,6 +403,31 @@ const QuestionBankViewPage: React.FC = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Question Preview Modal */}
+      {previewQuestion && (
+        <QuestionPreviewModal
+          isOpen={showPreview}
+          onClose={handleClosePreview}
+          questionData={{
+            questionContent: previewQuestion.questionContent,
+            type: previewQuestion.type,
+            options: previewQuestion.options,
+            correctAnswer: Array.isArray(previewQuestion.correctAnswer) 
+              ? previewQuestion.correctAnswer[0] 
+              : previewQuestion.correctAnswer,
+            explanationContent: previewQuestion.explanationContent,
+            hint: previewQuestion.hint || '',
+            marks: previewQuestion.marks,
+            difficulty: previewQuestion.difficulty,
+            category: previewQuestion.category,
+            chapter: previewQuestion.chapter,
+            topic: previewQuestion.topic,
+            questionBankType: previewQuestion.category,
+            numberOfOptions: previewQuestion.options.length
+          }}
+        />
+      )}
     </div>
   )
 }
