@@ -8,13 +8,27 @@ export interface QuestionBankSubject {
   lastUpdated: string
 }
 
+export interface QuestionContent {
+  text: string
+  html: string
+  hasmath: boolean
+  images: string[]
+}
+
+export interface QuestionOption {
+  text: string
+  html: string
+  hasmath: boolean
+  images: string[]
+}
+
 export interface Question {
   id: string
-  question: string
+  questionContent: QuestionContent
   type: 'single' | 'multiple' | 'fillInBlanks'
-  options: string[]
+  options: QuestionOption[]
   correctAnswer: number | number[]
-  explanation: string
+  explanationContent: QuestionContent
   hint?: string
   marks: number
   difficulty: 'easy' | 'medium' | 'hard'
@@ -34,11 +48,11 @@ export interface QuestionBankFilters {
 }
 
 export interface QuestionFormData extends QuestionBankFilters {
-  question: string
+  questionContent: QuestionContent
   type: 'single' | 'multiple' | 'fillInBlanks'
-  options: string[]
+  options: QuestionOption[]
   correctAnswer: number
-  explanation: string
+  explanationContent: QuestionContent
   hint: string
   marks: number
   numberOfOptions: number

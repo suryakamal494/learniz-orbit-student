@@ -12,9 +12,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { RichContentDisplay } from '@/components/ui/rich-content-display'
 import { TeacherDataWrapper } from '@/components/teacher/ui/TeacherDataWrapper'
 import { mockQuestions, mockQuestionBankSubjects } from '@/data/mockQuestionBank'
-import { ArrowLeft, Search, Filter, Edit, Trash2, Plus } from 'lucide-react'
+import { ArrowLeft, Search, Edit, Trash2, Plus } from 'lucide-react'
 import type { Question } from '@/types/questionBank'
 
 export default function QuestionBankViewPage() {
@@ -27,7 +28,7 @@ export default function QuestionBankViewPage() {
   const subject = mockQuestionBankSubjects.find(s => s.id === subjectId)
   
   const filteredQuestions = mockQuestions.filter(question => {
-    const matchesSearch = question.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = question.questionContent.text.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          question.chapter.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          question.topic.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesDifficulty = difficultyFilter === 'all' || question.difficulty === difficultyFilter
@@ -41,6 +42,15 @@ export default function QuestionBankViewPage() {
       case 'hard': return 'bg-red-100 text-red-800'
       default: return 'bg-gray-100 text-gray-800'
     }
+  }
+
+  const renderCorrectAnswer = (question: Question) => {
+    if (question.type === 'multiple' && Array.isArray(question.correctAnswer)) {
+      return question.correctAnswer.map(index => 
+        String.fromCharCode(65 + index)
+      ).join(', ')
+    }
+    return String.fromCharCode(65 + (question.correctAnswer as number))
   }
 
   return (
@@ -113,7 +123,7 @@ export default function QuestionBankViewPage() {
             emptyIcon={<div className="text-4xl">❓</div>}
           >
             {(questions) => (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {questions.map((question, index) => (
                   <Card key={question.id} className="hover:shadow-md transition-shadow">
                     <CardContent className="p-6">
@@ -128,9 +138,6 @@ export default function QuestionBankViewPage() {
                               <span>•</span>
                               <span>{question.topic}</span>
                             </div>
-                            <h3 className="font-medium text-lg leading-tight">
-                              {question.question}
-                            </h3>
                           </div>
                           <div className="flex items-center gap-2">
                             <Badge className={getDifficultyColor(question.difficulty)}>
@@ -138,6 +145,10 @@ export default function QuestionBankViewPage() {
                             </Badge>
                             <Badge variant="outline">
                               {question.marks} marks
+                            </Badge>
+                            <Badge variant="outline">
+                              {question.type === 'single' ? 'Single' : 
+                               question.type === 'multiple' ? 'Multiple' : 'Fill-in-Blanks'}
                             </Badge>
                             <div className="flex gap-1">
                               <Button variant="ghost" size="sm">
@@ -150,30 +161,74 @@ export default function QuestionBankViewPage() {
                           </div>
                         </div>
 
+                        {/* Question Content */}
+                        <div className="space-y-3">
+                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <h3 className="font-semibold text-blue-900 mb-2">Question:</h3>
+                            <RichContentDisplay 
+                              content={question.questionContent.html} 
+                              className="text-blue-800"
+                            />
+                          </div>
+                        </div>
+
                         {/* Options */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                          {question.options.map((option, optionIndex) => (
-                            <div
-                              key={optionIndex}
-                              className={`p-3 rounded-lg border text-sm ${
-                                question.correctAnswer === optionIndex
-                                  ? 'bg-green-50 border-green-200 text-green-800'
-                                  : 'bg-gray-50 border-gray-200'
-                              }`}
-                            >
-                              <span className="font-medium mr-2">
-                                {String.fromCharCode(65 + optionIndex)}.
-                              </span>
-                              {option}
-                            </div>
-                          ))}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {question.options.map((option, optionIndex) => {
+                            const isCorrect = question.type === 'multiple' 
+                              ? Array.isArray(question.correctAnswer) 
+                                ? question.correctAnswer.includes(optionIndex)
+                                : question.correctAnswer === optionIndex
+                              : question.correctAnswer === optionIndex
+                            
+                            return (
+                              <div
+                                key={optionIndex}
+                                className={`p-3 rounded-lg border ${
+                                  isCorrect
+                                    ? 'bg-green-50 border-green-200'
+                                    : 'bg-gray-50 border-gray-200'
+                                }`}
+                              >
+                                <div className="flex items-start gap-2">
+                                  <span className={`font-medium text-sm ${
+                                    isCorrect ? 'text-green-800' : 'text-gray-600'
+                                  }`}>
+                                    {String.fromCharCode(65 + optionIndex)}.
+                                  </span>
+                                  <div className="flex-1">
+                                    <RichContentDisplay 
+                                      content={option.html} 
+                                      className={isCorrect ? 'text-green-800' : 'text-gray-700'}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+
+                        {/* Correct Answer Badge */}
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="bg-green-50 border-green-200 text-green-800">
+                            Correct Answer: {renderCorrectAnswer(question)}
+                          </Badge>
                         </div>
 
                         {/* Explanation */}
-                        {question.explanation && (
-                          <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                            <p className="text-sm font-medium text-blue-800 mb-1">Explanation:</p>
-                            <p className="text-sm text-blue-700">{question.explanation}</p>
+                        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                          <h4 className="font-semibold text-amber-900 mb-2">Explanation:</h4>
+                          <RichContentDisplay 
+                            content={question.explanationContent.html} 
+                            className="text-amber-800"
+                          />
+                        </div>
+
+                        {/* Hint */}
+                        {question.hint && (
+                          <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                            <h4 className="font-semibold text-purple-900 mb-1">Hint:</h4>
+                            <p className="text-sm text-purple-800">{question.hint}</p>
                           </div>
                         )}
                       </div>
