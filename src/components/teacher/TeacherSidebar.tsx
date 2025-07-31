@@ -14,7 +14,8 @@ import {
   FileText,
   Zap,
   BookOpen,
-  Presentation
+  Presentation,
+  ChevronDown
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 import {
@@ -36,16 +37,16 @@ import { SidebarHoverMenu } from "./sidebar/SidebarHoverMenu"
 const navigationItems = [
   { title: "Dashboard", url: "/teacher/dashboard", icon: LayoutDashboard, badge: null },
   { title: "Student Batches", url: "/teacher/batches", icon: Users, badge: "8" },
-  { title: "Exams", url: "/teacher/exams", icon: FileText, badge: null, hasHover: true },
+  { title: "Exams", url: "/teacher/exams", icon: FileText, badge: null, hasSubmenu: true },
   { title: "Live Quizzes", url: "/teacher/quizzes", icon: Zap, badge: null },
-  { title: "LMS", url: "/teacher/lms", icon: BookOpen, badge: null, hasHover: true },
+  { title: "LMS", url: "/teacher/lms", icon: BookOpen, badge: null, hasSubmenu: true },
   { title: "Academic Schedule", url: "/teacher/schedule", icon: Calendar, badge: "2" },
-  { title: "Reports", url: "/teacher/reports", icon: Presentation, badge: null, hasHover: true },
+  { title: "Reports", url: "/teacher/reports", icon: Presentation, badge: null, hasSubmenu: true },
   { title: "Notifications", url: "/teacher/notifications", icon: Bell, badge: "3" },
   { title: "Messages", url: "/teacher/messages", icon: MessageCircle, badge: "7" },
 ]
 
-const hoverMenuItems = {
+const submenuItems = {
   "Exams": [
     { title: "Question Bank", url: "/teacher/exams/question-bank", emoji: "❓" },
     { title: "Directory", url: "/teacher/exams/directory", emoji: "🔀" },
@@ -71,56 +72,42 @@ export function TeacherSidebar() {
   const currentPath = location.pathname
   const isCollapsed = state === "collapsed"
   
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
-  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 })
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null)
+  const [submenuPosition, setSubmenuPosition] = useState({ x: 0, y: 0 })
   const sidebarRef = useRef<HTMLDivElement>(null)
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const isActive = (path: string) => currentPath === path
 
-  const clearHoverTimeout = useCallback(() => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current)
-      hoverTimeoutRef.current = null
-    }
-  }, [])
-
-  const handleMouseEnter = useCallback((item: any, event: React.MouseEvent) => {
-    if (item.hasHover && hoverMenuItems[item.title as keyof typeof hoverMenuItems]) {
-      clearHoverTimeout()
+  const handleSubmenuClick = useCallback((item: any, event: React.MouseEvent) => {
+    if (item.hasSubmenu && submenuItems[item.title as keyof typeof submenuItems]) {
+      event.preventDefault()
       
+      if (openSubmenu === item.title) {
+        setOpenSubmenu(null)
+        return
+      }
+
       const rect = event.currentTarget.getBoundingClientRect()
       const sidebarRect = sidebarRef.current?.getBoundingClientRect()
       
-      setMenuPosition({
+      setSubmenuPosition({
         x: (sidebarRect?.right || 0) + 8,
         y: rect.top
       })
-      setHoveredItem(item.title)
+      setOpenSubmenu(item.title)
     }
-  }, [clearHoverTimeout])
+  }, [openSubmenu])
 
-  const handleMouseLeave = useCallback(() => {
-    hoverTimeoutRef.current = setTimeout(() => {
-      setHoveredItem(null)
-    }, 150) // 150ms delay to allow mouse to reach hover panel
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    const target = event.target as Element
+    if (!target.closest('[data-submenu]') && !target.closest('[data-submenu-trigger]')) {
+      setOpenSubmenu(null)
+    }
   }, [])
 
-  const handleHoverMenuMouseEnter = useCallback(() => {
-    clearHoverTimeout()
-  }, [clearHoverTimeout])
-
-  const handleHoverMenuMouseLeave = useCallback(() => {
-    setHoveredItem(null)
-  }, [])
-
-  // Cleanup timeout on unmount
   useState(() => {
-    return () => {
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current)
-      }
-    }
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
   })
   
   return (
@@ -191,7 +178,7 @@ export function TeacherSidebar() {
                 {navigationItems.map((item, index) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton 
-                      asChild 
+                      asChild={!item.hasSubmenu}
                       className={`
                         relative rounded-xl transition-all duration-300 hover:bg-primary/10
                         group h-12 border border-transparent backdrop-blur-sm
@@ -201,43 +188,78 @@ export function TeacherSidebar() {
                         }
                       `}
                       style={{ animationDelay: `${index * 50}ms` }}
-                      onMouseEnter={(e) => handleMouseEnter(item, e)}
-                      onMouseLeave={handleMouseLeave}
+                      data-submenu-trigger={item.hasSubmenu}
+                      onClick={item.hasSubmenu ? (e) => handleSubmenuClick(item, e) : undefined}
                     >
-                      <NavLink to={item.url} className="flex items-center gap-3 w-full animate-fade-in">
-                        <div className={`
-                          p-2 rounded-lg transition-all duration-300
-                          ${isActive(item.url) 
-                            ? 'bg-primary/25 text-primary' 
-                            : 'group-hover:bg-primary/15 group-hover:text-primary'
-                          }
-                        `}>
-                          <item.icon className="h-5 w-5" />
-                        </div>
-                        
-                        {!isCollapsed && (
-                          <div className="flex items-center justify-between w-full">
-                            <span className="font-semibold text-base md:text-sm text-foreground group-hover:text-primary">
-                              {item.title}
-                            </span>
-                            
-                            <div className="flex items-center gap-2">
-                              {item.badge && (
-                                <Badge 
-                                  variant="secondary" 
-                                  className="bg-primary/15 text-primary text-xs h-5 min-w-5 flex items-center justify-center font-semibold"
-                                >
-                                  {item.badge}
-                                </Badge>
-                              )}
-                              
-                              {isActive(item.url) && (
-                                <ChevronRight className="h-4 w-4 text-primary" />
-                              )}
-                            </div>
+                      {item.hasSubmenu ? (
+                        <div className="flex items-center gap-3 w-full animate-fade-in">
+                          <div className={`
+                            p-2 rounded-lg transition-all duration-300
+                            ${isActive(item.url) 
+                              ? 'bg-primary/25 text-primary' 
+                              : 'group-hover:bg-primary/15 group-hover:text-primary'
+                            }
+                          `}>
+                            <item.icon className="h-5 w-5" />
                           </div>
-                        )}
-                      </NavLink>
+                          
+                          {!isCollapsed && (
+                            <div className="flex items-center justify-between w-full">
+                              <span className="font-semibold text-base md:text-sm text-foreground group-hover:text-primary">
+                                {item.title}
+                              </span>
+                              
+                              <div className="flex items-center gap-2">
+                                {item.badge && (
+                                  <Badge 
+                                    variant="secondary" 
+                                    className="bg-primary/15 text-primary text-xs h-5 min-w-5 flex items-center justify-center font-semibold"
+                                  >
+                                    {item.badge}
+                                  </Badge>
+                                )}
+                                
+                                <ChevronDown className={`h-4 w-4 text-primary transition-transform ${openSubmenu === item.title ? 'rotate-180' : ''}`} />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <NavLink to={item.url} className="flex items-center gap-3 w-full animate-fade-in">
+                          <div className={`
+                            p-2 rounded-lg transition-all duration-300
+                            ${isActive(item.url) 
+                              ? 'bg-primary/25 text-primary' 
+                              : 'group-hover:bg-primary/15 group-hover:text-primary'
+                            }
+                          `}>
+                            <item.icon className="h-5 w-5" />
+                          </div>
+                          
+                          {!isCollapsed && (
+                            <div className="flex items-center justify-between w-full">
+                              <span className="font-semibold text-base md:text-sm text-foreground group-hover:text-primary">
+                                {item.title}
+                              </span>
+                              
+                              <div className="flex items-center gap-2">
+                                {item.badge && (
+                                  <Badge 
+                                    variant="secondary" 
+                                    className="bg-primary/15 text-primary text-xs h-5 min-w-5 flex items-center justify-center font-semibold"
+                                  >
+                                    {item.badge}
+                                  </Badge>
+                                )}
+                                
+                                {isActive(item.url) && (
+                                  <ChevronRight className="h-4 w-4 text-primary" />
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </NavLink>
+                      )}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -247,14 +269,15 @@ export function TeacherSidebar() {
         </SidebarContent>
       </Sidebar>
 
-      {/* Hover Menu */}
-      {hoveredItem && hoverMenuItems[hoveredItem as keyof typeof hoverMenuItems] && (
+      {/* Click-based Submenu */}
+      {openSubmenu && submenuItems[openSubmenu as keyof typeof submenuItems] && (
         <SidebarHoverMenu
-          items={hoverMenuItems[hoveredItem as keyof typeof hoverMenuItems]}
-          isVisible={!!hoveredItem}
-          position={menuPosition}
-          onMouseEnter={handleHoverMenuMouseEnter}
-          onMouseLeave={handleHoverMenuMouseLeave}
+          items={submenuItems[openSubmenu as keyof typeof submenuItems]}
+          isVisible={!!openSubmenu}
+          position={submenuPosition}
+          onMouseEnter={() => {}}
+          onMouseLeave={() => {}}
+          isClickMode={true}
         />
       )}
     </>

@@ -16,6 +16,7 @@ interface SidebarHoverMenuProps {
   position: { x: number; y: number }
   onMouseEnter: () => void
   onMouseLeave: () => void
+  isClickMode?: boolean
 }
 
 export function SidebarHoverMenu({ 
@@ -23,27 +24,30 @@ export function SidebarHoverMenu({
   isVisible, 
   position, 
   onMouseEnter, 
-  onMouseLeave 
+  onMouseLeave,
+  isClickMode = false
 }: SidebarHoverMenuProps) {
   if (!isVisible) return null
 
   return (
     <>
-      {/* Invisible bridge to prevent gap issues */}
-      <div 
-        className="fixed z-[190]"
-        style={{ 
-          left: position.x - 20,
-          top: position.y - 10,
-          width: '40px',
-          height: `${items.length * 40 + 20}px`
-        }}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-      />
+      {/* Invisible bridge for hover mode */}
+      {!isClickMode && (
+        <div 
+          className="fixed z-[190]"
+          style={{ 
+            left: position.x - 20,
+            top: position.y - 10,
+            width: '40px',
+            height: `${items.length * 40 + 20}px`
+          }}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        />
+      )}
       
       <div 
-        className="fixed z-[200] bg-gradient-to-br from-background/95 to-muted/95 border border-border shadow-premium-lg backdrop-blur-md rounded-xl animate-fade-in"
+        className="fixed z-[200] bg-gradient-to-br from-blue-50/95 via-background/95 to-muted/95 border-2 border-primary/20 shadow-premium-lg backdrop-blur-md rounded-xl animate-fade-in"
         style={{ 
           left: position.x,
           top: position.y,
@@ -51,16 +55,20 @@ export function SidebarHoverMenu({
         }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        data-submenu={true}
       >
-        <div className="p-2 space-y-1">
+        <div className="p-3 space-y-1">
+          <div className="text-xs font-semibold text-muted-foreground/80 px-3 py-1 border-b border-border/30 mb-2">
+            Quick Access
+          </div>
           {items.map((item, index) => (
             <NavLink
               key={`${item.title}-${index}`}
               to={item.url}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/80 hover:bg-primary/10 hover:text-primary transition-all duration-200 group"
+              className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-foreground/90 hover:bg-primary/15 hover:text-primary transition-all duration-200 group border border-transparent hover:border-primary/20"
             >
               {item.emoji && (
-                <span className="text-base flex-shrink-0">{item.emoji}</span>
+                <span className="text-base flex-shrink-0 group-hover:scale-110 transition-transform">{item.emoji}</span>
               )}
               {item.icon && (
                 <item.icon className="h-4 w-4 text-muted-foreground group-hover:text-primary flex-shrink-0" />

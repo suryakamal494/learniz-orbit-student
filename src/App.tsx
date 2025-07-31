@@ -22,6 +22,9 @@ import LoginPage from "./pages/LoginPage";
 import TeacherDashboardPage from "./pages/teacher/TeacherDashboard";
 import TeacherMessagesPage from "./pages/teacher/TeacherMessagesPage";
 import TeacherNotificationsPage from "./pages/teacher/TeacherNotificationsPage";
+import QuestionBankMainPage from "./pages/teacher/exams/QuestionBankMainPage";
+import QuestionBankViewPage from "./pages/teacher/exams/QuestionBankViewPage";
+import QuestionBankAddPage from "./pages/teacher/exams/QuestionBankAddPage";
 
 const queryClient = new QueryClient();
 
@@ -91,6 +94,23 @@ const App = () => (
             <Route path="/teacher/notifications" element={
               <TeacherLayout>
                 <TeacherNotificationsPage />
+              </TeacherLayout>
+            } />
+            
+            {/* Teacher Exams - Question Bank routes */}
+            <Route path="/teacher/exams/question-bank" element={
+              <TeacherLayout>
+                <QuestionBankMainPage />
+              </TeacherLayout>
+            } />
+            <Route path="/teacher/exams/question-bank/view/:subjectId" element={
+              <TeacherLayout>
+                <QuestionBankViewPage />
+              </TeacherLayout>
+            } />
+            <Route path="/teacher/exams/question-bank/add/:subjectId" element={
+              <TeacherLayout>
+                <QuestionBankAddPage />
               </TeacherLayout>
             } />
             
