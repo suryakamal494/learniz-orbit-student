@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from '@/components/ui/sonner'
@@ -19,6 +18,7 @@ import NotFound from './pages/NotFound'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
 import TeacherMessagesPage from './pages/teacher/TeacherMessagesPage'
 import TeacherNotificationsPage from './pages/teacher/TeacherNotificationsPage'
+import TeacherSchedulePage from './pages/teacher/TeacherSchedulePage'
 import CreateExamPage from './pages/teacher/exams/CreateExamPage'
 import ExamsMainPage from './pages/teacher/exams/ExamsMainPage'
 import EditExamPage from './pages/teacher/exams/EditExamPage'
@@ -69,6 +69,7 @@ function App() {
             <Route path="/teacher" element={<TeacherLayout><TeacherDashboard /></TeacherLayout>} />
             <Route path="/teacher/messages" element={<TeacherLayout><TeacherMessagesPage /></TeacherLayout>} />
             <Route path="/teacher/notifications" element={<TeacherLayout><TeacherNotificationsPage /></TeacherLayout>} />
+            <Route path="/teacher/schedule" element={<TeacherLayout><TeacherSchedulePage /></TeacherLayout>} />
             <Route path="/teacher/exams" element={<TeacherLayout><ExamsMainPage /></TeacherLayout>} />
             <Route path="/teacher/exams/create" element={<TeacherLayout><CreateExamPage /></TeacherLayout>} />
             <Route path="/teacher/exams/:examId/edit" element={<TeacherLayout><EditExamPage /></TeacherLayout>} />
