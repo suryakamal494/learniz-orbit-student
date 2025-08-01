@@ -12,14 +12,19 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Teacher Routes */}
-        <Route path="/teacher" element={<TeacherLayout><div /></TeacherLayout>}>
-          <Route index element={<TeacherDashboardPage />} />
-          <Route path="dashboard" element={<TeacherDashboardPage />} />
-          <Route path="messages" element={<TeacherMessagesPage />} />
-          <Route path="notifications" element={<TeacherNotificationsPage />} />
-          <Route path="schedule" element={<TeacherSchedulePage />} />
-        </Route>
+        {/* Teacher Routes - All nested within TeacherLayout */}
+        <Route path="/teacher/*" element={
+          <TeacherLayout>
+            <Routes>
+              <Route index element={<TeacherDashboardPage />} />
+              <Route path="dashboard" element={<TeacherDashboardPage />} />
+              <Route path="messages" element={<TeacherMessagesPage />} />
+              <Route path="notifications" element={<TeacherNotificationsPage />} />
+              <Route path="schedule" element={<TeacherSchedulePage />} />
+              <Route path="batches" element={<div className="p-6"><h1 className="text-2xl font-bold">Teacher Batches</h1><p className="text-muted-foreground">Batches page coming soon...</p></div>} />
+            </Routes>
+          </TeacherLayout>
+        } />
 
         {/* Fallback route */}
         <Route path="*" element={<TeacherDashboardPage />} />
