@@ -21,6 +21,8 @@ import TeacherMessagesPage from './pages/teacher/TeacherMessagesPage'
 import TeacherNotificationsPage from './pages/teacher/TeacherNotificationsPage'
 import CreateExamPage from './pages/teacher/exams/CreateExamPage'
 import ExamsMainPage from './pages/teacher/exams/ExamsMainPage'
+import EditExamPage from './pages/teacher/exams/EditExamPage'
+import UpdateBatchesPage from './pages/teacher/exams/UpdateBatchesPage'
 import QuestionBankMainPage from './pages/teacher/exams/QuestionBankMainPage'
 import QuestionBankViewPage from './pages/teacher/exams/QuestionBankViewPage'
 import QuestionBankAddPage from './pages/teacher/exams/QuestionBankAddPage'
@@ -69,7 +71,9 @@ function App() {
             <Route path="/teacher/notifications" element={<TeacherLayout><TeacherNotificationsPage /></TeacherLayout>} />
             <Route path="/teacher/exams" element={<TeacherLayout><ExamsMainPage /></TeacherLayout>} />
             <Route path="/teacher/exams/create" element={<TeacherLayout><CreateExamPage /></TeacherLayout>} />
+            <Route path="/teacher/exams/:examId/edit" element={<TeacherLayout><EditExamPage /></TeacherLayout>} />
             <Route path="/teacher/exams/:examId/update-questions" element={<TeacherLayout><UpdateQuestionsPage /></TeacherLayout>} />
+            <Route path="/teacher/exams/:examId/update-batches" element={<TeacherLayout><UpdateBatchesPage /></TeacherLayout>} />
             <Route path="/teacher/question-bank" element={<TeacherLayout><QuestionBankMainPage /></TeacherLayout>} />
             <Route path="/teacher/question-bank/:subjectId" element={<TeacherLayout><QuestionBankViewPage /></TeacherLayout>} />
             <Route path="/teacher/question-bank/add" element={<TeacherLayout><QuestionBankAddPage /></TeacherLayout>} />
