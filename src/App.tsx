@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from '@/components/ui/sonner'
@@ -21,6 +20,9 @@ import TeacherMessagesPage from './pages/teacher/TeacherMessagesPage'
 import TeacherNotificationsPage from './pages/teacher/TeacherNotificationsPage'
 import TeacherSchedulePage from './pages/teacher/TeacherSchedulePage'
 import CreateClassPage from './pages/teacher/schedule/CreateClassPage'
+import LMSContentPage from './pages/teacher/lms/LMSContentPage'
+import ViewLMSContentPage from './pages/teacher/lms/content/ViewLMSContentPage'
+import CreateLMSContentPage from './pages/teacher/lms/content/CreateLMSContentPage'
 import CreateExamPage from './pages/teacher/exams/CreateExamPage'
 import ExamsMainPage from './pages/teacher/exams/ExamsMainPage'
 import EditExamPage from './pages/teacher/exams/EditExamPage'
@@ -90,6 +92,12 @@ function App() {
             <Route path="/teacher/batches/:id/students" element={<TeacherLayout><ViewStudentsPage /></TeacherLayout>} />
             <Route path="/teacher/batches/:id/assign-lms" element={<TeacherLayout><AssignLMSPage /></TeacherLayout>} />
             <Route path="/teacher/batches/:id/assign-notes" element={<TeacherLayout><BatchNotesAssignmentPage /></TeacherLayout>} />
+            
+            {/* LMS Content routes */}
+            <Route path="/teacher/lms/content" element={<TeacherLayout><LMSContentPage /></TeacherLayout>} />
+            <Route path="/teacher/lms/content/create" element={<TeacherLayout><CreateLMSContentPage /></TeacherLayout>} />
+            <Route path="/teacher/lms/content/:contentId/view" element={<TeacherLayout><ViewLMSContentPage /></TeacherLayout>} />
+            <Route path="/teacher/lms/content/:contentId/edit" element={<TeacherLayout><CreateLMSContentPage /></TeacherLayout>} />
             
             {/* 404 route */}
             <Route path="*" element={<NotFound />} />
