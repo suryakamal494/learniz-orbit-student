@@ -247,11 +247,12 @@ export default function CreateLMSContentPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="subject">Subject *</Label>
-                  <Select value={formData.subject} onValueChange={(value) => handleInputChange('subject', value)}>
+                  <Select value={formData.subject || "none"} onValueChange={(value) => handleInputChange('subject', value === 'none' ? '' : value)}>
                     <SelectTrigger className={errors.subject ? 'border-red-500' : ''}>
                       <SelectValue placeholder="Select subject" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="none">Select subject</SelectItem>
                       {mockSubjects.map(subject => (
                         <SelectItem key={subject.id} value={subject.name}>
                           {subject.name}
@@ -265,14 +266,15 @@ export default function CreateLMSContentPage() {
                 <div className="space-y-2">
                   <Label htmlFor="chapter">Chapter *</Label>
                   <Select 
-                    value={formData.chapter} 
-                    onValueChange={(value) => handleInputChange('chapter', value)}
+                    value={formData.chapter || "none"} 
+                    onValueChange={(value) => handleInputChange('chapter', value === 'none' ? '' : value)}
                     disabled={!formData.subject}
                   >
                     <SelectTrigger className={errors.chapter ? 'border-red-500' : ''}>
                       <SelectValue placeholder="Select chapter" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="none">Select chapter</SelectItem>
                       {availableChapters.map(chapter => (
                         <SelectItem key={chapter.id} value={chapter.name}>
                           {chapter.name}
@@ -286,14 +288,15 @@ export default function CreateLMSContentPage() {
                 <div className="space-y-2">
                   <Label htmlFor="topic">Topic *</Label>
                   <Select 
-                    value={formData.topic} 
-                    onValueChange={(value) => handleInputChange('topic', value)}
+                    value={formData.topic || "none"} 
+                    onValueChange={(value) => handleInputChange('topic', value === 'none' ? '' : value)}
                     disabled={!formData.chapter}
                   >
                     <SelectTrigger className={errors.topic ? 'border-red-500' : ''}>
                       <SelectValue placeholder="Select topic" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="none">Select topic</SelectItem>
                       {availableTopics.map(topic => (
                         <SelectItem key={topic.id} value={topic.name}>
                           {topic.name}
@@ -308,11 +311,12 @@ export default function CreateLMSContentPage() {
               {/* Content Type */}
               <div className="space-y-2">
                 <Label htmlFor="type">Content Type *</Label>
-                <Select value={formData.type} onValueChange={(value) => handleInputChange('type', value)}>
+                <Select value={formData.type || "none"} onValueChange={(value) => handleInputChange('type', value === 'none' ? '' : value)}>
                   <SelectTrigger className={errors.type ? 'border-red-500' : ''}>
                     <SelectValue placeholder="Select content type" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="none">Select content type</SelectItem>
                     {contentTypeOptions.map(option => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}

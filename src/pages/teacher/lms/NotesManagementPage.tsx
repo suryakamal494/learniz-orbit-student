@@ -141,48 +141,48 @@ const NotesManagementPage: React.FC = () => {
                 />
               </div>
               
-              <Select value={filters.subject} onValueChange={(value) => setFilters(prev => ({ ...prev, subject: value, chapter: '', topic: '' }))}>
+              <Select value={filters.subject || "all"} onValueChange={(value) => setFilters(prev => ({ ...prev, subject: value === 'all' ? '' : value, chapter: '', topic: '' }))}>
                 <SelectTrigger>
                   <SelectValue placeholder="Subject" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Subjects</SelectItem>
+                  <SelectItem value="all">All Subjects</SelectItem>
                   {subjects.map(subject => (
                     <SelectItem key={subject} value={subject}>{subject}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
 
-              <Select value={filters.chapter} onValueChange={(value) => setFilters(prev => ({ ...prev, chapter: value, topic: '' }))}>
+              <Select value={filters.chapter || "all"} onValueChange={(value) => setFilters(prev => ({ ...prev, chapter: value === 'all' ? '' : value, topic: '' }))}>
                 <SelectTrigger>
                   <SelectValue placeholder="Chapter" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Chapters</SelectItem>
+                  <SelectItem value="all">All Chapters</SelectItem>
                   {chapters.map(chapter => (
                     <SelectItem key={chapter} value={chapter}>{chapter}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
 
-              <Select value={filters.topic} onValueChange={(value) => setFilters(prev => ({ ...prev, topic: value }))}>
+              <Select value={filters.topic || "all"} onValueChange={(value) => setFilters(prev => ({ ...prev, topic: value === 'all' ? '' : value }))}>
                 <SelectTrigger>
                   <SelectValue placeholder="Topic" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Topics</SelectItem>
+                  <SelectItem value="all">All Topics</SelectItem>
                   {topics.map(topic => (
                     <SelectItem key={topic} value={topic}>{topic}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
 
-              <Select value={filters.fileType} onValueChange={(value) => setFilters(prev => ({ ...prev, fileType: value }))}>
+              <Select value={filters.fileType || "all"} onValueChange={(value) => setFilters(prev => ({ ...prev, fileType: value === 'all' ? '' : value }))}>
                 <SelectTrigger>
                   <SelectValue placeholder="File Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Types</SelectItem>
+                  <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="pdf">PDF</SelectItem>
                   <SelectItem value="doc">DOC</SelectItem>
                   <SelectItem value="docx">DOCX</SelectItem>
