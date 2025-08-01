@@ -1,155 +1,137 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { format } from 'date-fns'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Calendar } from '@/components/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { ArrowLeft, Save, X, Calculator, Clock, CalendarIcon } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { 
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { ArrowLeft, Plus } from 'lucide-react'
 import type { ExamFormData } from '@/types/exam'
-import { mockInstructions } from '@/data/mockInstructions'
 import { useToast } from '@/hooks/use-toast'
 
-const examSchema = z.object({
-  title: z.string().min(1, 'Exam title is required').max(200, 'Title must be less than 200 characters'),
-  category: z.enum(['Subject Exam', 'Quiz', 'LMS Exam'], {
-    required_error: 'Please select a category'
-  }),
-  duration: z.number().min(1, 'Duration must be at least 1 minute').max(600, 'Duration cannot exceed 600 minutes'),
-  marksPerQuestion: z.number().min(0.1, 'Marks per question must be greater than 0').max(100, 'Marks per question cannot exceed 100'),
+const examFormSchema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  category: z.enum(['Subject Exam', 'Quiz', 'LMS Exam']),
+  duration: z.number().min(1, 'Duration must be at least 1 minute'),
+  marksPerQuestion: z.number().min(0.1, 'Marks per question must be positive'),
   totalMarks: z.number().min(1, 'Total marks must be at least 1'),
-  passPercentage: z.number().min(0, 'Pass percentage cannot be negative').max(100, 'Pass percentage cannot exceed 100'),
-  negativeMark: z.number().min(0, 'Negative mark cannot be negative').max(10, 'Negative mark cannot exceed 10'),
-  instructionId: z.string().optional(),
+  passPercentage: z.number().min(0).max(100, 'Pass percentage must be between 0-100'),
+  negativeMark: z.number().min(0, 'Negative marks cannot be negative'),
   startDate: z.string().min(1, 'Start date is required'),
   endDate: z.string().min(1, 'End date is required'),
   startTime: z.string().min(1, 'Start time is required'),
-  examType: z.enum(['No Section, No Timer', 'Section with No Timer', 'Section with Timer'], {
-    required_error: 'Please select an exam type'
-  })
-}).refine((data) => new Date(data.endDate) >= new Date(data.startDate), {
-  message: "End date must be after start date",
-  path: ["endDate"]
+  examType: z.enum(['No Section, No Timer', 'Section with No Timer', 'Section with Timer']),
 })
 
 const CreateExamPage: React.FC = () => {
   const navigate = useNavigate()
   const { toast } = useToast()
-  const [questionCount, setQuestionCount] = useState(10) // Mock question count for calculation
-  
+  const [isCreating, setIsCreating] = useState(false)
+
   const form = useForm<ExamFormData>({
-    resolver: zodResolver(examSchema),
+    resolver: zodResolver(examFormSchema),
     defaultValues: {
       title: '',
       category: 'Subject Exam',
       duration: 60,
       marksPerQuestion: 1,
-      totalMarks: 10,
+      totalMarks: 100,
       passPercentage: 60,
       negativeMark: 0,
-      instructionId: 'none',
-      startDate: format(new Date(), 'yyyy-MM-dd'),
-      endDate: format(new Date(), 'yyyy-MM-dd'),
-      startTime: '09:00',
-      examType: 'No Section, No Timer'
+      startDate: '',
+      endDate: '',
+      startTime: '',
+      examType: 'No Section, No Timer',
     }
   })
 
-  const marksPerQuestion = form.watch('marksPerQuestion')
-
-  // Auto-calculate total marks when marks per question changes
-  useEffect(() => {
-    const totalMarks = marksPerQuestion * questionCount
-    form.setValue('totalMarks', totalMarks)
-  }, [marksPerQuestion, questionCount, form])
-
-  const onSubmit = (data: ExamFormData) => {
-    console.log('Creating exam:', data)
+  const onSubmit = async (data: ExamFormData) => {
+    setIsCreating(true)
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    console.log('Created exam data:', data)
     
     toast({
-      title: "Success",
-      description: "Exam created successfully",
+      title: "Exam Created Successfully",
+      description: `"${data.title}" has been created.`,
     })
     
+    setIsCreating(false)
     navigate('/teacher/exams')
-  }
-
-  const handleCancel = () => {
-    navigate('/teacher/exams')
-  }
-
-  const generateTimeOptions = () => {
-    const times = []
-    for (let hour = 0; hour < 24; hour++) {
-      for (let minute = 0; minute < 60; minute += 15) {
-        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
-        times.push(timeString)
-      }
-    }
-    return times
   }
 
   return (
-    <div className="p-4 sm:p-6 space-y-6 bg-gray-50 min-h-screen">
+    <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Button variant="ghost" onClick={() => navigate('/teacher/exams')} className="shrink-0">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Exams
+        <Button 
+          variant="ghost" 
+          onClick={() => navigate('/teacher/exams')}
+          className="p-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
         </Button>
-        <div className="min-w-0">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">Create New Exam</h1>
-          <p className="text-gray-600 mt-1 text-sm sm:text-base">
-            Set up a comprehensive exam with all required details
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Create New Exam</h1>
+          <p className="text-gray-600 mt-1">
+            Set up a new exam with questions and assign to batches
           </p>
         </div>
       </div>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* Basic Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Basic Information</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Exam Details</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Title */}
                 <FormField
                   control={form.control}
                   name="title"
                   render={({ field }) => (
                     <FormItem className="md:col-span-2">
-                      <FormLabel className="text-sm font-medium">Exam Title *</FormLabel>
+                      <FormLabel>Exam Title</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="Enter Exam Title" 
-                          {...field}
-                          className="h-12 text-base"
-                        />
+                        <Input {...field} placeholder="Enter exam title" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
+                {/* Category */}
                 <FormField
                   control={form.control}
                   name="category"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Category *</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormLabel>Category</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger className="h-12">
-                            <SelectValue placeholder="Select category" />
+                          <SelectTrigger>
+                            <SelectValue />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -163,53 +145,38 @@ const CreateExamPage: React.FC = () => {
                   )}
                 />
 
+                {/* Duration */}
                 <FormField
                   control={form.control}
                   name="duration"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Duration (minutes) *</FormLabel>
+                      <FormLabel>Duration (minutes)</FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                          <Input 
-                            type="number" 
-                            placeholder="60"
-                            {...field}
-                            onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                            className="h-12 pl-10 text-base"
-                          />
-                        </div>
+                        <Input 
+                          {...field} 
+                          type="number"
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Marking & Grading */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Marking & Grading</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Marks Per Question */}
                 <FormField
                   control={form.control}
                   name="marksPerQuestion"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Marks Per Question *</FormLabel>
+                      <FormLabel>Marks per Question</FormLabel>
                       <FormControl>
                         <Input 
-                          type="number" 
+                          {...field} 
+                          type="number"
                           step="0.1"
-                          placeholder="1"
-                          {...field}
-                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                          className="h-12 text-base"
+                          onChange={(e) => field.onChange(Number(e.target.value))}
                         />
                       </FormControl>
                       <FormMessage />
@@ -217,90 +184,129 @@ const CreateExamPage: React.FC = () => {
                   )}
                 />
 
+                {/* Total Marks */}
                 <FormField
                   control={form.control}
                   name="totalMarks"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Total Marks</FormLabel>
+                      <FormLabel>Total Marks</FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <Calculator className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                          <Input 
-                            {...field}
-                            readOnly
-                            className="h-12 pl-10 text-base bg-gray-50 text-gray-600"
-                          />
-                        </div>
+                        <Input 
+                          {...field} 
+                          type="number"
+                          onChange={(e) => field.onChange(Number(e.target.value))}
+                        />
                       </FormControl>
-                      <p className="text-xs text-gray-500 mt-1">Auto-calculated: {questionCount} questions × {marksPerQuestion} marks</p>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
 
+                {/* Pass Percentage */}
                 <FormField
                   control={form.control}
                   name="passPercentage"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Pass Percentage *</FormLabel>
+                      <FormLabel>Pass Percentage</FormLabel>
                       <FormControl>
                         <Input 
-                          type="number" 
-                          placeholder="60"
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                          className="h-12 text-base"
+                          {...field} 
+                          type="number"
+                          min="0"
+                          max="100"
+                          onChange={(e) => field.onChange(Number(e.target.value))}
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Negative Mark */}
                 <FormField
                   control={form.control}
                   name="negativeMark"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Negative Mark</FormLabel>
+                      <FormLabel>Negative Marks</FormLabel>
                       <FormControl>
                         <Input 
-                          type="number" 
+                          {...field} 
+                          type="number"
                           step="0.1"
-                          placeholder="0"
-                          {...field}
-                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                          className="h-12 text-base"
+                          min="0"
+                          onChange={(e) => field.onChange(Number(e.target.value))}
                         />
                       </FormControl>
-                      <p className="text-xs text-gray-500 mt-1">Marks deducted per wrong answer</p>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
+                {/* Start Date */}
                 <FormField
                   control={form.control}
-                  name="instructionId"
+                  name="startDate"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Instructions</FormLabel>
+                      <FormLabel>Start Date</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="date" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* End Date */}
+                <FormField
+                  control={form.control}
+                  name="endDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>End Date</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="date" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Start Time */}
+                <FormField
+                  control={form.control}
+                  name="startTime"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Start Time</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="time" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Exam Type */}
+                <FormField
+                  control={form.control}
+                  name="examType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Exam Type</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger className="h-12">
-                            <SelectValue placeholder="Select instructions" />
+                          <SelectTrigger>
+                            <SelectValue />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="none">No specific instructions</SelectItem>
-                          {mockInstructions.map(instruction => (
-                            <SelectItem key={instruction.id} value={instruction.id}>
-                              {instruction.title}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="No Section, No Timer">No Section, No Timer</SelectItem>
+                          <SelectItem value="Section with No Timer">Section with No Timer</SelectItem>
+                          <SelectItem value="Section with Timer">Section with Timer</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -308,128 +314,29 @@ const CreateExamPage: React.FC = () => {
                   )}
                 />
               </div>
-            </CardContent>
-          </Card>
 
-          {/* Schedule & Timing */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Schedule & Timing</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <FormField
-                  control={form.control}
-                  name="startDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel className="text-sm font-medium">Start Date *</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          {...field}
-                          className="h-12 text-base"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="endDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel className="text-sm font-medium">End Date *</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          {...field}
-                          className="h-12 text-base"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="startTime"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium">Start Time *</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="time"
-                          {...field}
-                          className="h-12 text-base"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="examType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium">Exam Type *</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="h-12">
-                          <SelectValue placeholder="Select exam type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="No Section, No Timer">No Section, No Timer</SelectItem>
-                        <SelectItem value="Section with No Timer">Section with No Timer</SelectItem>
-                        <SelectItem value="Section with Timer">Section with Timer</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
-
-          {/* Action Buttons */}
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex flex-col sm:flex-row items-center gap-3">
-                <Button 
-                  type="submit" 
-                  disabled={form.formState.isSubmitting || !form.formState.isValid}
-                  className="w-full sm:w-auto order-1 sm:order-none"
+              <div className="flex gap-4 pt-6">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => navigate('/teacher/exams')}
+                  className="flex-1 sm:flex-none"
                 >
-                  <Save className="h-4 w-4 mr-2" />
-                  {form.formState.isSubmitting ? 'Creating...' : 'Create Exam'}
-                </Button>
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={handleCancel}
-                  className="w-full sm:w-auto"
-                >
-                  <X className="h-4 w-4 mr-2" />
                   Cancel
                 </Button>
+                <Button
+                  type="submit"
+                  disabled={isCreating}
+                  className="flex-1 sm:flex-none"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  {isCreating ? 'Creating...' : 'Create Exam'}
+                </Button>
               </div>
-              
-              {!form.formState.isValid && form.formState.isSubmitted && (
-                <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-red-800 text-sm font-medium">Please fill in all required fields correctly</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </form>
-      </Form>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   )
 }
