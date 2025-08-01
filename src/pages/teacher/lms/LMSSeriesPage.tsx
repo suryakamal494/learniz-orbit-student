@@ -97,6 +97,13 @@ const LMSSeriesPage = () => {
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground">LMS Series</h1>
           <p className="text-muted-foreground mt-1">Manage and organize your content series</p>
         </div>
+        <Button 
+          onClick={() => navigate('/teacher/lms/series/create')}
+          className="w-full sm:w-auto"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Create Series
+        </Button>
       </div>
 
       {/* Filters */}
@@ -239,13 +246,6 @@ const LMSSeriesPage = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Button 
-                onClick={() => navigate('/teacher/lms/series/create')}
-                className="flex items-center gap-2"
-              >
-                <Plus className="h-4 w-4" />
-                Create
-              </Button>
             </div>
           </div>
         </CardHeader>
