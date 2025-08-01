@@ -120,7 +120,11 @@ export default function LMSContentPage() {
       if (value === 'all') {
         delete newFilters[key]
       } else {
-        newFilters[key] = value as any
+        if (key === 'contentType') {
+          newFilters[key] = value as LMSContentType
+        } else {
+          newFilters[key] = value as any
+        }
       }
       
       // Clear dependent filters when parent changes

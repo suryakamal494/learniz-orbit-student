@@ -18,7 +18,7 @@ import LiveQuizPage from './pages/LiveQuizPage';
 
 // Teacher pages
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
-import TeacherLayout from './components/teacher/layout/TeacherLayout';
+import { TeacherLayout } from './components/teacher/layout/TeacherLayout';
 import TeacherSchedulePage from './pages/teacher/TeacherSchedulePage';
 import TeacherMessagesPage from './pages/teacher/TeacherMessagesPage';
 import TeacherNotificationsPage from './pages/teacher/TeacherNotificationsPage';
@@ -54,7 +54,7 @@ import CreateLMSContentPage from './pages/teacher/lms/content/CreateLMSContentPa
 import ViewLMSContentPage from './pages/teacher/lms/content/ViewLMSContentPage';
 import ContentLibraryPage from './pages/teacher/lms/content/ContentLibraryPage';
 
-import AppLayout from './components/layout/AppLayout';
+import { AppLayout } from './components/layout/AppLayout';
 
 function App() {
   return (
