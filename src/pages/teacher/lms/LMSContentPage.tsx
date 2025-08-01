@@ -81,7 +81,7 @@ export default function LMSContentPage() {
 
   // Filter dependencies
   const availableSubjects = useMemo(() => {
-    if (!filters.institute) return mockSubjects
+    if (!filters.institute || filters.institute === 'all') return mockSubjects
     return mockSubjects.filter(subject => {
       const institute = mockInstitutes.find(inst => inst.name === filters.institute)
       return institute ? subject.instituteId === institute.id : true
@@ -89,13 +89,13 @@ export default function LMSContentPage() {
   }, [filters.institute])
 
   const availableChapters = useMemo(() => {
-    if (!filters.subject) return mockChapters
+    if (!filters.subject || filters.subject === 'all') return mockChapters
     const subject = availableSubjects.find(sub => sub.name === filters.subject)
     return subject ? mockChapters.filter(chapter => chapter.subjectId === subject.id) : mockChapters
   }, [filters.subject, availableSubjects])
 
   const availableTopics = useMemo(() => {
-    if (!filters.chapter) return mockTopics
+    if (!filters.chapter || filters.chapter === 'all') return mockTopics
     const chapter = availableChapters.find(chap => chap.name === filters.chapter)
     return chapter ? mockTopics.filter(topic => topic.chapterId === chapter.id) : mockTopics
   }, [filters.chapter, availableChapters])
@@ -103,11 +103,11 @@ export default function LMSContentPage() {
   // Filter content
   const filteredContent = useMemo(() => {
     return mockLMSContent.filter(content => {
-      if (filters.institute && content.institute !== filters.institute) return false
-      if (filters.contentType && content.type !== filters.contentType) return false
-      if (filters.subject && content.subject !== filters.subject) return false
-      if (filters.chapter && content.chapter !== filters.chapter) return false
-      if (filters.topic && content.topic !== filters.topic) return false
+      if (filters.institute && filters.institute !== 'all' && content.institute !== filters.institute) return false
+      if (filters.contentType && filters.contentType !== 'all' && content.type !== filters.contentType) return false
+      if (filters.subject && filters.subject !== 'all' && content.subject !== filters.subject) return false
+      if (filters.chapter && filters.chapter !== 'all' && content.chapter !== filters.chapter) return false
+      if (filters.topic && filters.topic !== 'all' && content.topic !== filters.topic) return false
       if (searchQuery && !content.title.toLowerCase().includes(searchQuery.toLowerCase())) return false
       return true
     })
@@ -115,7 +115,7 @@ export default function LMSContentPage() {
 
   const handleFilterChange = (key: keyof LMSContentFilters, value: string) => {
     setFilters(prev => {
-      const newFilters = { ...prev, [key]: value || undefined }
+      const newFilters = { ...prev, [key]: value === 'all' ? undefined : value }
       
       // Clear dependent filters when parent changes
       if (key === 'institute') {
@@ -180,14 +180,14 @@ export default function LMSContentPage() {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Institute</label>
                 <Select 
-                  value={filters.institute || ''} 
+                  value={filters.institute || 'all'} 
                   onValueChange={(value) => handleFilterChange('institute', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Institute" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Institutes</SelectItem>
+                    <SelectItem value="all">All Institutes</SelectItem>
                     {mockInstitutes.map(institute => (
                       <SelectItem key={institute.id} value={institute.name}>
                         {institute.name}
@@ -201,14 +201,14 @@ export default function LMSContentPage() {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Content Type</label>
                 <Select 
-                  value={filters.contentType || ''} 
+                  value={filters.contentType || 'all'} 
                   onValueChange={(value) => handleFilterChange('contentType', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Types</SelectItem>
+                    <SelectItem value="all">All Types</SelectItem>
                     {contentTypeOptions.map(option => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
@@ -222,14 +222,14 @@ export default function LMSContentPage() {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Subject</label>
                 <Select 
-                  value={filters.subject || ''} 
+                  value={filters.subject || 'all'} 
                   onValueChange={(value) => handleFilterChange('subject', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Subject" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Subjects</SelectItem>
+                    <SelectItem value="all">All Subjects</SelectItem>
                     {availableSubjects.map(subject => (
                       <SelectItem key={subject.id} value={subject.name}>
                         {subject.name}
@@ -243,14 +243,14 @@ export default function LMSContentPage() {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Chapter</label>
                 <Select 
-                  value={filters.chapter || ''} 
+                  value={filters.chapter || 'all'} 
                   onValueChange={(value) => handleFilterChange('chapter', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Chapter" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Chapters</SelectItem>
+                    <SelectItem value="all">All Chapters</SelectItem>
                     {availableChapters.map(chapter => (
                       <SelectItem key={chapter.id} value={chapter.name}>
                         {chapter.name}
@@ -264,14 +264,14 @@ export default function LMSContentPage() {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Topic</label>
                 <Select 
-                  value={filters.topic || ''} 
+                  value={filters.topic || 'all'} 
                   onValueChange={(value) => handleFilterChange('topic', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Topic" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Topics</SelectItem>
+                    <SelectItem value="all">All Topics</SelectItem>
                     {availableTopics.map(topic => (
                       <SelectItem key={topic.id} value={topic.name}>
                         {topic.name}
