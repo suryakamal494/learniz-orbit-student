@@ -1,100 +1,121 @@
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Toaster } from '@/components/ui/sonner'
-import Index from './pages/Index'
-import LoginPage from './pages/LoginPage'
-import SubjectPage from './pages/SubjectPage'
-import ExamPage from './pages/ExamPage'
-import ExamInstructionsPage from './pages/ExamInstructionsPage'
-import ExamResultsPage from './pages/ExamResultsPage'
-import SchedulePage from './pages/SchedulePage'
-import MessagesPage from './pages/MessagesPage'
-import NotificationsPage from './pages/NotificationsPage'
-import AnalysisPage from './pages/AnalysisPage'
-import LiveQuizPage from './pages/LiveQuizPage'
-import NotFound from './pages/NotFound'
-
-// Teacher pages
-import TeacherDashboard from './pages/teacher/TeacherDashboard'
-import TeacherMessagesPage from './pages/teacher/TeacherMessagesPage'
-import TeacherNotificationsPage from './pages/teacher/TeacherNotificationsPage'
-import CreateExamPage from './pages/teacher/exams/CreateExamPage'
-import ExamsMainPage from './pages/teacher/exams/ExamsMainPage'
-import EditExamPage from './pages/teacher/exams/EditExamPage'
-import UpdateBatchesPage from './pages/teacher/exams/UpdateBatchesPage'
-import QuestionBankMainPage from './pages/teacher/exams/QuestionBankMainPage'
-import QuestionBankViewPage from './pages/teacher/exams/QuestionBankViewPage'
-import QuestionBankAddPage from './pages/teacher/exams/QuestionBankAddPage'
-import InstructionsPage from './pages/teacher/exams/InstructionsPage'
-import CreateInstructionPage from './pages/teacher/exams/CreateInstructionPage'
-import EditInstructionPage from './pages/teacher/exams/EditInstructionPage'
-import DirectoryPage from './pages/teacher/exams/DirectoryPage'
-import BatchListingPage from './pages/teacher/batches/BatchListingPage'
-import AddBatchPage from './pages/teacher/batches/AddBatchPage'
-import ViewStudentsPage from './pages/teacher/batches/ViewStudentsPage'
-import AssignLMSPage from './pages/teacher/batches/AssignLMSPage'
-import BatchNotesAssignmentPage from './pages/teacher/batches/BatchNotesAssignmentPage'
-import UpdateQuestionsPage from './pages/teacher/exams/UpdateQuestionsPage'
-
-// Layout components
-import { AppLayout } from './components/layout/AppLayout'
-import { TeacherLayout } from './components/teacher/layout/TeacherLayout'
-
-// Create a client
-const queryClient = new QueryClient()
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './App.css';
+import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import PricingPage from './pages/PricingPage';
+import ContactPage from './pages/ContactPage';
+import AboutUsPage from './pages/AboutUsPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+import Dashboard from './pages/Dashboard';
+import ProfilePage from './pages/ProfilePage';
+import SettingsPage from './pages/SettingsPage';
+import LogoutPage from './pages/LogoutPage';
+import NotFoundPage from './pages/NotFoundPage';
+import UnauthorizedPage from './pages/UnauthorizedPage';
+import UnderConstructionPage from './pages/UnderConstructionPage';
+import StudentLayout from './layouts/StudentLayout';
+import TeacherLayout from './layouts/TeacherLayout';
+import AdminLayout from './layouts/AdminLayout';
+import StudentDashboard from './pages/student/StudentDashboard';
+import StudentMessagesPage from './pages/student/StudentMessagesPage';
+import StudentNotificationsPage from './pages/student/StudentNotificationsPage';
+import SchedulePage from './pages/SchedulePage';
+import TeacherDashboard from './pages/teacher/TeacherDashboard';
+import TeacherMessagesPage from './pages/teacher/TeacherMessagesPage';
+import TeacherNotificationsPage from './pages/teacher/TeacherNotificationsPage';
+import BatchListingPage from './pages/teacher/batches/BatchListingPage';
+import AddBatchPage from './pages/teacher/batches/AddBatchPage';
+import ViewStudentsPage from './pages/teacher/batches/ViewStudentsPage';
+import AssignLMSPage from './pages/teacher/batches/AssignLMSPage';
+import BatchNotesAssignmentPage from './pages/teacher/batches/BatchNotesAssignmentPage';
+import QuestionBankMainPage from './pages/teacher/question-bank/QuestionBankMainPage';
+import QuestionBankAddPage from './pages/teacher/question-bank/QuestionBankAddPage';
+import QuestionBankViewPage from './pages/teacher/question-bank/QuestionBankViewPage';
+import ExamsMainPage from './pages/teacher/exams/ExamsMainPage';
+import CreateExamPage from './pages/teacher/exams/CreateExamPage';
+import EditExamPage from './pages/teacher/exams/EditExamPage';
+import UpdateQuestionsPage from './pages/teacher/exams/UpdateQuestionsPage';
+import UpdateBatchesPage from './pages/teacher/exams/UpdateBatchesPage';
+import DirectoryPage from './pages/teacher/exams/DirectoryPage';
+import InstructionsPage from './pages/teacher/instructions/InstructionsPage';
+import CreateInstructionPage from './pages/teacher/instructions/CreateInstructionPage';
+import EditInstructionPage from './pages/teacher/instructions/EditInstructionPage';
+import TeacherSchedulePage from './pages/teacher/TeacherSchedulePage';
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <div className="min-h-screen bg-background">
-          <Routes>
-            {/* Public routes */}
-            <Route path="/login" element={<LoginPage />} />
-            
-            {/* Student routes */}
-            <Route path="/" element={<AppLayout><Index /></AppLayout>} />
-            <Route path="/subject/:id" element={<AppLayout><SubjectPage /></AppLayout>} />
-            <Route path="/exam/:id" element={<AppLayout><ExamPage /></AppLayout>} />
-            <Route path="/exam/:id/instructions" element={<AppLayout><ExamInstructionsPage /></AppLayout>} />
-            <Route path="/exam/:id/results" element={<AppLayout><ExamResultsPage /></AppLayout>} />
-            <Route path="/schedule" element={<AppLayout><SchedulePage /></AppLayout>} />
-            <Route path="/messages" element={<AppLayout><MessagesPage /></AppLayout>} />
-            <Route path="/notifications" element={<AppLayout><NotificationsPage /></AppLayout>} />
-            <Route path="/analysis" element={<AppLayout><AnalysisPage /></AppLayout>} />
-            <Route path="/live-quiz/:id" element={<AppLayout><LiveQuizPage /></AppLayout>} />
-            
-            {/* Teacher routes */}
-            <Route path="/teacher" element={<TeacherLayout><TeacherDashboard /></TeacherLayout>} />
-            <Route path="/teacher/messages" element={<TeacherLayout><TeacherMessagesPage /></TeacherLayout>} />
-            <Route path="/teacher/notifications" element={<TeacherLayout><TeacherNotificationsPage /></TeacherLayout>} />
-            <Route path="/teacher/exams" element={<TeacherLayout><ExamsMainPage /></TeacherLayout>} />
-            <Route path="/teacher/exams/create" element={<TeacherLayout><CreateExamPage /></TeacherLayout>} />
-            <Route path="/teacher/exams/:examId/edit" element={<TeacherLayout><EditExamPage /></TeacherLayout>} />
-            <Route path="/teacher/exams/:examId/update-questions" element={<TeacherLayout><UpdateQuestionsPage /></TeacherLayout>} />
-            <Route path="/teacher/exams/:examId/update-batches" element={<TeacherLayout><UpdateBatchesPage /></TeacherLayout>} />
-            <Route path="/teacher/question-bank" element={<TeacherLayout><QuestionBankMainPage /></TeacherLayout>} />
-            <Route path="/teacher/question-bank/:subjectId" element={<TeacherLayout><QuestionBankViewPage /></TeacherLayout>} />
-            <Route path="/teacher/question-bank/add" element={<TeacherLayout><QuestionBankAddPage /></TeacherLayout>} />
-            <Route path="/teacher/instructions" element={<TeacherLayout><InstructionsPage /></TeacherLayout>} />
-            <Route path="/teacher/instructions/create" element={<TeacherLayout><CreateInstructionPage /></TeacherLayout>} />
-            <Route path="/teacher/instructions/:id/edit" element={<TeacherLayout><EditInstructionPage /></TeacherLayout>} />
-            <Route path="/teacher/directory" element={<TeacherLayout><DirectoryPage /></TeacherLayout>} />
-            <Route path="/teacher/batches" element={<TeacherLayout><BatchListingPage /></TeacherLayout>} />
-            <Route path="/teacher/batches/add" element={<TeacherLayout><AddBatchPage /></TeacherLayout>} />
-            <Route path="/teacher/batches/:id/students" element={<TeacherLayout><ViewStudentsPage /></TeacherLayout>} />
-            <Route path="/teacher/batches/:id/assign-lms" element={<TeacherLayout><AssignLMSPage /></TeacherLayout>} />
-            <Route path="/teacher/batches/:id/assign-notes" element={<TeacherLayout><BatchNotesAssignmentPage /></TeacherLayout>} />
-            
-            {/* 404 route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Toaster />
-        </div>
-      </Router>
-    </QueryClientProvider>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/terms" element={<TermsOfServicePage />} />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/logout" element={<LogoutPage />} />
+        <Route path="/under-construction" element={<UnderConstructionPage />} />
+        
+        <Route path="/student" element={<StudentLayout />}>
+          <Route index element={<StudentDashboard />} />
+          <Route path="dashboard" element={<StudentDashboard />} />
+          <Route path="messages" element={<StudentMessagesPage />} />
+          <Route path="notifications" element={<StudentNotificationsPage />} />
+          <Route path="schedule" element={<SchedulePage />} />
+        </Route>
+
+        {/* Teacher Routes */}
+        <Route path="/teacher" element={<TeacherLayout />}>
+          <Route index element={<TeacherDashboard />} />
+          <Route path="dashboard" element={<TeacherDashboard />} />
+          <Route path="messages" element={<TeacherMessagesPage />} />
+          <Route path="notifications" element={<TeacherNotificationsPage />} />
+          <Route path="schedule" element={<TeacherSchedulePage />} />
+          
+          {/* Batch Management Routes */}
+          <Route path="batches" element={<BatchListingPage />} />
+          <Route path="batches/add" element={<AddBatchPage />} />
+          <Route path="batches/:batchId/students" element={<ViewStudentsPage />} />
+          <Route path="batches/:batchId/assign-lms" element={<AssignLMSPage />} />
+          <Route path="batches/:batchId/assign-notes" element={<BatchNotesAssignmentPage />} />
+
+          {/* Question Bank Routes */}
+          <Route path="question-bank" element={<QuestionBankMainPage />} />
+          <Route path="question-bank/add" element={<QuestionBankAddPage />} />
+          <Route path="question-bank/view/:questionId" element={<QuestionBankViewPage />} />
+
+          {/* Exam Management Routes */}
+          <Route path="exams" element={<ExamsMainPage />} />
+          <Route path="exams/create" element={<CreateExamPage />} />
+          <Route path="exams/:examId/edit" element={<EditExamPage />} />
+          <Route path="exams/:examId/update-questions" element={<UpdateQuestionsPage />} />
+          <Route path="exams/:examId/update-batches" element={<UpdateBatchesPage />} />
+          <Route path="exams/directory" element={<DirectoryPage />} />
+
+          {/* Instructions Routes */}
+          <Route path="instructions" element={<InstructionsPage />} />
+          <Route path="instructions/create" element={<CreateInstructionPage />} />
+          <Route path="instructions/:id/edit" element={<EditInstructionPage />} />
+        </Route>
+
+        <Route path="/admin" element={<AdminLayout />} />
+
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
