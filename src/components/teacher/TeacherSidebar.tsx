@@ -12,10 +12,9 @@ import {
   Database,
   Book,
   ListChecks,
-  Menu
+  GraduationCap
 } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
 import { 
   Accordion,
   AccordionContent,
@@ -23,164 +22,203 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarHeader,
+} from "@/components/ui/sidebar"
+import { Badge } from "@/components/ui/badge"
 
-interface SidebarProps {
-  isMobile?: boolean
-}
-
-const SidebarMenuButton = ({ children }: { children: React.ReactNode }) => {
+export function TeacherSidebar() {
   return (
-    <li>
-      {children}
-    </li>
-  )
-}
+    <Sidebar className="border-r-0 bg-white shadow-modern-lg">
+      <SidebarHeader className="border-b border-border/40 p-6 bg-white">
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-primary to-primary/80 shadow-modern">
+              <GraduationCap className="h-6 w-6 text-white" />
+            </div>
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+          </div>
+          
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-bold text-gray-900">Learniz</span>
+              <Badge variant="secondary" className="bg-primary/10 text-primary text-xs">Teacher</Badge>
+            </div>
+            <span className="text-xs text-gray-600">Teacher Portal</span>
+          </div>
+        </div>
+      </SidebarHeader>
 
-export function TeacherSidebar({ isMobile = false }: SidebarProps) {
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        {isMobile ? (
-          <Button variant="ghost" size="sm" className="p-0 rounded-md w-8 h-8">
-            <Menu className="h-5 w-5" />
-          </Button>
-        ) : null}
-      </SheetTrigger>
-      <SheetContent side="left" className="p-0">
-        <div className="flex flex-col h-full">
-          <SheetHeader className="px-6 mt-6">
-            <SheetTitle className="font-bold text-lg">
-              Acme Corp.
-            </SheetTitle>
-            <SheetDescription>
-              Teacher Dashboard
-            </SheetDescription>
-          </SheetHeader>
-          <div className="flex-1 overflow-y-auto py-2">
-            <nav className="grid gap-6 px-6">
-              <ul className="grid gap-1">
-                <SidebarMenuButton>
+      <SidebarContent className="px-4 py-6 bg-white">
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-gray-600 font-semibold mb-4 px-2">
+            Navigation
+          </SidebarGroupLabel>
+          
+          <SidebarGroupContent>
+            <SidebarMenu className="space-y-2">
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
                   <Link 
                     to="/teacher" 
-                    className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-accent"
+                    className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl hover:bg-primary/10 transition-colors"
                   >
                     <LayoutDashboard className="h-4 w-4" />
                     Dashboard
                   </Link>
                 </SidebarMenuButton>
-                <SidebarMenuButton>
+              </SidebarMenuItem>
+              
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
                   <Link 
                     to="/teacher/messages" 
-                    className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-accent"
+                    className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl hover:bg-primary/10 transition-colors"
                   >
                     <MessageSquare className="h-4 w-4" />
                     Messages
                   </Link>
                 </SidebarMenuButton>
-                <SidebarMenuButton>
+              </SidebarMenuItem>
+              
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
                   <Link 
                     to="/teacher/notifications" 
-                    className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-accent"
+                    className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl hover:bg-primary/10 transition-colors"
                   >
                     <Bell className="h-4 w-4" />
                     Notifications
                   </Link>
                 </SidebarMenuButton>
-              </ul>
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="exams">
-                  <AccordionTrigger className="text-sm font-medium">
-                    <FileText className="h-4 w-4 mr-2" /> Exams
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <ul className="grid gap-1 pl-2">
-                      <SidebarMenuButton>
-                        <Link 
-                          to="/teacher/exams" 
-                          className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-accent"
-                        >
-                          <ListChecks className="h-4 w-4" />
-                          All Exams
-                        </Link>
-                      </SidebarMenuButton>
-                      <SidebarMenuButton>
-                        <Link 
-                          to="/teacher/question-bank" 
-                          className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-accent"
-                        >
-                          <Database className="h-4 w-4" />
-                          Question Bank
-                        </Link>
-                      </SidebarMenuButton>
-                      <SidebarMenuButton>
-                        <Link 
-                          to="/teacher/instructions" 
-                          className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-accent"
-                        >
-                          <Book className="h-4 w-4" />
-                          Instructions
-                        </Link>
-                      </SidebarMenuButton>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="batches">
-                  <AccordionTrigger className="text-sm font-medium">
-                    <Users className="h-4 w-4 mr-2" /> Batches
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <ul className="grid gap-1 pl-2">
-                      <SidebarMenuButton>
-                        <Link 
-                          to="/teacher/batches" 
-                          className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-accent"
-                        >
-                          All Batches
-                        </Link>
-                      </SidebarMenuButton>
-                      <SidebarMenuButton>
-                        <Link 
-                          to="/teacher/directory" 
-                          className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-accent"
-                        >
-                          Directory
-                        </Link>
-                      </SidebarMenuButton>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-              <ul className="grid gap-1">
-                <SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <div className="mt-6">
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="exams" className="border-none">
+              <AccordionTrigger className="text-sm font-medium px-2 py-2 hover:bg-primary/5 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Exams
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="pt-2">
+                <SidebarMenu className="space-y-1">
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link 
+                        to="/teacher/exams" 
+                        className="flex items-center gap-3 px-6 py-2 text-sm rounded-xl hover:bg-primary/10 transition-colors"
+                      >
+                        <ListChecks className="h-4 w-4" />
+                        All Exams
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link 
+                        to="/teacher/question-bank" 
+                        className="flex items-center gap-3 px-6 py-2 text-sm rounded-xl hover:bg-primary/10 transition-colors"
+                      >
+                        <Database className="h-4 w-4" />
+                        Question Bank
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link 
+                        to="/teacher/instructions" 
+                        className="flex items-center gap-3 px-6 py-2 text-sm rounded-xl hover:bg-primary/10 transition-colors"
+                      >
+                        <Book className="h-4 w-4" />
+                        Instructions
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </AccordionContent>
+            </AccordionItem>
+            
+            <AccordionItem value="batches" className="border-none">
+              <AccordionTrigger className="text-sm font-medium px-2 py-2 hover:bg-primary/5 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Users className="h-4 w-4" />
+                  Batches
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="pt-2">
+                <SidebarMenu className="space-y-1">
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link 
+                        to="/teacher/batches" 
+                        className="flex items-center gap-3 px-6 py-2 text-sm rounded-xl hover:bg-primary/10 transition-colors"
+                      >
+                        All Batches
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link 
+                        to="/teacher/directory" 
+                        className="flex items-center gap-3 px-6 py-2 text-sm rounded-xl hover:bg-primary/10 transition-colors"
+                      >
+                        Directory
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+
+        <SidebarGroup className="mt-6">
+          <SidebarGroupContent>
+            <SidebarMenu className="space-y-2">
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
                   <Link 
                     to="/teacher/schedule" 
-                    className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-accent"
+                    className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl hover:bg-primary/10 transition-colors"
                   >
                     <Calendar className="h-4 w-4" />
                     Schedule
                   </Link>
                 </SidebarMenuButton>
-                <SidebarMenuButton>
+              </SidebarMenuItem>
+              
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
                   <Link 
                     to="/teacher/settings" 
-                    className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-accent"
+                    className="flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl hover:bg-primary/10 transition-colors"
                   >
                     <Settings className="h-4 w-4" />
                     Settings
                   </Link>
                 </SidebarMenuButton>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   )
 }
