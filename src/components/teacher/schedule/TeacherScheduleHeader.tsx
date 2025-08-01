@@ -49,7 +49,7 @@ export function TeacherScheduleHeader({
             </Button>
             <Button
               onClick={onCreateClick}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               <Plus className="h-4 w-4" />
               Create

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useTeacherScheduleData } from '@/hooks/useTeacherScheduleData';
 import { TeacherScheduleHeader } from '@/components/teacher/schedule/TeacherScheduleHeader';
@@ -8,6 +9,7 @@ import { TeacherScheduleExportBar } from '@/components/teacher/schedule/TeacherS
 import { TeacherScheduleTable } from '@/components/teacher/schedule/TeacherScheduleTable';
 
 export default function TeacherSchedulePage() {
+  const navigate = useNavigate();
   const {
     data,
     totalItems,
@@ -30,8 +32,7 @@ export default function TeacherSchedulePage() {
   };
 
   const handleCreateClick = () => {
-    toast.success('Create schedule clicked');
-    // TODO: Navigate to create schedule page
+    navigate('/teacher/schedule/create');
   };
 
   const handleImportClick = () => {
