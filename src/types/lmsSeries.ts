@@ -12,9 +12,6 @@ export interface LMSSeries {
   totalItems: number
   type: LMSSeriesType
   description?: string
-  showInHomepage: 'yes' | 'no'
-  startDate?: string
-  endDate?: string
   createdAt: string
   createdBy: string
   updatedAt: string

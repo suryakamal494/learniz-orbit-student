@@ -1,29 +1,28 @@
 
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Save, X, CalendarIcon } from 'lucide-react'
+import { ArrowLeft, Save, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Calendar } from '@/components/ui/calendar'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-import { format } from 'date-fns'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { cn } from '@/lib/utils'
+import { mockSubtopics } from '@/data/mockLMSSeries'
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required').min(3, 'Title must be at least 3 characters'),
+  institute: z.string().min(1, 'Institute is required'),
   subject: z.string().min(1, 'Subject is required'),
   chapter: z.string().min(1, 'Chapter is required'),
   topic: z.string().min(1, 'Topic is required'),
-  showInHomepage: z.enum(['yes', 'no']),
-  startDate: z.date().optional(),
-  endDate: z.date().optional()
+  subtopic: z.string().optional(),
+  type: z.enum(['content-series', 'video-series', 'assignment-series', 'quiz-series', 'exam-series']),
+  description: z.string().optional()
 })
 
 type FormData = z.infer<typeof formSchema>
@@ -31,54 +30,42 @@ type FormData = z.infer<typeof formSchema>
 const CreateLMSSeriesPage = () => {
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [totalItems] = useState(0) // Auto-calculated, non-editable
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
+      institute: '',
       subject: '',
       chapter: '',
       topic: '',
-      showInHomepage: 'no',
-      startDate: undefined,
-      endDate: undefined
+      subtopic: '',
+      type: 'content-series',
+      description: ''
     }
   })
 
+  const watchedInstitute = form.watch('institute')
   const watchedSubject = form.watch('subject')
   const watchedChapter = form.watch('chapter')
+  const watchedTopic = form.watch('topic')
 
-  // Mock data for dropdowns - in real app, these would come from API
+  // Mock data for dropdowns (in real app, these would come from API)
+  const institutes = ['Delhi Public School', 'Ryan International', 'St. Mary\'s School']
   const subjects = ['Physics', 'Mathematics', 'Chemistry', 'Biology', 'English', 'History']
+  const chapters = ['Motion in a Straight Line', 'Algebra', 'Acids and Bases', 'Cell Structure', 'Poetry Analysis', 'World War II']
+  const topics = ['Uniform Motion', 'Linear Equations', 'pH Scale', 'Cell Organelles', 'Romantic Poetry', 'European Theatre']
   
-  const chaptersBySubject: Record<string, string[]> = {
-    'Physics': ['Motion in a Straight Line', 'Laws of Motion', 'Work, Energy and Power'],
-    'Mathematics': ['Algebra', 'Calculus', 'Geometry', 'Statistics'],
-    'Chemistry': ['Acids and Bases', 'Organic Chemistry', 'Chemical Bonding'],
-    'Biology': ['Cell Structure', 'Genetics', 'Evolution', 'Ecology'],
-    'English': ['Poetry Analysis', 'Grammar', 'Literature'],
-    'History': ['World War II', 'Ancient History', 'Medieval Period']
-  }
-  
-  const topicsByChapter: Record<string, string[]> = {
-    'Motion in a Straight Line': ['Uniform Motion', 'Non-uniform Motion', 'Acceleration'],
-    'Algebra': ['Linear Equations', 'Quadratic Equations', 'Functions'],
-    'Acids and Bases': ['pH Scale', 'Neutralization', 'Salt Formation'],
-    'Cell Structure': ['Cell Organelles', 'Cell Division', 'Cell Membrane'],
-    'Poetry Analysis': ['Romantic Poetry', 'Modern Poetry', 'Classical Poetry'],
-    'World War II': ['European Theatre', 'Pacific Theatre', 'Home Front']
-  }
-
-  const availableChapters = watchedSubject ? chaptersBySubject[watchedSubject] || [] : []
-  const availableTopics = watchedChapter ? topicsByChapter[watchedChapter] || [] : []
+  const availableSubtopics = mockSubtopics.filter(subtopic => 
+    topics.includes(watchedTopic)
+  )
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true)
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500))
-      console.log('Creating series:', { ...data, totalItems })
+      console.log('Creating series:', data)
       
       // Navigate back to series list
       navigate('/teacher/lms/series')
@@ -102,7 +89,7 @@ const CreateLMSSeriesPage = () => {
           Back to Series
         </Button>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Create New LMS Series</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Create New Series</h1>
           <p className="text-muted-foreground mt-1">Create a new learning series for your students</p>
         </div>
       </div>
@@ -120,11 +107,59 @@ const CreateLMSSeriesPage = () => {
                   control={form.control}
                   name="title"
                   render={({ field }) => (
-                    <FormItem className="md:col-span-2">
-                      <FormLabel>Title *</FormLabel>
+                    <FormItem>
+                      <FormLabel>Series Title *</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter series title" {...field} />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Series Type *</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select series type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="content-series">Content Series</SelectItem>
+                          <SelectItem value="video-series">Video Series</SelectItem>
+                          <SelectItem value="assignment-series">Assignment Series</SelectItem>
+                          <SelectItem value="quiz-series">Quiz Series</SelectItem>
+                          <SelectItem value="exam-series">Exam Series</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="institute"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Institute *</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select institute" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {institutes.map(institute => (
+                            <SelectItem key={institute} value={institute}>{institute}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -136,12 +171,7 @@ const CreateLMSSeriesPage = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Subject *</FormLabel>
-                      <Select onValueChange={(value) => {
-                        field.onChange(value)
-                        // Reset chapter and topic when subject changes
-                        form.setValue('chapter', '')
-                        form.setValue('topic', '')
-                      }} value={field.value}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select subject" />
@@ -164,18 +194,14 @@ const CreateLMSSeriesPage = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Chapter *</FormLabel>
-                      <Select onValueChange={(value) => {
-                        field.onChange(value)
-                        // Reset topic when chapter changes
-                        form.setValue('topic', '')
-                      }} value={field.value} disabled={!watchedSubject}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select chapter" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {availableChapters.map(chapter => (
+                          {chapters.map(chapter => (
                             <SelectItem key={chapter} value={chapter}>{chapter}</SelectItem>
                           ))}
                         </SelectContent>
@@ -191,14 +217,14 @@ const CreateLMSSeriesPage = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Topic *</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value} disabled={!watchedChapter}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select topic" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {availableTopics.map(topic => (
+                          {topics.map(topic => (
                             <SelectItem key={topic} value={topic}>{topic}</SelectItem>
                           ))}
                         </SelectContent>
@@ -208,113 +234,48 @@ const CreateLMSSeriesPage = () => {
                   )}
                 />
 
-                <FormItem>
-                  <FormLabel>Total Items</FormLabel>
-                  <FormControl>
-                    <Input 
-                      value={totalItems} 
-                      disabled 
-                      className="bg-muted cursor-not-allowed"
-                      placeholder="Auto-calculated"
-                    />
-                  </FormControl>
-                  <p className="text-xs text-muted-foreground">This field updates automatically when content is added</p>
-                </FormItem>
-
                 <FormField
                   control={form.control}
-                  name="showInHomepage"
+                  name="subtopic"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Show in Homepage *</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <FormLabel>Subtopic (Optional)</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select option" />
+                            <SelectValue placeholder="Select subtopic" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="yes">Yes</SelectItem>
-                          <SelectItem value="no">No</SelectItem>
+                          <SelectItem value="">No Subtopic</SelectItem>
+                          {availableSubtopics.map(subtopic => (
+                            <SelectItem key={subtopic.id} value={subtopic.name}>{subtopic.name}</SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
-                <FormField
-                  control={form.control}
-                  name="startDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Start Date (Optional)</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "w-full justify-start text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {field.value ? format(field.value, "PPP") : "Select start date"}
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            initialFocus
-                            className={cn("p-3 pointer-events-auto")}
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="endDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>End Date (Optional)</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "w-full justify-start text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {field.value ? format(field.value, "PPP") : "Select end date"}
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            initialFocus
-                            className={cn("p-3 pointer-events-auto")}
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </div>
+
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description (Optional)</FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        placeholder="Enter series description..."
+                        className="min-h-[100px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               {/* Actions */}
               <div className="flex flex-col sm:flex-row gap-4 pt-6">
