@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { TeacherLayout } from '@/components/teacher/layout/TeacherLayout';
 import { TeacherScheduleHeader } from '@/components/teacher/schedule/TeacherScheduleHeader';
 import { TeacherScheduleFilters } from '@/components/teacher/schedule/TeacherScheduleFilters';
 import { TeacherScheduleExportBar } from '@/components/teacher/schedule/TeacherScheduleExportBar';
@@ -24,42 +23,40 @@ export default function TeacherSchedulePage() {
   } = useTeacherScheduleData();
 
   return (
-    <TeacherLayout>
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-        <div className="container mx-auto p-6 max-w-7xl">
-          <div className="space-y-6">
-            {/* Header */}
-            <TeacherScheduleHeader
-              searchQuery={filters.search}
-              onSearchChange={(query) => handleFiltersChange({ search: query })}
-              totalClasses={totalItems}
-            />
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      <div className="container mx-auto p-6 max-w-7xl">
+        <div className="space-y-6">
+          {/* Header */}
+          <TeacherScheduleHeader
+            searchQuery={filters.search}
+            onSearchChange={(query) => handleFiltersChange({ search: query })}
+            totalClasses={totalItems}
+          />
 
-            {/* Filters */}
-            <TeacherScheduleFilters
-              filters={filters}
-              onFiltersChange={handleFiltersChange}
-              onClearAll={clearAllFilters}
-            />
+          {/* Filters */}
+          <TeacherScheduleFilters
+            filters={filters}
+            onFiltersChange={handleFiltersChange}
+            onClearAll={clearAllFilters}
+          />
 
-            {/* Export Bar */}
-            <TeacherScheduleExportBar totalItems={totalItems} />
+          {/* Export Bar */}
+          <TeacherScheduleExportBar totalItems={totalItems} />
 
-            {/* Table */}
-            <TeacherScheduleTable
-              data={data}
-              sort={sort}
-              onSortChange={handleSortChange}
-              currentPage={currentPage}
-              pageSize={pageSize}
-              totalPages={totalPages}
-              totalItems={totalItems}
-              onPageChange={setCurrentPage}
-              onPageSizeChange={handlePageSizeChange}
-            />
-          </div>
+          {/* Table */}
+          <TeacherScheduleTable
+            data={data}
+            sort={sort}
+            onSortChange={handleSortChange}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={handlePageSizeChange}
+          />
         </div>
       </div>
-    </TeacherLayout>
+    </div>
   );
 }
