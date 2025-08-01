@@ -1,7 +1,7 @@
+
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { 
-  Dashboard, 
   LayoutDashboard, 
   Calendar, 
   MessageSquare, 
@@ -11,10 +11,10 @@ import {
   Settings,
   Database,
   Book,
-  ListChecks
+  ListChecks,
+  Menu
 } from 'lucide-react'
 
-import { Icons } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { 
   Accordion,
@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/sheet"
 
 interface SidebarProps {
-  isMobile: boolean
+  isMobile?: boolean
 }
 
 const SidebarMenuButton = ({ children }: { children: React.ReactNode }) => {
@@ -43,13 +43,13 @@ const SidebarMenuButton = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export function TeacherSidebar({ isMobile }: SidebarProps) {
+export function TeacherSidebar({ isMobile = false }: SidebarProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
         {isMobile ? (
           <Button variant="ghost" size="sm" className="p-0 rounded-md w-8 h-8">
-            <Icons.menu className="h-5 w-5" />
+            <Menu className="h-5 w-5" />
           </Button>
         ) : null}
       </SheetTrigger>
@@ -110,7 +110,7 @@ export function TeacherSidebar({ isMobile }: SidebarProps) {
                           All Exams
                         </Link>
                       </SidebarMenuButton>
-                      <SidebarMenuButton asChild>
+                      <SidebarMenuButton>
                         <Link 
                           to="/teacher/question-bank" 
                           className="flex items-center gap-2 px-2 py-1.5 text-sm rounded-lg hover:bg-accent"
