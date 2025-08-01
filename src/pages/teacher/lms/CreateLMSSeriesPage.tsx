@@ -247,7 +247,7 @@ const CreateLMSSeriesPage = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="">No Subtopic</SelectItem>
+                          <SelectItem value="no-subtopic">No Subtopic</SelectItem>
                           {availableSubtopics.map(subtopic => (
                             <SelectItem key={subtopic.id} value={subtopic.name}>{subtopic.name}</SelectItem>
                           ))}
