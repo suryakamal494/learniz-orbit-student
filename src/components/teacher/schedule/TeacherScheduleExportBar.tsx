@@ -24,43 +24,43 @@ export function TeacherScheduleExportBar({
   };
 
   return (
-    <div className="glass rounded-lg border border-border/40 p-4 mb-6 bg-gradient-to-r from-accent-teal/5 to-accent-orange/5">
+    <div className="bg-gradient-to-r from-teal-50 via-blue-50 to-purple-50 dark:from-teal-950/20 dark:via-blue-950/20 dark:to-purple-950/20 rounded-xl border border-border/50 p-4 mb-6 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="text-sm">
-          <span className="text-muted-foreground">Showing </span>
-          <span className="font-semibold text-primary">{totalItems}</span>
-          <span className="text-muted-foreground"> schedule{totalItems !== 1 ? 's' : ''}</span>
+          <span className="text-muted-foreground font-medium">Showing </span>
+          <span className="font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-950/30 px-2 py-1 rounded-md">{totalItems}</span>
+          <span className="text-muted-foreground font-medium"> schedule{totalItems !== 1 ? 's' : ''}</span>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Button
             onClick={handleCopy}
-            variant="ghost"
+            variant="outline"
             size="sm"
-            className="text-accent-teal hover:text-accent-teal-light hover:bg-accent-teal/10 transition-colors"
+            className="text-teal-600 dark:text-teal-400 hover:text-teal-700 hover:bg-teal-50 dark:hover:bg-teal-950/20 transition-colors border-2 border-teal-300 dark:border-teal-700 font-semibold"
           >
-            <Copy className="h-4 w-4 mr-1" />
+            <Copy className="h-4 w-4 mr-2" />
             Copy
           </Button>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-primary hover:text-primary-light hover:bg-primary/10 transition-colors">
-                <Download className="h-4 w-4 mr-1" />
+              <Button variant="outline" size="sm" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors border-2 border-blue-300 dark:border-blue-700 font-semibold">
+                <Download className="h-4 w-4 mr-2" />
                 Export
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={() => onExport('csv')} className="hover:bg-success/10">
-                <FileSpreadsheet className="h-4 w-4 mr-2 text-success" />
+            <DropdownMenuContent align="end" className="w-48 bg-card border-border/50">
+              <DropdownMenuItem onClick={() => onExport('csv')} className="hover:bg-green-50 dark:hover:bg-green-950/20 font-medium">
+                <FileSpreadsheet className="h-4 w-4 mr-2 text-green-600 dark:text-green-400" />
                 Export as CSV
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onExport('excel')} className="hover:bg-accent-teal/10">
-                <FileSpreadsheet className="h-4 w-4 mr-2 text-accent-teal" />
+              <DropdownMenuItem onClick={() => onExport('excel')} className="hover:bg-teal-50 dark:hover:bg-teal-950/20 font-medium">
+                <FileSpreadsheet className="h-4 w-4 mr-2 text-teal-600 dark:text-teal-400" />
                 Export as Excel
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onExport('pdf')} className="hover:bg-error/10">
-                <FileText className="h-4 w-4 mr-2 text-error" />
+              <DropdownMenuItem onClick={() => onExport('pdf')} className="hover:bg-red-50 dark:hover:bg-red-950/20 font-medium">
+                <FileText className="h-4 w-4 mr-2 text-red-600 dark:text-red-400" />
                 Export as PDF
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -68,11 +68,11 @@ export function TeacherScheduleExportBar({
           
           <Button
             onClick={handlePrint}
-            variant="ghost"
+            variant="outline"
             size="sm"
-            className="text-accent-orange hover:text-accent-orange-light hover:bg-accent-orange/10 transition-colors"
+            className="text-purple-600 dark:text-purple-400 hover:text-purple-700 hover:bg-purple-50 dark:hover:bg-purple-950/20 transition-colors border-2 border-purple-300 dark:border-purple-700 font-semibold"
           >
-            <Printer className="h-4 w-4 mr-1" />
+            <Printer className="h-4 w-4 mr-2" />
             Print
           </Button>
         </div>
