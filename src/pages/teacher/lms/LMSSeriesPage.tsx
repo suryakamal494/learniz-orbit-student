@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react'
 import { Plus, Search, Filter, Download, FileText, Eye, Edit, Settings, BookOpen } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -216,6 +215,13 @@ const LMSSeriesPage = () => {
               Series List ({filteredSeries.length} results)
             </CardTitle>
             <div className="flex items-center gap-2">
+              <Button 
+                onClick={() => navigate('/teacher/lms/series/create')}
+                className="flex items-center gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                Create
+              </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm">
