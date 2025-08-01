@@ -8,7 +8,7 @@ interface TeacherLayoutProps {
 
 export function TeacherLayout({ children }: TeacherLayoutProps) {
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50">
         <TeacherSidebar />
         <main className="flex-1 overflow-auto">
