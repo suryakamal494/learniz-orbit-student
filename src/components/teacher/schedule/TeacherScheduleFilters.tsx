@@ -9,12 +9,12 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { TeacherScheduleFilters } from '@/types/teacherSchedule';
+import { TeacherScheduleFilters as TeacherScheduleFiltersType } from '@/types/teacherSchedule';
 import { getUniqueClasses, getUniqueBatches } from '@/data/mockTeacherSchedule';
 
 interface TeacherScheduleFiltersProps {
-  filters: TeacherScheduleFilters;
-  onFiltersChange: (filters: Partial<TeacherScheduleFilters>) => void;
+  filters: TeacherScheduleFiltersType;
+  onFiltersChange: (filters: Partial<TeacherScheduleFiltersType>) => void;
   onClearFilters: () => void;
   totalItems: number;
 }
@@ -61,14 +61,14 @@ export function TeacherScheduleFilters({
         <div className="space-y-2">
           <Label htmlFor="class" className="text-sm font-medium">Class</Label>
           <Select
-            value={filters.class || ''}
-            onValueChange={(value) => onFiltersChange({ class: value || undefined })}
+            value={filters.class || 'all'}
+            onValueChange={(value) => onFiltersChange({ class: value === 'all' ? undefined : value })}
           >
             <SelectTrigger className="bg-background/50 border-border/60">
               <SelectValue placeholder="All Classes" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Classes</SelectItem>
+              <SelectItem value="all">All Classes</SelectItem>
               {classes.map((cls) => (
                 <SelectItem key={cls} value={cls}>{cls}</SelectItem>
               ))}
@@ -80,14 +80,14 @@ export function TeacherScheduleFilters({
         <div className="space-y-2">
           <Label htmlFor="batch" className="text-sm font-medium">Batch</Label>
           <Select
-            value={filters.batch || ''}
-            onValueChange={(value) => onFiltersChange({ batch: value || undefined })}
+            value={filters.batch || 'all'}
+            onValueChange={(value) => onFiltersChange({ batch: value === 'all' ? undefined : value })}
           >
             <SelectTrigger className="bg-background/50 border-border/60">
               <SelectValue placeholder="All Batches" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Batches</SelectItem>
+              <SelectItem value="all">All Batches</SelectItem>
               {batches.map((batch) => (
                 <SelectItem key={batch} value={batch}>{batch}</SelectItem>
               ))}
