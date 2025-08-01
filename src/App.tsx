@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Index from './pages/Index';
@@ -53,6 +52,8 @@ import LMSContentPage from './pages/teacher/lms/LMSContentPage';
 import CreateLMSContentPage from './pages/teacher/lms/content/CreateLMSContentPage';
 import ViewLMSContentPage from './pages/teacher/lms/content/ViewLMSContentPage';
 import ContentLibraryPage from './pages/teacher/lms/content/ContentLibraryPage';
+import LMSSeriesPage from './pages/teacher/lms/LMSSeriesPage';
+import CreateLMSSeriesPage from './pages/teacher/lms/CreateLMSSeriesPage';
 
 import { AppLayout } from './components/layout/AppLayout';
 
@@ -111,6 +112,8 @@ function App() {
           <Route path="lms/content/create" element={<CreateLMSContentPage />} />
           <Route path="lms/content/:contentId/view" element={<ViewLMSContentPage />} />
           <Route path="lms/library" element={<ContentLibraryPage />} />
+          <Route path="lms/series" element={<LMSSeriesPage />} />
+          <Route path="lms/series/create" element={<CreateLMSSeriesPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
