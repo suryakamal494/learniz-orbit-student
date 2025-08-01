@@ -13,6 +13,9 @@ export const mockLMSSeries: LMSSeries[] = [
     totalItems: 15,
     type: 'content-series',
     description: 'Comprehensive series covering basic physics concepts',
+    showInHomepage: 'yes',
+    startDate: '2024-02-01',
+    endDate: '2024-03-15',
     createdAt: '2024-01-15T10:30:00Z',
     createdBy: 'Dr. Smith',
     updatedAt: '2024-01-20T14:45:00Z'
@@ -28,6 +31,8 @@ export const mockLMSSeries: LMSSeries[] = [
     totalItems: 25,
     type: 'video-series',
     description: 'Step-by-step video explanations for algebra concepts',
+    showInHomepage: 'no',
+    startDate: '2024-02-10',
     createdAt: '2024-01-10T09:15:00Z',
     createdBy: 'Prof. Johnson',
     updatedAt: '2024-01-18T11:30:00Z'
@@ -42,6 +47,9 @@ export const mockLMSSeries: LMSSeries[] = [
     totalItems: 8,
     type: 'assignment-series',
     description: 'Practical chemistry experiments and assignments',
+    showInHomepage: 'yes',
+    startDate: '2024-01-20',
+    endDate: '2024-02-28',
     createdAt: '2024-01-12T16:20:00Z',
     createdBy: 'Dr. Patel',
     updatedAt: '2024-01-22T10:15:00Z'
@@ -57,6 +65,7 @@ export const mockLMSSeries: LMSSeries[] = [
     totalItems: 12,
     type: 'quiz-series',
     description: 'Interactive quizzes on cell biology',
+    showInHomepage: 'no',
     createdAt: '2024-01-08T13:45:00Z',
     createdBy: 'Ms. Anderson',
     updatedAt: '2024-01-19T15:20:00Z'
@@ -71,6 +80,9 @@ export const mockLMSSeries: LMSSeries[] = [
     totalItems: 20,
     type: 'exam-series',
     description: 'Comprehensive exam preparation for literature',
+    showInHomepage: 'yes',
+    startDate: '2024-03-01',
+    endDate: '2024-04-30',
     createdAt: '2024-01-05T08:30:00Z',
     createdBy: 'Prof. Williams',
     updatedAt: '2024-01-25T12:10:00Z'
@@ -86,6 +98,8 @@ export const mockLMSSeries: LMSSeries[] = [
     totalItems: 18,
     type: 'video-series',
     description: 'Historical documentaries and analysis',
+    showInHomepage: 'no',
+    startDate: '2024-02-15',
     createdAt: '2024-01-14T11:00:00Z',
     createdBy: 'Dr. Brown',
     updatedAt: '2024-01-21T09:45:00Z'
