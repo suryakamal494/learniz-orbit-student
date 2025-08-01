@@ -46,11 +46,11 @@ const InstructionsPage: React.FC = () => {
   )
 
   const handleCreateInstruction = () => {
-    navigate('/teacher/exams/instructions/create')
+    navigate('/teacher/instructions/create')
   }
 
   const handleEditInstruction = (instructionId: string) => {
-    navigate(`/teacher/exams/instructions/edit/${instructionId}`)
+    navigate(`/teacher/instructions/${instructionId}/edit`)
   }
 
   const handleDeleteInstruction = (instructionId: string) => {

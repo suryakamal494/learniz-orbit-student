@@ -39,17 +39,17 @@ const CreateInstructionPage: React.FC = () => {
       description: "Instruction created successfully",
     })
     
-    navigate('/teacher/exams/instructions')
+    navigate('/teacher/instructions')
   }
 
   const handleCancel = () => {
-    navigate('/teacher/exams/instructions')
+    navigate('/teacher/instructions')
   }
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" onClick={() => navigate('/teacher/exams/instructions')}>
+        <Button variant="ghost" onClick={() => navigate('/teacher/instructions')}>
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Instructions
         </Button>

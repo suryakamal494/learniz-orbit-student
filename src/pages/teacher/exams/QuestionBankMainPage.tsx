@@ -52,7 +52,7 @@ export default function QuestionBankMainPage() {
           <p className="text-muted-foreground">Manage questions for all subjects</p>
         </div>
         <Button 
-          onClick={() => navigate('/teacher/exams/question-bank/add/new')}
+          onClick={() => navigate('/teacher/question-bank/add')}
           className="bg-primary hover:bg-primary/90"
         >
           <Plus className="h-4 w-4 mr-2" />
