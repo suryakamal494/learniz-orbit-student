@@ -115,7 +115,13 @@ export default function LMSContentPage() {
 
   const handleFilterChange = (key: keyof LMSContentFilters, value: string) => {
     setFilters(prev => {
-      const newFilters = { ...prev, [key]: value === 'all' ? undefined : value }
+      const newFilters = { ...prev }
+      
+      if (value === 'all') {
+        delete newFilters[key]
+      } else {
+        newFilters[key] = value as any
+      }
       
       // Clear dependent filters when parent changes
       if (key === 'institute') {

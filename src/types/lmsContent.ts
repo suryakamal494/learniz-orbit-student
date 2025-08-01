@@ -1,5 +1,5 @@
 
-export type LMSContentType = 'text' | 'file' | 'pdf' | 'image' | 'video-url' | 'iframe'
+export type LMSContentType = 'text' | 'file' | 'video-url' | 'iframe'
 
 export interface LMSContentItem {
   id: string

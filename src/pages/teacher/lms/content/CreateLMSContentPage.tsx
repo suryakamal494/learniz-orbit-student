@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { ArrowLeft, Save } from "lucide-react"
+import { ArrowLeft, Save, Upload } from "lucide-react"
 import { 
   mockInstitutes, 
   mockSubjects, 
@@ -24,9 +24,7 @@ import type { LMSContentType } from '@/types/lmsContent'
 
 const contentTypeOptions = [
   { value: 'text', label: 'Text' },
-  { value: 'file', label: 'File' },
-  { value: 'pdf', label: 'PDF' },
-  { value: 'image', label: 'Image' },
+  { value: 'file', label: 'File (PDF or Image)' },
   { value: 'video-url', label: 'Video URL' },
   { value: 'iframe', label: 'Iframe' },
 ]
@@ -37,46 +35,35 @@ export default function CreateLMSContentPage() {
   const [formData, setFormData] = useState({
     title: '',
     type: '' as LMSContentType | '',
-    institute: '',
     subject: '',
     chapter: '',
     topic: '',
     content: '',
     url: '',
-    description: ''
+    file: null as File | null
   })
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  // Filter dependencies
-  const availableSubjects = useMemo(() => {
-    if (!formData.institute) return mockSubjects
-    const institute = mockInstitutes.find(inst => inst.name === formData.institute)
-    return institute ? mockSubjects.filter(subject => subject.instituteId === institute.id) : mockSubjects
-  }, [formData.institute])
-
+  // Filter dependencies based on selected values
   const availableChapters = useMemo(() => {
-    if (!formData.subject) return mockChapters
-    const subject = availableSubjects.find(sub => sub.name === formData.subject)
-    return subject ? mockChapters.filter(chapter => chapter.subjectId === subject.id) : mockChapters
-  }, [formData.subject, availableSubjects])
+    if (!formData.subject) return []
+    const subject = mockSubjects.find(sub => sub.name === formData.subject)
+    return subject ? mockChapters.filter(chapter => chapter.subjectId === subject.id) : []
+  }, [formData.subject])
 
   const availableTopics = useMemo(() => {
-    if (!formData.chapter) return mockTopics
+    if (!formData.chapter) return []
     const chapter = availableChapters.find(chap => chap.name === formData.chapter)
-    return chapter ? mockTopics.filter(topic => topic.chapterId === chapter.id) : mockTopics
+    return chapter ? mockTopics.filter(topic => topic.chapterId === chapter.id) : []
   }, [formData.chapter, availableChapters])
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | File | null) => {
     setFormData(prev => {
       const newData = { ...prev, [field]: value }
       
       // Clear dependent fields when parent changes
-      if (field === 'institute') {
-        newData.subject = ''
-        newData.chapter = ''
-        newData.topic = ''
-      } else if (field === 'subject') {
+      if (field === 'subject') {
         newData.chapter = ''
         newData.topic = ''
       } else if (field === 'chapter') {
@@ -101,9 +88,6 @@ export default function CreateLMSContentPage() {
     if (!formData.type) {
       newErrors.type = 'Content type is required'
     }
-    if (!formData.institute) {
-      newErrors.institute = 'Institute is required'
-    }
     if (!formData.subject) {
       newErrors.subject = 'Subject is required'
     }
@@ -113,12 +97,15 @@ export default function CreateLMSContentPage() {
     if (!formData.topic) {
       newErrors.topic = 'Topic is required'
     }
-    if (!formData.content.trim()) {
-      newErrors.content = 'Content is required'
-    }
 
-    // URL validation for certain types
-    if ((formData.type === 'video-url' || formData.type === 'pdf' || formData.type === 'image' || formData.type === 'file') && !formData.url.trim()) {
+    // Content validation based on type
+    if (formData.type === 'text' && !formData.content.trim()) {
+      newErrors.content = 'Content text is required'
+    }
+    if (formData.type === 'file' && !formData.file) {
+      newErrors.file = 'Please select a file to upload'
+    }
+    if ((formData.type === 'video-url' || formData.type === 'iframe') && !formData.url.trim()) {
       newErrors.url = 'URL is required for this content type'
     }
 
@@ -141,43 +128,14 @@ export default function CreateLMSContentPage() {
     navigate('/teacher/lms/content')
   }
 
-  const renderContentInput = () => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null
+    handleInputChange('file', file)
+  }
+
+  const renderDynamicContentField = () => {
     switch (formData.type) {
-      case 'video-url':
-      case 'image':
-      case 'pdf':
-      case 'file':
-        return (
-          <div className="space-y-2">
-            <Label htmlFor="url">URL *</Label>
-            <Input
-              id="url"
-              type="url"
-              value={formData.url}
-              onChange={(e) => handleInputChange('url', e.target.value)}
-              placeholder="Enter the URL"
-              className={errors.url ? 'border-red-500' : ''}
-            />
-            {errors.url && <p className="text-sm text-red-600">{errors.url}</p>}
-          </div>
-        )
-      case 'iframe':
-        return (
-          <div className="space-y-2">
-            <Label htmlFor="content">Iframe Code *</Label>
-            <Textarea
-              id="content"
-              value={formData.content}
-              onChange={(e) => handleInputChange('content', e.target.value)}
-              placeholder="Enter the iframe HTML code"
-              rows={4}
-              className={errors.content ? 'border-red-500' : ''}
-            />
-            {errors.content && <p className="text-sm text-red-600">{errors.content}</p>}
-          </div>
-        )
       case 'text':
-      default:
         return (
           <div className="space-y-2">
             <Label htmlFor="content">Content *</Label>
@@ -185,13 +143,69 @@ export default function CreateLMSContentPage() {
               id="content"
               value={formData.content}
               onChange={(e) => handleInputChange('content', e.target.value)}
-              placeholder="Enter your content"
-              rows={6}
+              placeholder="Enter your text content here..."
+              rows={8}
               className={errors.content ? 'border-red-500' : ''}
             />
             {errors.content && <p className="text-sm text-red-600">{errors.content}</p>}
           </div>
         )
+
+      case 'file':
+        return (
+          <div className="space-y-2">
+            <Label htmlFor="file">Upload File (PDF or Image) *</Label>
+            <div className="flex items-center gap-4">
+              <Input
+                id="file"
+                type="file"
+                accept=".pdf,.png,.jpg,.jpeg,.gif"
+                onChange={handleFileChange}
+                className={`${errors.file ? 'border-red-500' : ''} file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90`}
+              />
+              <Upload className="h-4 w-4 text-gray-400" />
+            </div>
+            {formData.file && (
+              <p className="text-sm text-green-600">Selected: {formData.file.name}</p>
+            )}
+            {errors.file && <p className="text-sm text-red-600">{errors.file}</p>}
+          </div>
+        )
+
+      case 'video-url':
+        return (
+          <div className="space-y-2">
+            <Label htmlFor="url">Video URL *</Label>
+            <Input
+              id="url"
+              type="url"
+              value={formData.url}
+              onChange={(e) => handleInputChange('url', e.target.value)}
+              placeholder="Enter the video URL (YouTube, Vimeo, etc.)"
+              className={errors.url ? 'border-red-500' : ''}
+            />
+            {errors.url && <p className="text-sm text-red-600">{errors.url}</p>}
+          </div>
+        )
+
+      case 'iframe':
+        return (
+          <div className="space-y-2">
+            <Label htmlFor="url">Iframe URL *</Label>
+            <Input
+              id="url"
+              type="url"
+              value={formData.url}
+              onChange={(e) => handleInputChange('url', e.target.value)}
+              placeholder="Enter the iframe URL"
+              className={errors.url ? 'border-red-500' : ''}
+            />
+            {errors.url && <p className="text-sm text-red-600">{errors.url}</p>}
+          </div>
+        )
+
+      default:
+        return null
     }
   }
 
@@ -216,69 +230,29 @@ export default function CreateLMSContentPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Basic Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Title *</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) => handleInputChange('title', e.target.value)}
-                    placeholder="Enter content title"
-                    className={errors.title ? 'border-red-500' : ''}
-                  />
-                  {errors.title && <p className="text-sm text-red-600">{errors.title}</p>}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="type">Content Type *</Label>
-                  <Select value={formData.type} onValueChange={(value) => handleInputChange('type', value)}>
-                    <SelectTrigger className={errors.type ? 'border-red-500' : ''}>
-                      <SelectValue placeholder="Select content type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {contentTypeOptions.map(option => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {errors.type && <p className="text-sm text-red-600">{errors.type}</p>}
-                </div>
+              {/* Title */}
+              <div className="space-y-2">
+                <Label htmlFor="title">Title *</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => handleInputChange('title', e.target.value)}
+                  placeholder="Enter content title"
+                  className={errors.title ? 'border-red-500' : ''}
+                />
+                {errors.title && <p className="text-sm text-red-600">{errors.title}</p>}
               </div>
 
-              {/* Hierarchical Selectors */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="institute">Institute *</Label>
-                  <Select value={formData.institute} onValueChange={(value) => handleInputChange('institute', value)}>
-                    <SelectTrigger className={errors.institute ? 'border-red-500' : ''}>
-                      <SelectValue placeholder="Select institute" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {mockInstitutes.map(institute => (
-                        <SelectItem key={institute.id} value={institute.name}>
-                          {institute.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {errors.institute && <p className="text-sm text-red-600">{errors.institute}</p>}
-                </div>
-
+              {/* Subject, Chapter, Topic */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="subject">Subject *</Label>
-                  <Select 
-                    value={formData.subject} 
-                    onValueChange={(value) => handleInputChange('subject', value)}
-                    disabled={!formData.institute}
-                  >
+                  <Select value={formData.subject} onValueChange={(value) => handleInputChange('subject', value)}>
                     <SelectTrigger className={errors.subject ? 'border-red-500' : ''}>
                       <SelectValue placeholder="Select subject" />
                     </SelectTrigger>
                     <SelectContent>
-                      {availableSubjects.map(subject => (
+                      {mockSubjects.map(subject => (
                         <SelectItem key={subject.id} value={subject.name}>
                           {subject.name}
                         </SelectItem>
@@ -331,19 +305,26 @@ export default function CreateLMSContentPage() {
                 </div>
               </div>
 
-              {/* Description */}
+              {/* Content Type */}
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <Input
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => handleInputChange('description', e.target.value)}
-                  placeholder="Brief description of the content"
-                />
+                <Label htmlFor="type">Content Type *</Label>
+                <Select value={formData.type} onValueChange={(value) => handleInputChange('type', value)}>
+                  <SelectTrigger className={errors.type ? 'border-red-500' : ''}>
+                    <SelectValue placeholder="Select content type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {contentTypeOptions.map(option => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.type && <p className="text-sm text-red-600">{errors.type}</p>}
               </div>
 
               {/* Dynamic Content Input */}
-              {formData.type && renderContentInput()}
+              {formData.type && renderDynamicContentField()}
 
               {/* Form Actions */}
               <div className="flex justify-end gap-4 pt-6 border-t">
@@ -352,7 +333,7 @@ export default function CreateLMSContentPage() {
                 </Button>
                 <Button type="submit">
                   <Save className="h-4 w-4 mr-2" />
-                  Create Content
+                  Create
                 </Button>
               </div>
             </form>
