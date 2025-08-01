@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Index from './pages/Index';
 import NotFound from './pages/NotFound';
 import LoginPage from './pages/LoginPage';
@@ -63,7 +63,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         
         {/* Student Routes */}
-        <Route path="/" element={<AppLayout />}>
+        <Route path="/" element={<AppLayout><Outlet /></AppLayout>}>
           <Route index element={<Index />} />
           <Route path="subject/:subjectId" element={<SubjectPage />} />
           <Route path="exam/:examId" element={<ExamPage />} />
@@ -77,7 +77,7 @@ function App() {
         </Route>
 
         {/* Teacher Routes */}
-        <Route path="/teacher" element={<TeacherLayout />}>
+        <Route path="/teacher" element={<TeacherLayout><Outlet /></TeacherLayout>}>
           <Route index element={<TeacherDashboard />} />
           <Route path="schedule" element={<TeacherSchedulePage />} />
           <Route path="schedule/create" element={<CreateClassPage />} />

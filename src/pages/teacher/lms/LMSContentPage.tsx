@@ -104,7 +104,7 @@ export default function LMSContentPage() {
   const filteredContent = useMemo(() => {
     return mockLMSContent.filter(content => {
       if (filters.institute && filters.institute !== 'all' && content.institute !== filters.institute) return false
-      if (filters.contentType && filters.contentType !== 'all' && content.type !== filters.contentType) return false
+      if (filters.contentType && content.type !== filters.contentType) return false
       if (filters.subject && filters.subject !== 'all' && content.subject !== filters.subject) return false
       if (filters.chapter && filters.chapter !== 'all' && content.chapter !== filters.chapter) return false
       if (filters.topic && filters.topic !== 'all' && content.topic !== filters.topic) return false
