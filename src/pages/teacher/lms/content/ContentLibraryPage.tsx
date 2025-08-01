@@ -37,7 +37,7 @@ const ContentLibraryPage = () => {
       if (filters.subject && content.subject !== filters.subject) return false
       if (filters.chapter && content.chapter !== filters.chapter) return false
       if (filters.topic && content.topic !== filters.topic) return false
-      if (filters.type && content.type !== filters.type) return false
+      if (filters.contentType && content.type !== filters.contentType) return false
       if (searchQuery && !content.title.toLowerCase().includes(searchQuery.toLowerCase())) return false
       return true
     })
@@ -57,11 +57,11 @@ const ContentLibraryPage = () => {
 
   const getContentTypeIcon = (type: string) => {
     switch (type) {
-      case 'video':
+      case 'video-url':
         return <Video className="h-4 w-4" />
       case 'pdf':
         return <FileText className="h-4 w-4" />
-      case 'document':
+      case 'file':
         return <File className="h-4 w-4" />
       default:
         return <BookOpen className="h-4 w-4" />
@@ -70,10 +70,12 @@ const ContentLibraryPage = () => {
 
   const getContentTypeColor = (type: string) => {
     const colors = {
-      'video': 'bg-purple-100 text-purple-800 border-purple-200',
+      'video-url': 'bg-purple-100 text-purple-800 border-purple-200',
       'pdf': 'bg-red-100 text-red-800 border-red-200',
-      'document': 'bg-blue-100 text-blue-800 border-blue-200',
-      'presentation': 'bg-green-100 text-green-800 border-green-200'
+      'file': 'bg-blue-100 text-blue-800 border-blue-200',
+      'text': 'bg-green-100 text-green-800 border-green-200',
+      'image': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+      'iframe': 'bg-orange-100 text-orange-800 border-orange-200'
     }
     return colors[type as keyof typeof colors] || 'bg-gray-100 text-gray-800 border-gray-200'
   }
@@ -146,16 +148,18 @@ const ContentLibraryPage = () => {
               </SelectContent>
             </Select>
 
-            <Select value={filters.type || 'all'} onValueChange={(value) => handleFilterChange('type', value)}>
+            <Select value={filters.contentType || 'all'} onValueChange={(value) => handleFilterChange('contentType', value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="video">Video</SelectItem>
+                <SelectItem value="text">Text</SelectItem>
+                <SelectItem value="file">File</SelectItem>
                 <SelectItem value="pdf">PDF</SelectItem>
-                <SelectItem value="document">Document</SelectItem>
-                <SelectItem value="presentation">Presentation</SelectItem>
+                <SelectItem value="image">Image</SelectItem>
+                <SelectItem value="video-url">Video URL</SelectItem>
+                <SelectItem value="iframe">Iframe</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -262,7 +266,7 @@ const ContentLibraryPage = () => {
                         </div>
 
                         <div className="flex justify-between items-center text-xs text-muted-foreground">
-                          <span>{content.duration || 'N/A'}</span>
+                          <span>{content.type}</span>
                           <span>{new Date(content.createdAt).toLocaleDateString()}</span>
                         </div>
                       </div>
