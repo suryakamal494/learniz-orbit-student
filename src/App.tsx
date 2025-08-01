@@ -43,6 +43,9 @@ import InstructionsPage from './pages/teacher/exams/InstructionsPage';
 import CreateInstructionPage from './pages/teacher/exams/CreateInstructionPage';
 import EditInstructionPage from './pages/teacher/exams/EditInstructionPage';
 
+// Layout components
+import { TeacherLayout } from '@/components/teacher/layout/TeacherLayout';
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -62,33 +65,39 @@ function App() {
           <Route path="/messages" element={<MessagesPage />} />
           <Route path="/notifications" element={<NotificationsPage />} />
 
-          {/* Teacher Routes */}
-          <Route path="/teacher" element={<TeacherDashboard />} />
-          <Route path="/teacher/messages" element={<TeacherMessagesPage />} />
-          <Route path="/teacher/notifications" element={<TeacherNotificationsPage />} />
-          <Route path="/teacher/question-bank" element={<QuestionBankPage />} />
-          <Route path="/teacher/schedule" element={<TeacherSchedulePage />} />
+          {/* Teacher Routes - All wrapped with TeacherLayout */}
+          <Route path="/teacher/*" element={
+            <TeacherLayout>
+              <Routes>
+                <Route index element={<TeacherDashboard />} />
+                <Route path="messages" element={<TeacherMessagesPage />} />
+                <Route path="notifications" element={<TeacherNotificationsPage />} />
+                <Route path="question-bank" element={<QuestionBankPage />} />
+                <Route path="schedule" element={<TeacherSchedulePage />} />
 
-          {/* Teacher Batches */}
-          <Route path="/teacher/batches" element={<BatchListingPage />} />
-          <Route path="/teacher/batches/add" element={<AddBatchPage />} />
-          <Route path="/teacher/batches/:batchId/students" element={<ViewStudentsPage />} />
-          <Route path="/teacher/batches/:batchId/assign-lms" element={<AssignLMSPage />} />
-          <Route path="/teacher/batches/:batchId/assign-notes" element={<BatchNotesAssignmentPage />} />
+                {/* Teacher Batches */}
+                <Route path="batches" element={<BatchListingPage />} />
+                <Route path="batches/add" element={<AddBatchPage />} />
+                <Route path="batches/:batchId/students" element={<ViewStudentsPage />} />
+                <Route path="batches/:batchId/assign-lms" element={<AssignLMSPage />} />
+                <Route path="batches/:batchId/assign-notes" element={<BatchNotesAssignmentPage />} />
 
-          {/* Teacher Exams */}
-          <Route path="/teacher/exams" element={<ExamsMainPage />} />
-          <Route path="/teacher/exams/create" element={<CreateExamPage />} />
-          <Route path="/teacher/exams/:examId/edit" element={<EditExamPage />} />
-          <Route path="/teacher/exams/:examId/questions" element={<UpdateQuestionsPage />} />
-          <Route path="/teacher/exams/:examId/batches" element={<UpdateBatchesPage />} />
-          <Route path="/teacher/exams/directory" element={<DirectoryPage />} />
-          <Route path="/teacher/exams/question-bank" element={<QuestionBankMainPage />} />
-          <Route path="/teacher/exams/question-bank/add" element={<QuestionBankAddPage />} />
-          <Route path="/teacher/exams/question-bank/:questionId" element={<QuestionBankViewPage />} />
-          <Route path="/teacher/exams/instructions" element={<InstructionsPage />} />
-          <Route path="/teacher/exams/instructions/create" element={<CreateInstructionPage />} />
-          <Route path="/teacher/exams/instructions/:instructionId/edit" element={<EditInstructionPage />} />
+                {/* Teacher Exams */}
+                <Route path="exams" element={<ExamsMainPage />} />
+                <Route path="exams/create" element={<CreateExamPage />} />
+                <Route path="exams/:examId/edit" element={<EditExamPage />} />
+                <Route path="exams/:examId/questions" element={<UpdateQuestionsPage />} />
+                <Route path="exams/:examId/batches" element={<UpdateBatchesPage />} />
+                <Route path="exams/directory" element={<DirectoryPage />} />
+                <Route path="exams/question-bank" element={<QuestionBankMainPage />} />
+                <Route path="exams/question-bank/add" element={<QuestionBankAddPage />} />
+                <Route path="exams/question-bank/:questionId" element={<QuestionBankViewPage />} />
+                <Route path="exams/instructions" element={<InstructionsPage />} />
+                <Route path="exams/instructions/create" element={<CreateInstructionPage />} />
+                <Route path="exams/instructions/:instructionId/edit" element={<EditInstructionPage />} />
+              </Routes>
+            </TeacherLayout>
+          } />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
