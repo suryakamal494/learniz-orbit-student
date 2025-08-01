@@ -4,667 +4,312 @@ import type { Question } from '@/types/questionBank'
 export const mockQuestions: Question[] = [
   {
     id: '1',
-    content: {
-      text: 'What is the capital of France?',
-      html: '<p>What is the capital of France?</p>',
+    questionContent: {
+      text: 'What is the molecular formula of water?',
+      html: '<p>What is the molecular formula of water?</p>',
       hasmath: false,
       images: []
     },
-    subject: 'Geography',
     type: 'single',
     options: [
-      { text: 'London', isCorrect: false },
-      { text: 'Paris', isCorrect: true },
-      { text: 'Berlin', isCorrect: false },
-      { text: 'Rome', isCorrect: false }
+      { text: 'H2O', html: '<p>H2O</p>', hasmath: false, images: [] },
+      { text: 'CO2', html: '<p>CO2</p>', hasmath: false, images: [] },
+      { text: 'NaCl', html: '<p>NaCl</p>', hasmath: false, images: [] },
+      { text: 'CH4', html: '<p>CH4</p>', hasmath: false, images: [] }
     ],
-    correctAnswer: 1,
-    explanation: {
-      text: 'Paris is the capital and largest city of France.',
-      html: '<p>Paris is the capital and largest city of France.</p>',
+    correctAnswer: 0,
+    explanationContent: {
+      text: 'Water is composed of two hydrogen atoms and one oxygen atom, hence H2O.',
+      html: '<p>Water is composed of two hydrogen atoms and one oxygen atom, hence H2O.</p>',
       hasmath: false,
       images: []
     },
+    hint: 'Think about the atoms that make up water',
+    marks: 2,
     difficulty: 'easy',
-    marks: 1,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
+    category: 'Chemistry',
+    chapter: 'Basic Chemistry',
+    topic: 'Molecular Formulas',
+    hasImage: false,
+    createdAt: '2024-01-15T10:30:00Z'
   },
   {
     id: '2',
-    content: {
-      text: 'Solve the equation: x² - 5x + 6 = 0',
-      html: '<p>Solve the equation: x² - 5x + 6 = 0</p>',
+    questionContent: {
+      text: 'Solve for x: 2x + 5 = 15',
+      html: '<p>Solve for x: <span class="math">2x + 5 = 15</span></p>',
       hasmath: true,
       images: []
     },
-    subject: 'Mathematics',
-    type: 'multiple',
+    type: 'single',
     options: [
-      { text: 'x = 2', isCorrect: true },
-      { text: 'x = 3', isCorrect: true },
-      { text: 'x = 1', isCorrect: false },
-      { text: 'x = 4', isCorrect: false }
+      { text: '5', html: '<p>5</p>', hasmath: false, images: [] },
+      { text: '10', html: '<p>10</p>', hasmath: false, images: [] },
+      { text: '7.5', html: '<p>7.5</p>', hasmath: false, images: [] },
+      { text: '2.5', html: '<p>2.5</p>', hasmath: false, images: [] }
     ],
-    correctAnswer: [0, 1],
-    explanation: {
-      text: 'Factoring: (x-2)(x-3) = 0, so x = 2 or x = 3',
-      html: '<p>Factoring: (x-2)(x-3) = 0, so x = 2 or x = 3</p>',
+    correctAnswer: 0,
+    explanationContent: {
+      text: '2x + 5 = 15, so 2x = 10, therefore x = 5',
+      html: '<p><span class="math">2x + 5 = 15</span><br><span class="math">2x = 10</span><br><span class="math">x = 5</span></p>',
       hasmath: true,
       images: []
     },
+    hint: 'Isolate x by subtracting 5 from both sides first',
+    marks: 3,
     difficulty: 'medium',
-    marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
+    category: 'Mathematics',
+    chapter: 'Algebra',
+    topic: 'Linear Equations',
+    hasImage: false,
+    createdAt: '2024-01-15T11:15:00Z'
   },
   {
     id: '3',
-    content: {
-      text: 'The process by which plants make their own food is called _____.',
-      html: '<p>The process by which plants make their own food is called _____.</p>',
+    questionContent: {
+      text: 'What is the process by which plants make their own food using sunlight?',
+      html: '<p>What is the process by which plants make their own food using sunlight?</p>',
       hasmath: false,
-      images: []
+      images: ['plant-diagram.jpg']
     },
-    subject: 'Biology',
-    type: 'fillInBlanks',
-    options: [],
-    correctAnswer: 0,
-    explanation: {
-      text: 'Photosynthesis is the process by which plants use sunlight to synthesize food.',
-      html: '<p>Photosynthesis is the process by which plants use sunlight to synthesize food.</p>',
+    type: 'single',
+    options: [
+      { text: 'Respiration', html: '<p>Respiration</p>', hasmath: false, images: [] },
+      { text: 'Photosynthesis', html: '<p>Photosynthesis</p>', hasmath: false, images: [] },
+      { text: 'Transpiration', html: '<p>Transpiration</p>', hasmath: false, images: [] },
+      { text: 'Digestion', html: '<p>Digestion</p>', hasmath: false, images: [] }
+    ],
+    correctAnswer: 1,
+    explanationContent: {
+      text: 'Photosynthesis is the process where plants convert light energy into chemical energy (glucose) using chlorophyll.',
+      html: '<p>Photosynthesis is the process where plants convert light energy into chemical energy (glucose) using chlorophyll.</p>',
       hasmath: false,
-      images: []
+      images: ['photosynthesis-process.jpg']
     },
+    hint: 'This process requires sunlight, carbon dioxide, and water',
+    marks: 2,
     difficulty: 'easy',
-    marks: 1,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
+    category: 'Biology',
+    chapter: 'Plant Biology',
+    topic: 'Photosynthesis',
+    hasImage: true,
+    createdAt: '2024-01-15T12:00:00Z'
   },
   {
     id: '4',
-    content: {
-      text: 'Which of the following are programming languages?',
-      html: '<p>Which of the following are programming languages?</p>',
+    questionContent: {
+      text: 'Which of the following elements are noble gases? (Select all that apply)',
+      html: '<p>Which of the following elements are noble gases? <em>(Select all that apply)</em></p>',
       hasmath: false,
       images: []
     },
-    subject: 'Computer Science',
     type: 'multiple',
     options: [
-      { text: 'Python', isCorrect: true },
-      { text: 'JavaScript', isCorrect: true },
-      { text: 'HTML', isCorrect: false },
-      { text: 'Java', isCorrect: true }
+      { text: 'Helium (He)', html: '<p>Helium (He)</p>', hasmath: false, images: [] },
+      { text: 'Nitrogen (N)', html: '<p>Nitrogen (N)</p>', hasmath: false, images: [] },
+      { text: 'Argon (Ar)', html: '<p>Argon (Ar)</p>', hasmath: false, images: [] },
+      { text: 'Neon (Ne)', html: '<p>Neon (Ne)</p>', hasmath: false, images: [] }
     ],
-    correctAnswer: [0, 1, 3],
-    explanation: {
-      text: 'Python, JavaScript, and Java are programming languages. HTML is a markup language.',
-      html: '<p>Python, JavaScript, and Java are programming languages. HTML is a markup language.</p>',
+    correctAnswer: [0, 2, 3],
+    explanationContent: {
+      text: 'Noble gases are Helium, Neon, Argon, Krypton, Xenon, and Radon. They are chemically inert under normal conditions.',
+      html: '<p>Noble gases are Helium, Neon, Argon, Krypton, Xenon, and Radon. They are chemically inert under normal conditions.</p>',
       hasmath: false,
       images: []
     },
+    hint: 'Noble gases are in Group 18 of the periodic table',
+    marks: 4,
     difficulty: 'medium',
-    marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
+    category: 'Chemistry',
+    chapter: 'Periodic Table',
+    topic: 'Noble Gases',
+    hasImage: false,
+    createdAt: '2024-01-15T13:30:00Z'
   },
   {
     id: '5',
-    content: {
-      text: 'What is the derivative of sin(x)?',
-      html: '<p>What is the derivative of sin(x)?</p>',
+    questionContent: {
+      text: 'Calculate the area of a circle with radius 7 cm. Use π = 22/7',
+      html: '<p>Calculate the area of a circle with radius 7 cm. Use <span class="math">π = 22/7</span></p>',
       hasmath: true,
-      images: []
+      images: ['circle-diagram.png']
     },
-    subject: 'Mathematics',
     type: 'single',
     options: [
-      { text: 'cos(x)', isCorrect: true },
-      { text: '-cos(x)', isCorrect: false },
-      { text: 'sin(x)', isCorrect: false },
-      { text: '-sin(x)', isCorrect: false }
+      { text: '154 cm²', html: '<p>154 cm²</p>', hasmath: false, images: [] },
+      { text: '44 cm²', html: '<p>44 cm²</p>', hasmath: false, images: [] },
+      { text: '22 cm²', html: '<p>22 cm²</p>', hasmath: false, images: [] },
+      { text: '77 cm²', html: '<p>77 cm²</p>', hasmath: false, images: [] }
     ],
     correctAnswer: 0,
-    explanation: {
-      text: 'The derivative of sin(x) is cos(x).',
-      html: '<p>The derivative of sin(x) is cos(x).</p>',
+    explanationContent: {
+      text: 'Area = πr² = (22/7) × 7² = (22/7) × 49 = 22 × 7 = 154 cm²',
+      html: '<p>Area = <span class="math">πr²</span> = <span class="math">(22/7) × 7²</span> = <span class="math">(22/7) × 49</span> = <span class="math">22 × 7 = 154 cm²</span></p>',
       hasmath: true,
       images: []
     },
+    hint: 'Use the formula A = πr²',
+    marks: 3,
     difficulty: 'medium',
-    marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
+    category: 'Mathematics',
+    chapter: 'Geometry',
+    topic: 'Area and Perimeter',
+    hasImage: true,
+    createdAt: '2024-01-15T14:15:00Z'
   },
   {
     id: '6',
-    content: {
-      text: 'Who wrote the novel "Pride and Prejudice"?',
-      html: '<p>Who wrote the novel "Pride and Prejudice"?</p>',
+    questionContent: {
+      text: 'What is the capital city of Australia?',
+      html: '<p>What is the capital city of Australia?</p>',
       hasmath: false,
       images: []
     },
-    subject: 'Literature',
     type: 'single',
     options: [
-      { text: 'Charlotte Bronte', isCorrect: false },
-      { text: 'Jane Austen', isCorrect: true },
-      { text: 'Emily Dickinson', isCorrect: false },
-      { text: 'Virginia Woolf', isCorrect: false }
+      { text: 'Sydney', html: '<p>Sydney</p>', hasmath: false, images: [] },
+      { text: 'Melbourne', html: '<p>Melbourne</p>', hasmath: false, images: [] },
+      { text: 'Canberra', html: '<p>Canberra</p>', hasmath: false, images: [] },
+      { text: 'Perth', html: '<p>Perth</p>', hasmath: false, images: [] }
     ],
-    correctAnswer: 1,
-    explanation: {
-      text: 'Jane Austen wrote "Pride and Prejudice" in 1813.',
-      html: '<p>Jane Austen wrote "Pride and Prejudice" in 1813.</p>',
+    correctAnswer: 2,
+    explanationContent: {
+      text: 'Canberra is the capital city of Australia, located in the Australian Capital Territory.',
+      html: '<p>Canberra is the capital city of Australia, located in the Australian Capital Territory.</p>',
       hasmath: false,
       images: []
     },
-    difficulty: 'easy',
+    hint: 'It\'s not the largest city',
     marks: 1,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
+    difficulty: 'easy',
+    category: 'Geography',
+    chapter: 'World Capitals',
+    topic: 'Australia and Oceania',
+    hasImage: false,
+    createdAt: '2024-01-15T15:00:00Z'
   },
   {
     id: '7',
-    content: {
-      text: 'Calculate the area of a circle with radius 5 units.',
-      html: '<p>Calculate the area of a circle with radius 5 units.</p>',
-      hasmath: true,
-      images: []
+    questionContent: {
+      text: 'Fill in the blank: The mitochondria is known as the ______ of the cell.',
+      html: '<p>Fill in the blank: The mitochondria is known as the ______ of the cell.</p>',
+      hasmath: false,
+      images: ['cell-diagram.jpg']
     },
-    subject: 'Mathematics',
-    type: 'single',
+    type: 'fillInBlanks',
     options: [
-      { text: '25π', isCorrect: true },
-      { text: '10π', isCorrect: false },
-      { text: '5π', isCorrect: false },
-      { text: '50π', isCorrect: false }
+      { text: 'powerhouse', html: '<p>powerhouse</p>', hasmath: false, images: [] },
+      { text: 'nucleus', html: '<p>nucleus</p>', hasmath: false, images: [] },
+      { text: 'membrane', html: '<p>membrane</p>', hasmath: false, images: [] },
+      { text: 'ribosome', html: '<p>ribosome</p>', hasmath: false, images: [] }
     ],
     correctAnswer: 0,
-    explanation: {
-      text: 'Area = πr² = π × 5² = 25π square units',
-      html: '<p>Area = πr² = π × 5² = 25π square units</p>',
-      hasmath: true,
+    explanationContent: {
+      text: 'Mitochondria are called the powerhouse of the cell because they produce ATP, which provides energy for cellular processes.',
+      html: '<p>Mitochondria are called the powerhouse of the cell because they produce ATP, which provides energy for cellular processes.</p>',
+      hasmath: false,
       images: []
     },
-    difficulty: 'medium',
+    hint: 'Think about energy production',
     marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
+    difficulty: 'easy',
+    category: 'Biology',
+    chapter: 'Cell Biology',
+    topic: 'Cell Organelles',
+    hasImage: true,
+    createdAt: '2024-01-15T16:45:00Z'
   },
   {
     id: '8',
-    content: {
-      text: 'Which elements are noble gases?',
-      html: '<p>Which elements are noble gases?</p>',
-      hasmath: false,
+    questionContent: {
+      text: 'Solve the quadratic equation: x² - 5x + 6 = 0',
+      html: '<p>Solve the quadratic equation: <span class="math">x² - 5x + 6 = 0</span></p>',
+      hasmath: true,
       images: []
     },
-    subject: 'Chemistry',
     type: 'multiple',
     options: [
-      { text: 'Helium', isCorrect: true },
-      { text: 'Neon', isCorrect: true },
-      { text: 'Oxygen', isCorrect: false },
-      { text: 'Argon', isCorrect: true }
+      { text: 'x = 2', html: '<p>x = 2</p>', hasmath: false, images: [] },
+      { text: 'x = 3', html: '<p>x = 3</p>', hasmath: false, images: [] },
+      { text: 'x = 1', html: '<p>x = 1</p>', hasmath: false, images: [] },
+      { text: 'x = 6', html: '<p>x = 6</p>', hasmath: false, images: [] }
     ],
-    correctAnswer: [0, 1, 3],
-    explanation: {
-      text: 'Noble gases include Helium, Neon, Argon, Krypton, Xenon, and Radon.',
-      html: '<p>Noble gases include Helium, Neon, Argon, Krypton, Xenon, and Radon.</p>',
-      hasmath: false,
+    correctAnswer: [0, 1],
+    explanationContent: {
+      text: 'Factoring: (x-2)(x-3) = 0, so x = 2 or x = 3',
+      html: '<p>Factoring: <span class="math">(x-2)(x-3) = 0</span><br>So <span class="math">x = 2</span> or <span class="math">x = 3</span></p>',
+      hasmath: true,
       images: []
     },
-    difficulty: 'medium',
-    marks: 3,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
+    hint: 'Try factoring the quadratic expression',
+    marks: 4,
+    difficulty: 'hard',
+    category: 'Mathematics',
+    chapter: 'Algebra',
+    topic: 'Quadratic Equations',
+    hasImage: false,
+    createdAt: '2024-01-15T17:30:00Z'
   },
   {
     id: '9',
-    content: {
-      text: 'The speed of light in vacuum is approximately _____ m/s.',
-      html: '<p>The speed of light in vacuum is approximately _____ m/s.</p>',
+    questionContent: {
+      text: 'Which of the following best describes the function of the heart?',
+      html: '<p>Which of the following best describes the function of the heart?</p>',
+      hasmath: false,
+      images: ['heart-anatomy.png']
+    },
+    type: 'single',
+    options: [
+      { text: 'To filter blood', html: '<p>To filter blood</p>', hasmath: false, images: [] },
+      { text: 'To pump blood throughout the body', html: '<p>To pump blood throughout the body</p>', hasmath: false, images: [] },
+      { text: 'To produce red blood cells', html: '<p>To produce red blood cells</p>', hasmath: false, images: [] },
+      { text: 'To store oxygen', html: '<p>To store oxygen</p>', hasmath: false, images: [] }
+    ],
+    correctAnswer: 1,
+    explanationContent: {
+      text: 'The heart is a muscular organ that pumps blood throughout the circulatory system, delivering oxygen and nutrients to tissues.',
+      html: '<p>The heart is a muscular organ that pumps blood throughout the circulatory system, delivering oxygen and nutrients to tissues.</p>',
       hasmath: false,
       images: []
     },
-    subject: 'Physics',
-    type: 'fillInBlanks',
-    options: [],
-    correctAnswer: 0,
-    explanation: {
-      text: 'The speed of light in vacuum is approximately 3 × 10⁸ m/s.',
-      html: '<p>The speed of light in vacuum is approximately 3 × 10⁸ m/s.</p>',
-      hasmath: true,
-      images: []
-    },
-    difficulty: 'medium',
+    hint: 'Think about circulation',
     marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
+    difficulty: 'easy',
+    category: 'Biology',
+    chapter: 'Human Anatomy',
+    topic: 'Circulatory System',
+    hasImage: true,
+    createdAt: '2024-01-15T18:00:00Z'
   },
   {
     id: '10',
-    content: {
-      text: 'What is the largest planet in our solar system?',
-      html: '<p>What is the largest planet in our solar system?</p>',
-      hasmath: false,
+    questionContent: {
+      text: 'What is the derivative of f(x) = 3x² + 2x - 1?',
+      html: '<p>What is the derivative of <span class="math">f(x) = 3x² + 2x - 1</span>?</p>',
+      hasmath: true,
       images: []
     },
-    subject: 'Astronomy',
     type: 'single',
     options: [
-      { text: 'Saturn', isCorrect: false },
-      { text: 'Jupiter', isCorrect: true },
-      { text: 'Neptune', isCorrect: false },
-      { text: 'Earth', isCorrect: false }
-    ],
-    correctAnswer: 1,
-    explanation: {
-      text: 'Jupiter is the largest planet in our solar system.',
-      html: '<p>Jupiter is the largest planet in our solar system.</p>',
-      hasmath: false,
-      images: []
-    },
-    difficulty: 'easy',
-    marks: 1,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '11',
-    content: {
-      text: 'Solve for x: 2x + 8 = 20',
-      html: '<p>Solve for x: 2x + 8 = 20</p>',
-      hasmath: true,
-      images: []
-    },
-    subject: 'Mathematics',
-    type: 'single',
-    options: [
-      { text: 'x = 6', isCorrect: true },
-      { text: 'x = 4', isCorrect: false },
-      { text: 'x = 8', isCorrect: false },
-      { text: 'x = 10', isCorrect: false }
+      { text: '6x + 2', html: '<p><span class="math">6x + 2</span></p>', hasmath: true, images: [] },
+      { text: '3x + 2', html: '<p><span class="math">3x + 2</span></p>', hasmath: true, images: [] },
+      { text: '6x - 1', html: '<p><span class="math">6x - 1</span></p>', hasmath: true, images: [] },
+      { text: '3x² + 2', html: '<p><span class="math">3x² + 2</span></p>', hasmath: true, images: [] }
     ],
     correctAnswer: 0,
-    explanation: {
-      text: '2x + 8 = 20, so 2x = 12, therefore x = 6',
-      html: '<p>2x + 8 = 20, so 2x = 12, therefore x = 6</p>',
+    explanationContent: {
+      text: 'Using power rule: d/dx(3x²) = 6x, d/dx(2x) = 2, d/dx(-1) = 0. So f\'(x) = 6x + 2',
+      html: '<p>Using power rule:<br><span class="math">d/dx(3x²) = 6x</span><br><span class="math">d/dx(2x) = 2</span><br><span class="math">d/dx(-1) = 0</span><br>So <span class="math">f\'(x) = 6x + 2</span></p>',
       hasmath: true,
       images: []
     },
-    difficulty: 'easy',
-    marks: 1,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '12',
-    content: {
-      text: 'Which of the following are characteristics of mammals?',
-      html: '<p>Which of the following are characteristics of mammals?</p>',
-      hasmath: false,
-      images: []
-    },
-    subject: 'Biology',
-    type: 'multiple',
-    options: [
-      { text: 'Warm-blooded', isCorrect: true },
-      { text: 'Have fur or hair', isCorrect: true },
-      { text: 'Lay eggs', isCorrect: false },
-      { text: 'Produce milk', isCorrect: true }
-    ],
-    correctAnswer: [0, 1, 3],
-    explanation: {
-      text: 'Mammals are warm-blooded, have fur or hair, and produce milk. Most mammals give birth to live young.',
-      html: '<p>Mammals are warm-blooded, have fur or hair, and produce milk. Most mammals give birth to live young.</p>',
-      hasmath: false,
-      images: []
-    },
-    difficulty: 'medium',
-    marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '13',
-    content: {
-      text: 'The chemical symbol for gold is _____.',
-      html: '<p>The chemical symbol for gold is _____.</p>',
-      hasmath: false,
-      images: []
-    },
-    subject: 'Chemistry',
-    type: 'fillInBlanks',
-    options: [],
-    correctAnswer: 0,
-    explanation: {
-      text: 'The chemical symbol for gold is Au, from the Latin word "aurum".',
-      html: '<p>The chemical symbol for gold is Au, from the Latin word "aurum".</p>',
-      hasmath: false,
-      images: []
-    },
-    difficulty: 'easy',
-    marks: 1,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '14',
-    content: {
-      text: 'What is the integral of x²?',
-      html: '<p>What is the integral of x²?</p>',
-      hasmath: true,
-      images: []
-    },
-    subject: 'Mathematics',
-    type: 'single',
-    options: [
-      { text: 'x³/3 + C', isCorrect: true },
-      { text: 'x³ + C', isCorrect: false },
-      { text: '2x + C', isCorrect: false },
-      { text: 'x²/2 + C', isCorrect: false }
-    ],
-    correctAnswer: 0,
-    explanation: {
-      text: 'The integral of x² is x³/3 + C, where C is the constant of integration.',
-      html: '<p>The integral of x² is x³/3 + C, where C is the constant of integration.</p>',
-      hasmath: true,
-      images: []
-    },
-    difficulty: 'medium',
-    marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '15',
-    content: {
-      text: 'Which countries are part of the United Kingdom?',
-      html: '<p>Which countries are part of the United Kingdom?</p>',
-      hasmath: false,
-      images: []
-    },
-    subject: 'Geography',
-    type: 'multiple',
-    options: [
-      { text: 'England', isCorrect: true },
-      { text: 'Scotland', isCorrect: true },
-      { text: 'Ireland', isCorrect: false },
-      { text: 'Wales', isCorrect: true }
-    ],
-    correctAnswer: [0, 1, 3],
-    explanation: {
-      text: 'The United Kingdom consists of England, Scotland, Wales, and Northern Ireland.',
-      html: '<p>The United Kingdom consists of England, Scotland, Wales, and Northern Ireland.</p>',
-      hasmath: false,
-      images: []
-    },
-    difficulty: 'medium',
-    marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '16',
-    content: {
-      text: 'Newton\'s second law states that F = _____.',
-      html: '<p>Newton\'s second law states that F = _____.</p>',
-      hasmath: true,
-      images: []
-    },
-    subject: 'Physics',
-    type: 'fillInBlanks',
-    options: [],
-    correctAnswer: 0,
-    explanation: {
-      text: 'Newton\'s second law states that F = ma, where F is force, m is mass, and a is acceleration.',
-      html: '<p>Newton\'s second law states that F = ma, where F is force, m is mass, and a is acceleration.</p>',
-      hasmath: true,
-      images: []
-    },
-    difficulty: 'medium',
-    marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '17',
-    content: {
-      text: 'What is the longest river in the world?',
-      html: '<p>What is the longest river in the world?</p>',
-      hasmath: false,
-      images: []
-    },
-    subject: 'Geography',
-    type: 'single',
-    options: [
-      { text: 'Amazon River', isCorrect: false },
-      { text: 'Nile River', isCorrect: true },
-      { text: 'Mississippi River', isCorrect: false },
-      { text: 'Yangtze River', isCorrect: false }
-    ],
-    correctAnswer: 1,
-    explanation: {
-      text: 'The Nile River is the longest river in the world at approximately 6,650 kilometers.',
-      html: '<p>The Nile River is the longest river in the world at approximately 6,650 kilometers.</p>',
-      hasmath: false,
-      images: []
-    },
-    difficulty: 'easy',
-    marks: 1,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '18',
-    content: {
-      text: 'Which data structures use LIFO (Last In, First Out) principle?',
-      html: '<p>Which data structures use LIFO (Last In, First Out) principle?</p>',
-      hasmath: false,
-      images: []
-    },
-    subject: 'Computer Science',
-    type: 'multiple',
-    options: [
-      { text: 'Stack', isCorrect: true },
-      { text: 'Queue', isCorrect: false },
-      { text: 'Linked List', isCorrect: false },
-      { text: 'Call Stack', isCorrect: true }
-    ],
-    correctAnswer: [0, 3],
-    explanation: {
-      text: 'Stack and Call Stack both use LIFO principle. Queue uses FIFO (First In, First Out).',
-      html: '<p>Stack and Call Stack both use LIFO principle. Queue uses FIFO (First In, First Out).</p>',
-      hasmath: false,
-      images: []
-    },
-    difficulty: 'medium',
-    marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '19',
-    content: {
-      text: 'The powerhouse of the cell is the _____.',
-      html: '<p>The powerhouse of the cell is the _____.</p>',
-      hasmath: false,
-      images: []
-    },
-    subject: 'Biology',
-    type: 'fillInBlanks',
-    options: [],
-    correctAnswer: 0,
-    explanation: {
-      text: 'The mitochondria is known as the powerhouse of the cell because it produces ATP.',
-      html: '<p>The mitochondria is known as the powerhouse of the cell because it produces ATP.</p>',
-      hasmath: false,
-      images: []
-    },
-    difficulty: 'easy',
-    marks: 1,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '20',
-    content: {
-      text: 'Calculate the quadratic formula for ax² + bx + c = 0',
-      html: '<p>Calculate the quadratic formula for ax² + bx + c = 0</p>',
-      hasmath: true,
-      images: []
-    },
-    subject: 'Mathematics',
-    type: 'single',
-    options: [
-      { text: 'x = (-b ± √(b²-4ac)) / 2a', isCorrect: true },
-      { text: 'x = (-b ± √(b²+4ac)) / 2a', isCorrect: false },
-      { text: 'x = (b ± √(b²-4ac)) / 2a', isCorrect: false },
-      { text: 'x = (-b ± √(b²-4ac)) / a', isCorrect: false }
-    ],
-    correctAnswer: 0,
-    explanation: {
-      text: 'The quadratic formula is x = (-b ± √(b²-4ac)) / 2a',
-      html: '<p>The quadratic formula is x = (-b ± √(b²-4ac)) / 2a</p>',
-      hasmath: true,
-      images: []
-    },
-    difficulty: 'hard',
+    hint: 'Use the power rule for differentiation',
     marks: 3,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '21',
-    content: {
-      text: 'Which of the following are benefits of renewable energy?',
-      html: '<p>Which of the following are benefits of renewable energy?</p>',
-      hasmath: false,
-      images: []
-    },
-    subject: 'Environmental Science',
-    type: 'multiple',
-    options: [
-      { text: 'Reduces carbon emissions', isCorrect: true },
-      { text: 'Sustainable long-term', isCorrect: true },
-      { text: 'Increases pollution', isCorrect: false },
-      { text: 'Cost-effective over time', isCorrect: true }
-    ],
-    correctAnswer: [0, 1, 3],
-    explanation: {
-      text: 'Renewable energy reduces carbon emissions, is sustainable long-term, and becomes cost-effective over time.',
-      html: '<p>Renewable energy reduces carbon emissions, is sustainable long-term, and becomes cost-effective over time.</p>',
-      hasmath: false,
-      images: []
-    },
     difficulty: 'medium',
-    marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '22',
-    content: {
-      text: 'The formula for calculating compound interest is _____.',
-      html: '<p>The formula for calculating compound interest is _____.</p>',
-      hasmath: true,
-      images: []
-    },
-    subject: 'Mathematics',
-    type: 'fillInBlanks',
-    options: [],
-    correctAnswer: 0,
-    explanation: {
-      text: 'The compound interest formula is A = P(1 + r/n)^(nt), where A is final amount, P is principal, r is annual interest rate, n is number of times interest is compounded per year, and t is time in years.',
-      html: '<p>The compound interest formula is A = P(1 + r/n)^(nt)</p>',
-      hasmath: true,
-      images: []
-    },
-    difficulty: 'hard',
-    marks: 3,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '23',
-    content: {
-      text: 'What is the pH value of pure water at 25°C?',
-      html: '<p>What is the pH value of pure water at 25°C?</p>',
-      hasmath: false,
-      images: []
-    },
-    subject: 'Chemistry',
-    type: 'single',
-    options: [
-      { text: '6', isCorrect: false },
-      { text: '7', isCorrect: true },
-      { text: '8', isCorrect: false },
-      { text: '14', isCorrect: false }
-    ],
-    correctAnswer: 1,
-    explanation: {
-      text: 'Pure water has a pH of 7 at 25°C, which is neutral on the pH scale.',
-      html: '<p>Pure water has a pH of 7 at 25°C, which is neutral on the pH scale.</p>',
-      hasmath: false,
-      images: []
-    },
-    difficulty: 'easy',
-    marks: 1,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '24',
-    content: {
-      text: 'Which programming paradigms are supported by Python?',
-      html: '<p>Which programming paradigms are supported by Python?</p>',
-      hasmath: false,
-      images: []
-    },
-    subject: 'Computer Science',
-    type: 'multiple',
-    options: [
-      { text: 'Object-oriented', isCorrect: true },
-      { text: 'Functional', isCorrect: true },
-      { text: 'Procedural', isCorrect: true },
-      { text: 'Assembly', isCorrect: false }
-    ],
-    correctAnswer: [0, 1, 2],
-    explanation: {
-      text: 'Python supports object-oriented, functional, and procedural programming paradigms.',
-      html: '<p>Python supports object-oriented, functional, and procedural programming paradigms.</p>',
-      hasmath: false,
-      images: []
-    },
-    difficulty: 'medium',
-    marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
-  },
-  {
-    id: '25',
-    content: {
-      text: 'The study of earthquakes is called _____.',
-      html: '<p>The study of earthquakes is called _____.</p>',
-      hasmath: false,
-      images: []
-    },
-    subject: 'Geology',
-    type: 'fillInBlanks',
-    options: [],
-    correctAnswer: 0,
-    explanation: {
-      text: 'Seismology is the scientific study of earthquakes and the propagation of elastic waves through the Earth.',
-      html: '<p>Seismology is the scientific study of earthquakes and the propagation of elastic waves through the Earth.</p>',
-      hasmath: false,
-      images: []
-    },
-    difficulty: 'medium',
-    marks: 2,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z'
+    category: 'Mathematics',
+    chapter: 'Calculus',
+    topic: 'Differentiation',
+    hasImage: false,
+    createdAt: '2024-01-16T09:00:00Z'
   }
 ]
