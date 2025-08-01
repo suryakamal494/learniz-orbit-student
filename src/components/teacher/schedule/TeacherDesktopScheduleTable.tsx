@@ -23,8 +23,8 @@ export function TeacherDesktopScheduleTable({
   const getSortIcon = (field: string) => {
     if (sort.field !== field) return null;
     return sort.direction === 'asc' ? 
-      <ChevronUp className="h-4 w-4 text-primary" /> : 
-      <ChevronDown className="h-4 w-4 text-primary" />;
+      <ChevronUp className="h-4 w-4" /> : 
+      <ChevronDown className="h-4 w-4" />;
   };
 
   const handleAssignmentClick = (type: string, classItem: TeacherScheduleClass) => {
@@ -37,45 +37,28 @@ export function TeacherDesktopScheduleTable({
 
   const getStatusBadge = (status: string) => {
     const variants = {
-      scheduled: { 
-        className: 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800/30' 
-      },
-      completed: { 
-        className: 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800/30' 
-      },
-      cancelled: { 
-        className: 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-800/30' 
-      }
+      scheduled: { variant: 'secondary' as const },
+      completed: { variant: 'default' as const },
+      cancelled: { variant: 'destructive' as const }
     };
     
     const config = variants[status as keyof typeof variants] || variants.scheduled;
     
     return (
-      <Badge className={`font-medium border ${config.className}`}>
+      <Badge variant={config.variant}>
         {status.charAt(0).toUpperCase() + status.slice(1)}
       </Badge>
     );
   };
 
-  const getSubjectColor = (subject: string) => {
-    const colors = {
-      'Mathematics': 'text-blue-600 dark:text-blue-400',
-      'Physics': 'text-purple-600 dark:text-purple-400',
-      'Chemistry': 'text-orange-600 dark:text-orange-400',
-      'Biology': 'text-green-600 dark:text-green-400',
-      'English': 'text-red-600 dark:text-red-400',
-    };
-    return colors[subject as keyof typeof colors] || 'text-blue-600 dark:text-blue-400';
-  };
-
   return (
     <div className="hidden lg:block">
-      <div className="bg-card rounded-xl border border-border/50 overflow-hidden shadow-sm">
+      <div className="bg-card rounded-lg border border-border overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-gradient-to-r from-blue-50 via-purple-50 to-orange-50 dark:from-blue-950/20 dark:via-purple-950/20 dark:to-orange-950/20 hover:from-blue-100 hover:via-purple-100 hover:to-orange-100 dark:hover:from-blue-900/30 dark:hover:via-purple-900/30 dark:hover:to-orange-900/30 border-b border-border/30">
+            <TableRow className="bg-muted/50">
               <TableHead 
-                className="cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/20 transition-colors font-semibold text-blue-700 dark:text-blue-300"
+                className="cursor-pointer hover:bg-muted transition-colors font-medium"
                 onClick={() => onSortChange('date')}
               >
                 <div className="flex items-center gap-2">
@@ -84,7 +67,7 @@ export function TeacherDesktopScheduleTable({
                 </div>
               </TableHead>
               <TableHead 
-                className="cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/20 transition-colors font-semibold text-purple-700 dark:text-purple-300"
+                className="cursor-pointer hover:bg-muted transition-colors font-medium"
                 onClick={() => onSortChange('time')}
               >
                 <div className="flex items-center gap-2">
@@ -93,7 +76,7 @@ export function TeacherDesktopScheduleTable({
                 </div>
               </TableHead>
               <TableHead 
-                className="cursor-pointer hover:bg-orange-100 dark:hover:bg-orange-900/20 transition-colors font-semibold text-orange-700 dark:text-orange-300"
+                className="cursor-pointer hover:bg-muted transition-colors font-medium"
                 onClick={() => onSortChange('class')}
               >
                 <div className="flex items-center gap-2">
@@ -102,7 +85,7 @@ export function TeacherDesktopScheduleTable({
                 </div>
               </TableHead>
               <TableHead 
-                className="cursor-pointer hover:bg-green-100 dark:hover:bg-green-900/20 transition-colors font-semibold text-green-700 dark:text-green-300"
+                className="cursor-pointer hover:bg-muted transition-colors font-medium"
                 onClick={() => onSortChange('batch')}
               >
                 <div className="flex items-center gap-2">
@@ -111,7 +94,7 @@ export function TeacherDesktopScheduleTable({
                 </div>
               </TableHead>
               <TableHead 
-                className="cursor-pointer hover:bg-indigo-100 dark:hover:bg-indigo-900/20 transition-colors font-semibold text-indigo-700 dark:text-indigo-300"
+                className="cursor-pointer hover:bg-muted transition-colors font-medium"
                 onClick={() => onSortChange('subject')}
               >
                 <div className="flex items-center gap-2">
@@ -120,7 +103,7 @@ export function TeacherDesktopScheduleTable({
                 </div>
               </TableHead>
               <TableHead 
-                className="cursor-pointer hover:bg-teal-100 dark:hover:bg-teal-900/20 transition-colors font-semibold text-teal-700 dark:text-teal-300"
+                className="cursor-pointer hover:bg-muted transition-colors font-medium"
                 onClick={() => onSortChange('topic')}
               >
                 <div className="flex items-center gap-2">
@@ -128,54 +111,48 @@ export function TeacherDesktopScheduleTable({
                   {getSortIcon('topic')}
                 </div>
               </TableHead>
-              <TableHead className="font-semibold text-pink-700 dark:text-pink-300">ASSIGNMENTS</TableHead>
-              <TableHead className="text-center font-semibold text-slate-700 dark:text-slate-300">ACTION</TableHead>
+              <TableHead className="font-medium">ASSIGNMENTS</TableHead>
+              <TableHead className="text-center font-medium">ACTION</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((classItem, index) => (
-              <TableRow key={classItem.id} className="hover:bg-gradient-to-r hover:from-blue-50/30 hover:via-purple-50/30 hover:to-orange-50/30 dark:hover:from-blue-950/10 dark:hover:via-purple-950/10 dark:hover:to-orange-950/10 transition-all duration-200 border-b border-border/10">
+            {data.map((classItem) => (
+              <TableRow key={classItem.id} className="hover:bg-muted/30 transition-colors">
                 <TableCell className="font-medium">
                   <div className="space-y-2">
-                    <div className="text-foreground font-semibold">{format(new Date(classItem.date), 'MMM dd, yyyy')}</div>
+                    <div className="text-sm">{format(new Date(classItem.date), 'MMM dd, yyyy')}</div>
                     {getStatusBadge(classItem.status)}
                   </div>
                 </TableCell>
                 <TableCell>
                   <div className="space-y-1">
-                    <div className="font-bold text-purple-600 dark:text-purple-400 text-lg">{classItem.time}</div>
-                    <div className="text-sm text-muted-foreground bg-purple-50 dark:bg-purple-950/20 px-2 py-1 rounded-md">{classItem.duration}</div>
+                    <div className="font-medium">{classItem.time}</div>
+                    <div className="text-xs text-muted-foreground">{classItem.duration}</div>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="font-bold text-orange-700 dark:text-orange-300 bg-orange-100 dark:bg-orange-950/30 px-3 py-2 rounded-lg border border-orange-200 dark:border-orange-800/30">
-                    {classItem.class}
-                  </span>
+                  <span className="font-medium">{classItem.class}</span>
                 </TableCell>
                 <TableCell>
-                  <span className="font-bold text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-950/30 px-3 py-2 rounded-lg border border-green-200 dark:border-green-800/30">
-                    {classItem.batch}
-                  </span>
+                  <span className="font-medium">{classItem.batch}</span>
                 </TableCell>
                 <TableCell>
-                  <div className={`font-bold text-lg ${getSubjectColor(classItem.subject)}`}>
-                    {classItem.subject}
-                  </div>
+                  <div className="font-medium">{classItem.subject}</div>
                 </TableCell>
                 <TableCell>
                   <div className="max-w-xs">
-                    <div className="font-semibold text-foreground mb-1">{classItem.topic}</div>
-                    <div className="text-sm text-muted-foreground bg-slate-100 dark:bg-slate-800/50 px-2 py-1 rounded-md truncate">{classItem.faculty}</div>
+                    <div className="font-medium text-sm mb-1">{classItem.topic}</div>
+                    <div className="text-xs text-muted-foreground">{classItem.faculty}</div>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1">
                     {classItem.assignments.urlView && (
                       <Button
                         onClick={() => handleAssignmentClick('URL View', classItem)}
                         variant="outline"
                         size="sm"
-                        className="h-8 px-3 text-xs font-semibold border-2 border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100 hover:border-blue-400 dark:border-blue-600 dark:text-blue-300 dark:bg-blue-950/30 dark:hover:bg-blue-900/40 transition-all duration-200"
+                        className="h-7 px-2 text-xs"
                       >
                         <ExternalLink className="h-3 w-3 mr-1" />
                         View
@@ -185,10 +162,7 @@ export function TeacherDesktopScheduleTable({
                       onClick={() => handleAssignmentClick('LMS', classItem)}
                       variant={classItem.assignments.lmsAssigned ? 'default' : 'outline'}
                       size="sm"
-                      className={classItem.assignments.lmsAssigned 
-                        ? "h-8 px-3 text-xs font-bold bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-600 hover:to-teal-700 shadow-lg border-2 border-teal-400" 
-                        : "h-8 px-3 text-xs font-semibold border-2 border-teal-300 text-teal-700 bg-teal-50 hover:bg-teal-100 hover:border-teal-400 dark:border-teal-600 dark:text-teal-300 dark:bg-teal-950/30 dark:hover:bg-teal-900/40"
-                      }
+                      className="h-7 px-2 text-xs"
                     >
                       <BookOpen className="h-3 w-3 mr-1" />
                       LMS
@@ -197,10 +171,7 @@ export function TeacherDesktopScheduleTable({
                       onClick={() => handleAssignmentClick('Notes', classItem)}
                       variant={classItem.assignments.notesAssigned ? 'default' : 'outline'}
                       size="sm"
-                      className={classItem.assignments.notesAssigned 
-                        ? "h-8 px-3 text-xs font-bold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 shadow-lg border-2 border-orange-400" 
-                        : "h-8 px-3 text-xs font-semibold border-2 border-orange-300 text-orange-700 bg-orange-50 hover:bg-orange-100 hover:border-orange-400 dark:border-orange-600 dark:text-orange-300 dark:bg-orange-950/30 dark:hover:bg-orange-900/40"
-                      }
+                      className="h-7 px-2 text-xs"
                     >
                       <FileText className="h-3 w-3 mr-1" />
                       Notes
@@ -209,10 +180,7 @@ export function TeacherDesktopScheduleTable({
                       onClick={() => handleAssignmentClick('Quiz', classItem)}
                       variant={classItem.assignments.liveQuizAssigned ? 'default' : 'outline'}
                       size="sm"
-                      className={classItem.assignments.liveQuizAssigned 
-                        ? "h-8 px-3 text-xs font-bold bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-lg border-2 border-green-400" 
-                        : "h-8 px-3 text-xs font-semibold border-2 border-green-300 text-green-700 bg-green-50 hover:bg-green-100 hover:border-green-400 dark:border-green-600 dark:text-green-300 dark:bg-green-950/30 dark:hover:bg-green-900/40"
-                      }
+                      className="h-7 px-2 text-xs"
                     >
                       <Zap className="h-3 w-3 mr-1" />
                       Quiz
@@ -222,19 +190,19 @@ export function TeacherDesktopScheduleTable({
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm" className="h-8 w-8 p-0 hover:bg-slate-100 dark:hover:bg-slate-800 border-2 border-slate-300 dark:border-slate-600">
-                        <MoreVertical className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                      <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+                        <MoreVertical className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-48 bg-card border-border/50">
-                      <DropdownMenuItem onClick={() => handleActionClick('Edit', classItem)} className="text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950/20 font-medium">
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem onClick={() => handleActionClick('Edit', classItem)}>
                         <Edit className="h-4 w-4 mr-2" />
                         Edit Schedule
                       </DropdownMenuItem>
-                      <DropdownMenuSeparator className="bg-border/30" />
+                      <DropdownMenuSeparator />
                       <DropdownMenuItem 
                         onClick={() => handleActionClick('Delete', classItem)}
-                        className="text-red-600 focus:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/20 font-medium"
+                        className="text-destructive focus:text-destructive"
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Delete Schedule
