@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Users, CheckCircle } from 'lucide-react'
+import { ArrowLeft, Users, CheckCircle, Save } from 'lucide-react'
 import { mockExamsData } from '@/data/mockExamsData'
 import { mockBatches } from '@/data/mockBatches'
 import { useToast } from '@/hooks/use-toast'
@@ -217,6 +217,7 @@ const UpdateBatchesPage: React.FC = () => {
             disabled={isUpdating || (assignType === 'specific' && selectedBatches.length === 0)}
             className="w-full"
           >
+            <Save className="h-4 w-4 mr-2" />
             {isUpdating ? 'Updating...' : 'Update Batch Assignment'}
           </Button>
         </CardContent>
