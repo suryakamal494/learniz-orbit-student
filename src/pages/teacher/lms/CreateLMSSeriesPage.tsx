@@ -282,7 +282,7 @@ const CreateLMSSeriesPage = () => {
                 <Button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="flex-1 sm:flex-none"
+                  className="flex-1 sm:flex-none bg-primary hover:bg-primary/90 text-primary-foreground"
                 >
                   <Save className="h-4 w-4 mr-2" />
                   {isSubmitting ? 'Creating...' : 'Create Series'}

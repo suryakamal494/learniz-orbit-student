@@ -74,6 +74,12 @@ const LMSSeriesPage = () => {
     setCurrentPage(1)
   }
 
+  const handleSearch = () => {
+    // Search is already applied through useMemo, this is just for UI feedback
+    console.log('Search triggered:', searchQuery)
+    setCurrentPage(1)
+  }
+
   const getSeriesTypeColor = (type: LMSSeriesType) => {
     const colors = {
       'content-series': 'bg-blue-100 text-blue-800 border-blue-200',
@@ -99,7 +105,7 @@ const LMSSeriesPage = () => {
         </div>
         <Button 
           onClick={() => navigate('/teacher/lms/series/create')}
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           <Plus className="h-4 w-4 mr-2" />
           Create Series
@@ -192,14 +198,23 @@ const LMSSeriesPage = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input
-                placeholder="Search series..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
+            <div className="flex flex-1 gap-2">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input
+                  placeholder="Search series..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <Button 
+                onClick={handleSearch}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
+                <Search className="h-4 w-4 mr-2" />
+                Search
+              </Button>
             </div>
             <Button variant="outline" onClick={handleReset}>
               Reset Filters
@@ -216,6 +231,13 @@ const LMSSeriesPage = () => {
               Series List ({filteredSeries.length} results)
             </CardTitle>
             <div className="flex items-center gap-2">
+              <Button 
+                onClick={() => navigate('/teacher/lms/series/create')}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Create
+              </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm">

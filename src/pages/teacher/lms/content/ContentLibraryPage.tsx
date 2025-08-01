@@ -1,301 +1,281 @@
 
 import React, { useState, useMemo } from 'react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Label } from "@/components/ui/label"
-import { 
-  ChevronDown, 
-  ChevronRight, 
-  Eye, 
-  FileText, 
-  Video, 
-  Image, 
-  Code,
-  Type,
-  File
-} from "lucide-react"
+import { Plus, Search, Filter, Download, FileText, Eye, Edit, BookOpen, File, Video } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { 
-  mockLMSContent, 
-  mockInstitutes, 
-  mockSubjects, 
-  mockChapters, 
-  mockTopics 
-} from '@/data/mockLMSContent'
-import type { LMSContentType } from '@/types/lmsContent'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { TeacherDataWrapper } from '@/components/teacher/ui/TeacherDataWrapper'
+import { mockLMSContent } from '@/data/mockLMSContent'
+import { LMSContentItem, LMSContentFilters } from '@/types/lmsContent'
 
-interface TreeNode {
-  id: string
-  name: string
-  type: 'chapter' | 'topic' | 'content'
-  isExpanded: boolean
-  children?: TreeNode[]
-  contentType?: LMSContentType
-  contentId?: string
-}
-
-const getContentTypeIcon = (type: LMSContentType) => {
-  const icons = {
-    'text': Type,
-    'file': File,
-    'video-url': Video,
-    'iframe': Code
-  }
-  return icons[type] || FileText
-}
-
-export default function ContentLibraryPage() {
+const ContentLibraryPage = () => {
   const navigate = useNavigate()
-  const [selectedInstitute, setSelectedInstitute] = useState('')
-  const [selectedSubject, setSelectedSubject] = useState('')
-  const [treeData, setTreeData] = useState<TreeNode[]>([])
-  const [hasAppliedFilters, setHasAppliedFilters] = useState(false)
+  const [filters, setFilters] = useState<LMSContentFilters>({})
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
-  // Filter available subjects based on selected institute
-  const availableSubjects = useMemo(() => {
-    if (!selectedInstitute) return mockSubjects
-    const institute = mockInstitutes.find(inst => inst.name === selectedInstitute)
-    return institute ? mockSubjects.filter(subject => subject.instituteId === institute.id) : mockSubjects
-  }, [selectedInstitute])
+  // Get unique filter options from data
+  const filterOptions = useMemo(() => {
+    const subjects = [...new Set(mockLMSContent.map(content => content.subject))]
+    const chapters = filters.subject 
+      ? [...new Set(mockLMSContent.filter(c => c.subject === filters.subject).map(c => c.chapter))]
+      : [...new Set(mockLMSContent.map(content => content.chapter))]
+    const topics = filters.chapter
+      ? [...new Set(mockLMSContent.filter(c => c.chapter === filters.chapter).map(c => c.topic))]
+      : [...new Set(mockLMSContent.map(content => content.topic))]
 
-  const buildTreeData = () => {
-    if (!selectedSubject) return []
+    return { subjects, chapters, topics }
+  }, [filters.subject, filters.chapter])
 
-    const subject = availableSubjects.find(sub => sub.name === selectedSubject)
-    if (!subject) return []
-
-    // Get chapters for the selected subject
-    const chapters = mockChapters.filter(chapter => chapter.subjectId === subject.id)
-    
-    return chapters.map(chapter => {
-      // Get topics for this chapter
-      const topics = mockTopics.filter(topic => topic.chapterId === chapter.id)
-      
-      const topicNodes: TreeNode[] = topics.map(topic => {
-        // Get content for this topic
-        const contents = mockLMSContent.filter(content => 
-          content.subject === selectedSubject && 
-          content.chapter === chapter.name && 
-          content.topic === topic.name &&
-          (!selectedInstitute || content.institute === selectedInstitute)
-        )
-        
-        const contentNodes: TreeNode[] = contents.map(content => ({
-          id: `content-${content.id}`,
-          name: content.title,
-          type: 'content' as const,
-          isExpanded: false,
-          contentType: content.type,
-          contentId: content.id
-        }))
-        
-        return {
-          id: `topic-${topic.id}`,
-          name: topic.name,
-          type: 'topic' as const,
-          isExpanded: false,
-          children: contentNodes
-        }
-      })
-      
-      return {
-        id: `chapter-${chapter.id}`,
-        name: chapter.name,
-        type: 'chapter' as const,
-        isExpanded: false,
-        children: topicNodes
-      }
+  // Filter and search content data
+  const filteredContent = useMemo(() => {
+    return mockLMSContent.filter(content => {
+      if (filters.subject && content.subject !== filters.subject) return false
+      if (filters.chapter && content.chapter !== filters.chapter) return false
+      if (filters.topic && content.topic !== filters.topic) return false
+      if (filters.type && content.type !== filters.type) return false
+      if (searchQuery && !content.title.toLowerCase().includes(searchQuery.toLowerCase())) return false
+      return true
     })
+  }, [filters, searchQuery])
+
+  const handleFilterChange = (key: keyof LMSContentFilters, value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: value === 'all' ? undefined : value
+    }))
   }
 
-  const handleApplyFilters = () => {
-    const newTreeData = buildTreeData()
-    setTreeData(newTreeData)
-    setHasAppliedFilters(true)
+  const handleReset = () => {
+    setFilters({})
+    setSearchQuery('')
   }
 
-  const toggleNode = (nodeId: string) => {
-    const updateNode = (nodes: TreeNode[]): TreeNode[] => {
-      return nodes.map(node => {
-        if (node.id === nodeId) {
-          return { ...node, isExpanded: !node.isExpanded }
-        }
-        if (node.children) {
-          return { ...node, children: updateNode(node.children) }
-        }
-        return node
-      })
+  const getContentTypeIcon = (type: string) => {
+    switch (type) {
+      case 'video':
+        return <Video className="h-4 w-4" />
+      case 'pdf':
+        return <FileText className="h-4 w-4" />
+      case 'document':
+        return <File className="h-4 w-4" />
+      default:
+        return <BookOpen className="h-4 w-4" />
     }
-    
-    setTreeData(updateNode(treeData))
   }
 
-  const handlePreview = (contentId: string) => {
-    navigate(`/teacher/lms/content/${contentId}/view`)
+  const getContentTypeColor = (type: string) => {
+    const colors = {
+      'video': 'bg-purple-100 text-purple-800 border-purple-200',
+      'pdf': 'bg-red-100 text-red-800 border-red-200',
+      'document': 'bg-blue-100 text-blue-800 border-blue-200',
+      'presentation': 'bg-green-100 text-green-800 border-green-200'
+    }
+    return colors[type as keyof typeof colors] || 'bg-gray-100 text-gray-800 border-gray-200'
   }
 
-  const renderTreeNode = (node: TreeNode, level: number = 0) => {
-    const hasChildren = node.children && node.children.length > 0
-    const paddingLeft = level * 24
-
-    return (
-      <div key={node.id} className="select-none">
-        <div 
-          className={`flex items-center gap-2 py-2 px-3 hover:bg-gray-50 cursor-pointer rounded-lg transition-colors`}
-          style={{ paddingLeft: `${paddingLeft + 12}px` }}
-          onClick={() => hasChildren ? toggleNode(node.id) : undefined}
-        >
-          {hasChildren && (
-            <div className="w-4 h-4 flex items-center justify-center">
-              {node.isExpanded ? (
-                <ChevronDown className="h-4 w-4 text-gray-600" />
-              ) : (
-                <ChevronRight className="h-4 w-4 text-gray-600" />
-              )}
-            </div>
-          )}
-          
-          {!hasChildren && <div className="w-4" />}
-          
-          {node.type === 'content' && node.contentType && (
-            <div className="w-4 h-4 flex items-center justify-center">
-              {React.createElement(getContentTypeIcon(node.contentType), {
-                className: "h-4 w-4 text-blue-600"
-              })}
-            </div>
-          )}
-          
-          <span className={`flex-1 text-sm ${
-            node.type === 'chapter' ? 'font-semibold text-gray-900' :
-            node.type === 'topic' ? 'font-medium text-gray-700' :
-            'text-gray-600'
-          }`}>
-            {node.name}
-          </span>
-          
-          {node.type === 'content' && (
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={(e) => {
-                e.stopPropagation()
-                if (node.contentId) {
-                  handlePreview(node.contentId)
-                }
-              }}
-              className="h-8 px-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-            >
-              <Eye className="h-3 w-3 mr-1" />
-              Preview
-            </Button>
-          )}
-        </div>
-        
-        {hasChildren && node.isExpanded && node.children && (
-          <div className="ml-2">
-            {node.children.map(child => renderTreeNode(child, level + 1))}
-          </div>
-        )}
-      </div>
-    )
+  const applyFilters = () => {
+    // Filters are already applied through useMemo, this is just for UI feedback
+    console.log('Filters applied:', filters)
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="p-6 space-y-6 max-w-7xl mx-auto">
-        {/* Header */}
+    <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Content Library</h1>
-          <p className="text-gray-600 mt-1">Browse and preview all learning materials in a hierarchical view</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Content Library</h1>
+          <p className="text-muted-foreground mt-1">Browse and manage your learning content</p>
         </div>
+        <Button 
+          onClick={() => navigate('/teacher/lms/content/create')}
+          className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Create Content
+        </Button>
+      </div>
 
-        {/* Filters */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Filters</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div className="space-y-2">
-                <Label>Institute</Label>
-                <Select value={selectedInstitute} onValueChange={setSelectedInstitute}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Institute" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {mockInstitutes.map(institute => (
-                      <SelectItem key={institute.id} value={institute.name}>
-                        {institute.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+      {/* Filters */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Filter className="h-5 w-5" />
+            Filters
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            <Select value={filters.subject || 'all'} onValueChange={(value) => handleFilterChange('subject', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Subject" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Subjects</SelectItem>
+                {filterOptions.subjects.map(subject => (
+                  <SelectItem key={subject} value={subject}>{subject}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-              <div className="space-y-2">
-                <Label>Subject *</Label>
-                <Select 
-                  value={selectedSubject} 
-                  onValueChange={setSelectedSubject}
-                  disabled={!selectedInstitute}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Subject" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableSubjects.map(subject => (
-                      <SelectItem key={subject.id} value={subject.name}>
-                        {subject.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+            <Select value={filters.chapter || 'all'} onValueChange={(value) => handleFilterChange('chapter', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Chapter" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Chapters</SelectItem>
+                {filterOptions.chapters.map(chapter => (
+                  <SelectItem key={chapter} value={chapter}>{chapter}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-              <div className="flex items-end">
-                <Button 
-                  onClick={handleApplyFilters}
-                  disabled={!selectedSubject}
-                  className="w-full"
-                >
-                  Apply Filters
-                </Button>
-              </div>
+            <Select value={filters.topic || 'all'} onValueChange={(value) => handleFilterChange('topic', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Topic" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Topics</SelectItem>
+                {filterOptions.topics.map(topic => (
+                  <SelectItem key={topic} value={topic}>{topic}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={filters.type || 'all'} onValueChange={(value) => handleFilterChange('type', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="video">Video</SelectItem>
+                <SelectItem value="pdf">PDF</SelectItem>
+                <SelectItem value="document">Document</SelectItem>
+                <SelectItem value="presentation">Presentation</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="Search content..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
             </div>
-          </CardContent>
-        </Card>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                onClick={handleReset}
+              >
+                Reset Filters
+              </Button>
+              <Button 
+                onClick={applyFilters}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
+                Apply Filters
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* Content Tree */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Content Hierarchy</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {!hasAppliedFilters ? (
-              <div className="text-center py-12 text-gray-500">
-                <FileText className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                <p>Select filters and click "Apply Filters" to view the content hierarchy</p>
-              </div>
-            ) : treeData.length === 0 ? (
-              <div className="text-center py-12 text-gray-500">
-                <FileText className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                <p>No content found for the selected filters</p>
-              </div>
-            ) : (
-              <div className="space-y-1">
-                {treeData.map(node => renderTreeNode(node))}
+      {/* Content Grid */}
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <CardTitle>
+              Content Library ({filteredContent.length} items)
+            </CardTitle>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  <FileText className="h-4 w-4 mr-2" />
+                  Export List
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <TeacherDataWrapper
+            data={filteredContent}
+            loading={isLoading}
+            emptyTitle="No content found"
+            emptyDescription="No content matches your current filters. Try adjusting your search criteria."
+            emptyIcon={<BookOpen className="h-8 w-8 text-muted-foreground" />}
+          >
+            {(data) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {data.map((content) => (
+                  <Card key={content.id} className="hover:shadow-lg transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2">
+                            {getContentTypeIcon(content.type)}
+                            <Badge className={getContentTypeColor(content.type)}>
+                              {content.type.charAt(0).toUpperCase() + content.type.slice(1)}
+                            </Badge>
+                          </div>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => navigate(`/teacher/lms/content/${content.id}/view`)}>
+                                <Eye className="h-4 w-4 mr-2" />
+                                View
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Edit className="h-4 w-4 mr-2" />
+                                Edit
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                        
+                        <div>
+                          <h3 className="font-semibold text-sm line-clamp-2">{content.title}</h3>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {content.subject} • {content.chapter}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {content.topic}
+                          </p>
+                        </div>
+
+                        <div className="flex justify-between items-center text-xs text-muted-foreground">
+                          <span>{content.duration || 'N/A'}</span>
+                          <span>{new Date(content.createdAt).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             )}
-          </CardContent>
-        </Card>
-      </div>
+          </TeacherDataWrapper>
+        </CardContent>
+      </Card>
     </div>
   )
 }
+
+export default ContentLibraryPage

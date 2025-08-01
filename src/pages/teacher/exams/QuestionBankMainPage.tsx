@@ -30,11 +30,11 @@ export default function QuestionBankMainPage() {
   const [loading, setLoading] = useState(false)
 
   const handleViewQuestions = (subjectId: string) => {
-    navigate(`/teacher/exams/question-bank/view/${subjectId}`)
+    navigate(`/teacher/question-bank/${subjectId}`)
   }
 
   const handleAddQuestion = (subjectId: string) => {
-    navigate(`/teacher/exams/question-bank/add/${subjectId}`)
+    navigate(`/teacher/question-bank/add`)
   }
 
   const filteredSubjects = mockQuestionBankSubjects.filter(subject =>
@@ -53,7 +53,7 @@ export default function QuestionBankMainPage() {
         </div>
         <Button 
           onClick={() => navigate('/teacher/question-bank/add')}
-          className="bg-primary hover:bg-primary/90"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           <Plus className="h-4 w-4 mr-2" />
           Add New Question
