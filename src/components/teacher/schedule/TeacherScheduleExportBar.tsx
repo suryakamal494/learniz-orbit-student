@@ -24,10 +24,12 @@ export function TeacherScheduleExportBar({
   };
 
   return (
-    <div className="glass rounded-lg border border-border/40 p-4 mb-6">
+    <div className="glass rounded-lg border border-border/40 p-4 mb-6 bg-gradient-to-r from-accent-teal/5 to-accent-orange/5">
       <div className="flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">
-          Showing {totalItems} schedule{totalItems !== 1 ? 's' : ''}
+        <div className="text-sm">
+          <span className="text-muted-foreground">Showing </span>
+          <span className="font-semibold text-primary">{totalItems}</span>
+          <span className="text-muted-foreground"> schedule{totalItems !== 1 ? 's' : ''}</span>
         </div>
         
         <div className="flex items-center gap-2">
@@ -35,7 +37,7 @@ export function TeacherScheduleExportBar({
             onClick={handleCopy}
             variant="ghost"
             size="sm"
-            className="text-muted-foreground hover:text-foreground"
+            className="text-accent-teal hover:text-accent-teal-light hover:bg-accent-teal/10 transition-colors"
           >
             <Copy className="h-4 w-4 mr-1" />
             Copy
@@ -43,22 +45,22 @@ export function TeacherScheduleExportBar({
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" size="sm" className="text-primary hover:text-primary-light hover:bg-primary/10 transition-colors">
                 <Download className="h-4 w-4 mr-1" />
                 Export
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={() => onExport('csv')}>
-                <FileSpreadsheet className="h-4 w-4 mr-2" />
+              <DropdownMenuItem onClick={() => onExport('csv')} className="hover:bg-success/10">
+                <FileSpreadsheet className="h-4 w-4 mr-2 text-success" />
                 Export as CSV
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onExport('excel')}>
-                <FileSpreadsheet className="h-4 w-4 mr-2" />
+              <DropdownMenuItem onClick={() => onExport('excel')} className="hover:bg-accent-teal/10">
+                <FileSpreadsheet className="h-4 w-4 mr-2 text-accent-teal" />
                 Export as Excel
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onExport('pdf')}>
-                <FileText className="h-4 w-4 mr-2" />
+              <DropdownMenuItem onClick={() => onExport('pdf')} className="hover:bg-error/10">
+                <FileText className="h-4 w-4 mr-2 text-error" />
                 Export as PDF
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -68,7 +70,7 @@ export function TeacherScheduleExportBar({
             onClick={handlePrint}
             variant="ghost"
             size="sm"
-            className="text-muted-foreground hover:text-foreground"
+            className="text-accent-orange hover:text-accent-orange-light hover:bg-accent-orange/10 transition-colors"
           >
             <Printer className="h-4 w-4 mr-1" />
             Print

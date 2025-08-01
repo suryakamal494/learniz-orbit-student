@@ -31,14 +31,14 @@ export function TeacherScheduleFilters({
   const hasActiveFilters = filters.class || filters.batch || filters.dateRange.from || filters.dateRange.to;
 
   return (
-    <div className="glass rounded-lg border border-border/40 p-4 mb-6">
+    <div className="glass rounded-lg border border-border/40 p-4 mb-6 bg-gradient-to-br from-primary/5 via-accent-teal/5 to-accent-orange/5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-muted-foreground" />
+          <Filter className="h-4 w-4 text-primary" />
           <span className="font-medium text-foreground">Filters</span>
           {hasActiveFilters && (
-            <span className="text-sm text-muted-foreground">
-              ({totalItems} result{totalItems !== 1 ? 's' : ''})
+            <span className="text-sm text-primary font-medium bg-primary/10 px-2 py-1 rounded-full">
+              {totalItems} result{totalItems !== 1 ? 's' : ''}
             </span>
           )}
         </div>
@@ -48,7 +48,7 @@ export function TeacherScheduleFilters({
             onClick={onClearFilters}
             variant="ghost"
             size="sm"
-            className="text-muted-foreground hover:text-foreground"
+            className="text-accent-orange hover:text-accent-orange-dark hover:bg-accent-orange/10"
           >
             <RotateCcw className="h-4 w-4 mr-1" />
             Reset
@@ -59,12 +59,12 @@ export function TeacherScheduleFilters({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Class Filter */}
         <div className="space-y-2">
-          <Label htmlFor="class" className="text-sm font-medium">Class</Label>
+          <Label htmlFor="class" className="text-sm font-medium text-primary">Class</Label>
           <Select
             value={filters.class || 'all'}
             onValueChange={(value) => onFiltersChange({ class: value === 'all' ? undefined : value })}
           >
-            <SelectTrigger className="bg-background/50 border-border/60">
+            <SelectTrigger className="bg-background/80 border-primary/20 hover:border-primary/40 focus:border-primary/60 transition-colors">
               <SelectValue placeholder="All Classes" />
             </SelectTrigger>
             <SelectContent>
@@ -78,12 +78,12 @@ export function TeacherScheduleFilters({
 
         {/* Batch Filter */}
         <div className="space-y-2">
-          <Label htmlFor="batch" className="text-sm font-medium">Batch</Label>
+          <Label htmlFor="batch" className="text-sm font-medium text-accent-teal">Batch</Label>
           <Select
             value={filters.batch || 'all'}
             onValueChange={(value) => onFiltersChange({ batch: value === 'all' ? undefined : value })}
           >
-            <SelectTrigger className="bg-background/50 border-border/60">
+            <SelectTrigger className="bg-background/80 border-accent-teal/20 hover:border-accent-teal/40 focus:border-accent-teal/60 transition-colors">
               <SelectValue placeholder="All Batches" />
             </SelectTrigger>
             <SelectContent>
@@ -97,17 +97,17 @@ export function TeacherScheduleFilters({
 
         {/* Date From */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium">From Date</Label>
+          <Label className="text-sm font-medium text-accent-orange">From Date</Label>
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
                 className={cn(
-                  "w-full justify-start text-left font-normal bg-background/50 border-border/60",
+                  "w-full justify-start text-left font-normal bg-background/80 border-accent-orange/20 hover:border-accent-orange/40 focus:border-accent-orange/60 transition-colors",
                   !filters.dateRange.from && "text-muted-foreground"
                 )}
               >
-                <CalendarIcon className="mr-2 h-4 w-4" />
+                <CalendarIcon className="mr-2 h-4 w-4 text-accent-orange" />
                 {filters.dateRange.from ? (
                   format(filters.dateRange.from, "PPP")
                 ) : (
@@ -131,17 +131,17 @@ export function TeacherScheduleFilters({
 
         {/* Date To */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium">To Date</Label>
+          <Label className="text-sm font-medium text-accent-orange">To Date</Label>
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
                 className={cn(
-                  "w-full justify-start text-left font-normal bg-background/50 border-border/60",
+                  "w-full justify-start text-left font-normal bg-background/80 border-accent-orange/20 hover:border-accent-orange/40 focus:border-accent-orange/60 transition-colors",
                   !filters.dateRange.to && "text-muted-foreground"
                 )}
               >
-                <CalendarIcon className="mr-2 h-4 w-4" />
+                <CalendarIcon className="mr-2 h-4 w-4 text-accent-orange" />
                 {filters.dateRange.to ? (
                   format(filters.dateRange.to, "PPP")
                 ) : (
@@ -168,48 +168,48 @@ export function TeacherScheduleFilters({
       {hasActiveFilters && (
         <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border/30">
           {filters.class && (
-            <div className="flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+            <div className="flex items-center gap-1 px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full text-sm">
               Class: {filters.class}
               <button
                 onClick={() => onFiltersChange({ class: undefined })}
-                className="ml-1 hover:bg-primary/20 rounded-full p-1"
+                className="ml-1 hover:bg-primary/30 rounded-full p-1 transition-colors"
               >
                 <X className="h-3 w-3" />
               </button>
             </div>
           )}
           {filters.batch && (
-            <div className="flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+            <div className="flex items-center gap-1 px-3 py-1 bg-accent-teal/20 text-accent-teal border border-accent-teal/30 rounded-full text-sm">
               Batch: {filters.batch}
               <button
                 onClick={() => onFiltersChange({ batch: undefined })}
-                className="ml-1 hover:bg-primary/20 rounded-full p-1"
+                className="ml-1 hover:bg-accent-teal/30 rounded-full p-1 transition-colors"
               >
                 <X className="h-3 w-3" />
               </button>
             </div>
           )}
           {filters.dateRange.from && (
-            <div className="flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+            <div className="flex items-center gap-1 px-3 py-1 bg-accent-orange/20 text-accent-orange border border-accent-orange/30 rounded-full text-sm">
               From: {format(filters.dateRange.from, "MMM dd")}
               <button
                 onClick={() => onFiltersChange({ 
                   dateRange: { ...filters.dateRange, from: undefined } 
                 })}
-                className="ml-1 hover:bg-primary/20 rounded-full p-1"
+                className="ml-1 hover:bg-accent-orange/30 rounded-full p-1 transition-colors"
               >
                 <X className="h-3 w-3" />
               </button>
             </div>
           )}
           {filters.dateRange.to && (
-            <div className="flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+            <div className="flex items-center gap-1 px-3 py-1 bg-accent-orange/20 text-accent-orange border border-accent-orange/30 rounded-full text-sm">
               To: {format(filters.dateRange.to, "MMM dd")}
               <button
                 onClick={() => onFiltersChange({ 
                   dateRange: { ...filters.dateRange, to: undefined } 
                 })}
-                className="ml-1 hover:bg-primary/20 rounded-full p-1"
+                className="ml-1 hover:bg-accent-orange/30 rounded-full p-1 transition-colors"
               >
                 <X className="h-3 w-3" />
               </button>
