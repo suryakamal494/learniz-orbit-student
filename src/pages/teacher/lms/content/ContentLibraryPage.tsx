@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo } from 'react'
-import { Plus, Search, Filter, Download, FileText, Eye, Edit, BookOpen, Video, File } from 'lucide-react'
+import { Plus, Search, Filter, Download, FileText, Eye, Edit, BookOpen, File, Video } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { TeacherDataWrapper } from '@/components/teacher/ui/TeacherDataWrapper'
-import { ContentTreeView } from '@/components/lms/ContentTreeView'
 import { mockLMSContent } from '@/data/mockLMSContent'
 import { LMSContentItem, LMSContentFilters } from '@/types/lmsContent'
 
@@ -18,14 +17,10 @@ const ContentLibraryPage = () => {
   const [filters, setFilters] = useState<LMSContentFilters>({})
   const [searchQuery, setSearchQuery] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [viewMode, setViewMode] = useState<'tree' | 'grid'>('tree')
 
   // Get unique filter options from data
   const filterOptions = useMemo(() => {
-    const institutes = [...new Set(mockLMSContent.map(content => content.institute))]
-    const subjects = filters.institute 
-      ? [...new Set(mockLMSContent.filter(c => c.institute === filters.institute).map(c => c.subject))]
-      : [...new Set(mockLMSContent.map(content => content.subject))]
+    const subjects = [...new Set(mockLMSContent.map(content => content.subject))]
     const chapters = filters.subject 
       ? [...new Set(mockLMSContent.filter(c => c.subject === filters.subject).map(c => c.chapter))]
       : [...new Set(mockLMSContent.map(content => content.chapter))]
@@ -33,13 +28,12 @@ const ContentLibraryPage = () => {
       ? [...new Set(mockLMSContent.filter(c => c.chapter === filters.chapter).map(c => c.topic))]
       : [...new Set(mockLMSContent.map(content => content.topic))]
 
-    return { institutes, subjects, chapters, topics }
-  }, [filters.institute, filters.subject, filters.chapter])
+    return { subjects, chapters, topics }
+  }, [filters.subject, filters.chapter])
 
   // Filter and search content data
   const filteredContent = useMemo(() => {
     return mockLMSContent.filter(content => {
-      if (filters.institute && content.institute !== filters.institute) return false
       if (filters.subject && content.subject !== filters.subject) return false
       if (filters.chapter && content.chapter !== filters.chapter) return false
       if (filters.topic && content.topic !== filters.topic) return false
@@ -59,10 +53,6 @@ const ContentLibraryPage = () => {
   const handleReset = () => {
     setFilters({})
     setSearchQuery('')
-  }
-
-  const handleContentSelect = (content: LMSContentItem) => {
-    navigate(`/teacher/lms/content/${content.id}/view`)
   }
 
   const getContentTypeIcon = (type: string) => {
@@ -90,37 +80,26 @@ const ContentLibraryPage = () => {
     return colors[type as keyof typeof colors] || 'bg-gray-100 text-gray-800 border-gray-200'
   }
 
+  const applyFilters = () => {
+    // Filters are already applied through useMemo, this is just for UI feedback
+    console.log('Filters applied:', filters)
+  }
+
   return (
     <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Content Library</h1>
-          <p className="text-muted-foreground mt-1">Browse and manage your learning content in organized hierarchy</p>
+          <p className="text-muted-foreground mt-1">Browse and manage your learning content</p>
         </div>
-        <div className="flex gap-2">
-          <Button 
-            variant={viewMode === 'tree' ? 'default' : 'outline'}
-            onClick={() => setViewMode('tree')}
-            size="sm"
-          >
-            Tree View
-          </Button>
-          <Button 
-            variant={viewMode === 'grid' ? 'default' : 'outline'}
-            onClick={() => setViewMode('grid')}
-            size="sm"
-          >
-            Grid View
-          </Button>
-          <Button 
-            onClick={() => navigate('/teacher/lms/content/create')}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Create Content
-          </Button>
-        </div>
+        <Button 
+          onClick={() => navigate('/teacher/lms/content/create')}
+          className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Create Content
+        </Button>
       </div>
 
       {/* Filters */}
@@ -133,18 +112,6 @@ const ContentLibraryPage = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            <Select value={filters.institute || 'all'} onValueChange={(value) => handleFilterChange('institute', value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Institute" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Institutes</SelectItem>
-                {filterOptions.institutes.map(institute => (
-                  <SelectItem key={institute} value={institute}>{institute}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
             <Select value={filters.subject || 'all'} onValueChange={(value) => handleFilterChange('subject', value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Subject" />
@@ -165,6 +132,18 @@ const ContentLibraryPage = () => {
                 <SelectItem value="all">All Chapters</SelectItem>
                 {filterOptions.chapters.map(chapter => (
                   <SelectItem key={chapter} value={chapter}>{chapter}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={filters.topic || 'all'} onValueChange={(value) => handleFilterChange('topic', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Topic" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Topics</SelectItem>
+                {filterOptions.topics.map(topic => (
+                  <SelectItem key={topic} value={topic}>{topic}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -202,12 +181,18 @@ const ContentLibraryPage = () => {
               >
                 Reset Filters
               </Button>
+              <Button 
+                onClick={applyFilters}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
+                Apply Filters
+              </Button>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Content Display */}
+      {/* Content Grid */}
       <Card>
         <CardHeader>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -239,65 +224,56 @@ const ContentLibraryPage = () => {
             emptyIcon={<BookOpen className="h-8 w-8 text-muted-foreground" />}
           >
             {(data) => (
-              <>
-                {viewMode === 'tree' ? (
-                  <ContentTreeView 
-                    data={data} 
-                    onContentSelect={handleContentSelect}
-                  />
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {data.map((content) => (
-                      <Card key={content.id} className="hover:shadow-lg transition-shadow">
-                        <CardContent className="p-4">
-                          <div className="space-y-3">
-                            <div className="flex items-start justify-between">
-                              <div className="flex items-center gap-2">
-                                {getContentTypeIcon(content.type)}
-                                <Badge className={getContentTypeColor(content.type)}>
-                                  {content.type.charAt(0).toUpperCase() + content.type.slice(1)}
-                                </Badge>
-                              </div>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="sm">
-                                    <Eye className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuItem onClick={() => navigate(`/teacher/lms/content/${content.id}/view`)}>
-                                    <Eye className="h-4 w-4 mr-2" />
-                                    View
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem>
-                                    <Edit className="h-4 w-4 mr-2" />
-                                    Edit
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
-                            
-                            <div>
-                              <h3 className="font-semibold text-sm line-clamp-2">{content.title}</h3>
-                              <p className="text-xs text-muted-foreground mt-1">
-                                {content.institute} • {content.subject}
-                              </p>
-                              <p className="text-xs text-muted-foreground">
-                                {content.chapter} • {content.topic}
-                              </p>
-                            </div>
-
-                            <div className="flex justify-between items-center text-xs text-muted-foreground">
-                              <span>{content.type}</span>
-                              <span>{new Date(content.createdAt).toLocaleDateString()}</span>
-                            </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {data.map((content) => (
+                  <Card key={content.id} className="hover:shadow-lg transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2">
+                            {getContentTypeIcon(content.type)}
+                            <Badge className={getContentTypeColor(content.type)}>
+                              {content.type.charAt(0).toUpperCase() + content.type.slice(1)}
+                            </Badge>
                           </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-              </>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => navigate(`/teacher/lms/content/${content.id}/view`)}>
+                                <Eye className="h-4 w-4 mr-2" />
+                                View
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Edit className="h-4 w-4 mr-2" />
+                                Edit
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                        
+                        <div>
+                          <h3 className="font-semibold text-sm line-clamp-2">{content.title}</h3>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {content.subject} • {content.chapter}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {content.topic}
+                          </p>
+                        </div>
+
+                        <div className="flex justify-between items-center text-xs text-muted-foreground">
+                          <span>{content.type}</span>
+                          <span>{new Date(content.createdAt).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             )}
           </TeacherDataWrapper>
         </CardContent>

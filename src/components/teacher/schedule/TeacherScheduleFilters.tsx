@@ -121,7 +121,6 @@ export function TeacherScheduleFilters({
                 onSelect={(date) => onFiltersChange({ 
                   dateRange: { ...filters.dateRange, from: date } 
                 })}
-                className="p-3 pointer-events-auto"
                 initialFocus
               />
             </PopoverContent>
@@ -155,7 +154,6 @@ export function TeacherScheduleFilters({
                 onSelect={(date) => onFiltersChange({ 
                   dateRange: { ...filters.dateRange, to: date } 
                 })}
-                className="p-3 pointer-events-auto"
                 initialFocus
               />
             </PopoverContent>
