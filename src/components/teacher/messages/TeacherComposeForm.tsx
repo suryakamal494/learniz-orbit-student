@@ -1,4 +1,3 @@
-
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -64,6 +63,9 @@ export function TeacherComposeForm({ faculty, onCancel, onSend }: TeacherCompose
 
   const messageLength = form.watch('body')?.length || 0
 
+  // Filter out any faculty members with empty or invalid IDs
+  const validFaculty = faculty.filter(member => member.id && member.id.trim() !== '')
+
   return (
     <Card className="max-w-2xl mx-auto">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -87,14 +89,14 @@ export function TeacherComposeForm({ faculty, onCancel, onSend }: TeacherCompose
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>To</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value || ""}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select recipient" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {faculty.map((member) => (
+                      {validFaculty.map((member) => (
                         <SelectItem key={member.id} value={member.id}>
                           <div className="flex items-center gap-2">
                             <span>{member.name}</span>
