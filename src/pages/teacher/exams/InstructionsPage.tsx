@@ -1,226 +1,139 @@
-
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from '@/components/ui/table'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import { Plus, Search, MoreHorizontal, Edit, Trash2, FileText } from 'lucide-react'
-import { mockInstructions, deleteInstruction } from '@/data/mockInstructions'
-import type { Instruction } from '@/types/instruction'
-import { useToast } from '@/hooks/use-toast'
+import { Badge } from '@/components/ui/badge'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Plus, Search, Filter, Edit, Eye, FileText } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { mockInstructions } from '@/data/mockInstructions'
 
-const InstructionsPage: React.FC = () => {
+export default function InstructionsPage() {
   const navigate = useNavigate()
-  const { toast } = useToast()
-  const [instructions, setInstructions] = useState<Instruction[]>(mockInstructions)
   const [searchTerm, setSearchTerm] = useState('')
-
-  const filteredInstructions = instructions.filter(instruction =>
-    instruction.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    instruction.content.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const [selectedSubject, setSelectedSubject] = useState('')
+  const [selectedType, setSelectedType] = useState('')
 
   const handleCreateInstruction = () => {
-    navigate('/teacher/instructions/create')
+    navigate('/teacher/exams/instructions/create')
   }
 
   const handleEditInstruction = (instructionId: string) => {
-    navigate(`/teacher/instructions/${instructionId}/edit`)
+    navigate(`/teacher/exams/instructions/${instructionId}/edit`)
   }
 
-  const handleDeleteInstruction = (instructionId: string) => {
-    const success = deleteInstruction(instructionId)
-    if (success) {
-      setInstructions(prev => prev.filter(i => i.id !== instructionId))
-      toast({
-        title: "Success",
-        description: "Instruction deleted successfully",
-      })
-    } else {
-      toast({
-        title: "Error",
-        description: "Failed to delete instruction",
-        variant: "destructive"
-      })
-    }
-  }
+  // Filtering logic
+  const filteredInstructions = mockInstructions.filter(instruction => {
+    const searchRegex = new RegExp(searchTerm, 'i')
+    const subjectMatch = selectedSubject ? instruction.subject === selectedSubject : true
+    const typeMatch = selectedType ? instruction.type === selectedType : true
+    const searchMatch = searchTerm ? searchRegex.test(instruction.title) || searchRegex.test(instruction.content) : true
 
-  const truncateContent = (content: string, maxLength: number = 100) => {
-    if (content.length <= maxLength) return content
-    return content.substring(0, maxLength) + '...'
-  }
+    return subjectMatch && typeMatch && searchMatch
+  })
 
+  // Render methods
   return (
-    <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="p-6 space-y-6 max-w-6xl mx-auto">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Instructions Management</h1>
-          <p className="text-gray-600 mt-1">
-            Create and manage instructions for students and staff
-          </p>
+          <h1 className="text-3xl font-bold text-foreground">Exam Instructions</h1>
+          <p className="text-muted-foreground">Manage exam instructions and guidelines</p>
         </div>
-        <Button onClick={handleCreateInstruction} className="bg-blue-600 hover:bg-blue-700">
-          <Plus className="h-4 w-4 mr-2" />
-          Create Instruction
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => navigate('/teacher/exams')}>
+            Back to Exams
+          </Button>
+          <Button onClick={handleCreateInstruction}>
+            <Plus className="h-4 w-4 mr-2" />
+            Create Instruction
+          </Button>
+        </div>
       </div>
 
-      {/* Search */}
+      {/* Filters */}
       <Card>
         <CardContent className="p-4">
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Search instructions..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search instructions..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+            <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="All Subjects" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">All Subjects</SelectItem>
+                <SelectItem value="mathematics">Mathematics</SelectItem>
+                <SelectItem value="physics">Physics</SelectItem>
+                <SelectItem value="chemistry">Chemistry</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={selectedType} onValueChange={setSelectedType}>
+              <SelectTrigger className="w-full sm:w-48">
+                <SelectValue placeholder="All Types" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="general">General</SelectItem>
+                <SelectItem value="subject-specific">Subject Specific</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button variant="outline" size="sm">
+              <Filter className="h-4 w-4 mr-2" />
+              More Filters
+            </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* Instructions Table */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5" />
-              All Instructions
-            </CardTitle>
-            <div className="text-sm text-muted-foreground">
-              {filteredInstructions.length} instruction{filteredInstructions.length !== 1 ? 's' : ''}
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Content</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead>Updated</TableHead>
-                  <TableHead className="w-16">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredInstructions.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center py-8">
-                      <div className="text-gray-500">
-                        {searchTerm ? 'No instructions found matching your search.' : 'No instructions created yet.'}
-                      </div>
-                      {!searchTerm && (
-                        <Button 
-                          variant="outline" 
-                          onClick={handleCreateInstruction}
-                          className="mt-2"
-                        >
-                          Create Your First Instruction
-                        </Button>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredInstructions.map((instruction) => (
-                    <TableRow key={instruction.id}>
-                      <TableCell>
-                        <div className="font-medium">{instruction.title}</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm text-gray-600 max-w-md">
-                          {truncateContent(instruction.content)}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm text-gray-500">
-                          {new Date(instruction.createdAt).toLocaleDateString()}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm text-gray-500">
-                          {new Date(instruction.updatedAt).toLocaleDateString()}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => handleEditInstruction(instruction.id)}>
-                              <Edit className="h-4 w-4 mr-2" />
-                              Edit
-                            </DropdownMenuItem>
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                  <Trash2 className="h-4 w-4 mr-2" />
-                                  Delete
-                                </DropdownMenuItem>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    This action cannot be undone. This will permanently delete the instruction
-                                    "{instruction.title}".
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    onClick={() => handleDeleteInstruction(instruction.id)}
-                                    className="bg-red-600 hover:bg-red-700"
-                                  >
-                                    Delete
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Instructions Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredInstructions.map((instruction) => (
+          <Card key={instruction.id} className="hover:shadow-md transition-shadow">
+            <CardHeader>
+              <div className="flex items-start justify-between">
+                <FileText className="h-8 w-8 text-blue-500" />
+                <Badge variant={instruction.type === 'general' ? 'default' : 'secondary'}>
+                  {instruction.type === 'general' ? 'General' : 'Subject Specific'}
+                </Badge>
+              </div>
+              <CardTitle className="text-lg">{instruction.title}</CardTitle>
+              <div className="space-y-1">
+                <p className="text-sm text-muted-foreground">{instruction.subject}</p>
+                <p className="text-xs text-muted-foreground line-clamp-2">
+                  {instruction.content.substring(0, 100)}...
+                </p>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-muted-foreground">
+                  Updated: {new Date(instruction.updatedAt).toLocaleDateString()}
+                </span>
+                <div className="flex gap-1">
+                  <Button size="sm" variant="ghost">
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    variant="ghost"
+                    onClick={() => handleEditInstruction(instruction.id)}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   )
 }
-
-export default InstructionsPage

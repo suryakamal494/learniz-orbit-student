@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -20,7 +19,7 @@ export default function LoginPage() {
     if (userType === "student") {
       navigate("/dashboard");
     } else {
-      navigate("/teacher/dashboard");
+      navigate("/teacher");
     }
   };
 

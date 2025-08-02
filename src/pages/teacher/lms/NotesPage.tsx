@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -11,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 export default function NotesPage() {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedSubject, setSelectedSubject] = useState('')
+  const [selectedSubject, setSelectedSubject] = useState('all')
 
   // Sample notes data
   const notes = [
@@ -83,7 +82,7 @@ export default function NotesPage() {
                 <SelectValue placeholder="All Subjects" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Subjects</SelectItem>
+                <SelectItem value="all">All Subjects</SelectItem>
                 <SelectItem value="physics">Physics</SelectItem>
                 <SelectItem value="chemistry">Chemistry</SelectItem>
                 <SelectItem value="mathematics">Mathematics</SelectItem>

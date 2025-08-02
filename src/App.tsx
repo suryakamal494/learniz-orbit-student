@@ -71,11 +71,12 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
         
         {/* Student Routes */}
         <Route path="/" element={<AppLayout><Outlet /></AppLayout>}>
-          <Route index element={<Index />} />
+          <Route path="dashboard" element={<Index />} />
           <Route path="subject/:subjectId" element={<SubjectPage />} />
           <Route path="exam/:examId" element={<ExamPage />} />
           <Route path="exam/:examId/instructions" element={<ExamInstructionsPage />} />
