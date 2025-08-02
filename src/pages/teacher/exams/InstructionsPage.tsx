@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -46,11 +45,11 @@ const InstructionsPage: React.FC = () => {
   )
 
   const handleCreateInstruction = () => {
-    navigate('/teacher/instructions/create')
+    navigate('/teacher/exams/instructions/create')
   }
 
   const handleEditInstruction = (instructionId: string) => {
-    navigate(`/teacher/instructions/${instructionId}/edit`)
+    navigate(`/teacher/exams/instructions/${instructionId}/edit`)
   }
 
   const handleDeleteInstruction = (instructionId: string) => {

@@ -20,7 +20,7 @@ export default function LoginPage() {
     if (userType === "student") {
       navigate("/dashboard");
     } else {
-      navigate("/teacher/dashboard");
+      navigate("/teacher");
     }
   };
 

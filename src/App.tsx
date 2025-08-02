@@ -71,10 +71,11 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
         
         {/* Student Routes */}
-        <Route path="/" element={<AppLayout><Outlet /></AppLayout>}>
+        <Route path="/dashboard" element={<AppLayout><Outlet /></AppLayout>}>
           <Route index element={<Index />} />
           <Route path="subject/:subjectId" element={<SubjectPage />} />
           <Route path="exam/:examId" element={<ExamPage />} />
@@ -86,6 +87,17 @@ function App() {
           <Route path="notifications" element={<NotificationsPage />} />
           <Route path="live-quiz/:quizId" element={<LiveQuizPage />} />
         </Route>
+
+        {/* Standalone student routes for backward compatibility */}
+        <Route path="/subject/:subjectId" element={<AppLayout><SubjectPage /></AppLayout>} />
+        <Route path="/exam/:examId" element={<AppLayout><ExamPage /></AppLayout>} />
+        <Route path="/exam/:examId/instructions" element={<AppLayout><ExamInstructionsPage /></AppLayout>} />
+        <Route path="/exam/:examId/results" element={<AppLayout><ExamResultsPage /></AppLayout>} />
+        <Route path="/analysis" element={<AppLayout><AnalysisPage /></AppLayout>} />
+        <Route path="/schedule" element={<AppLayout><SchedulePage /></AppLayout>} />
+        <Route path="/messages" element={<AppLayout><MessagesPage /></AppLayout>} />
+        <Route path="/notifications" element={<AppLayout><NotificationsPage /></AppLayout>} />
+        <Route path="/live-quiz/:quizId" element={<AppLayout><LiveQuizPage /></AppLayout>} />
 
         {/* Teacher Routes */}
         <Route path="/teacher" element={<TeacherLayout><Outlet /></TeacherLayout>}>
