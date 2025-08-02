@@ -73,7 +73,7 @@ const QuestionBankViewPage: React.FC = () => {
   const paginatedQuestions = filteredQuestions.slice(startIndex, endIndex)
 
   const handleAddQuestion = () => {
-    navigate(`/teacher/exams/question-bank/add/${subjectId}`)
+    navigate('/teacher/question-bank/add')
   }
 
   const handleViewQuestion = (questionId: string) => {
@@ -130,7 +130,7 @@ const QuestionBankViewPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" onClick={() => navigate('/teacher/exams/question-bank')}>
+          <Button variant="ghost" onClick={() => navigate('/teacher/question-bank')}>
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Question Bank
           </Button>

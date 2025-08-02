@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Index from './pages/Index';
@@ -36,7 +37,6 @@ import CreateExamPage from './pages/teacher/exams/CreateExamPage';
 import EditExamPage from './pages/teacher/exams/EditExamPage';
 import UpdateQuestionsPage from './pages/teacher/exams/UpdateQuestionsPage';
 import UpdateBatchesPage from './pages/teacher/exams/UpdateBatchesPage';
-import QuestionBankMainPage from './pages/teacher/exams/QuestionBankMainPage';
 import QuestionBankAddPage from './pages/teacher/exams/QuestionBankAddPage';
 import QuestionBankViewPage from './pages/teacher/exams/QuestionBankViewPage';
 import DirectoryPage from './pages/teacher/exams/DirectoryPage';
@@ -84,7 +84,11 @@ function App() {
           <Route path="schedule/create" element={<CreateClassPage />} />
           <Route path="messages" element={<TeacherMessagesPage />} />
           <Route path="notifications" element={<TeacherNotificationsPage />} />
+          
+          {/* Question Bank Routes - Consolidated under /teacher/question-bank */}
           <Route path="question-bank" element={<QuestionBankPage />} />
+          <Route path="question-bank/add" element={<QuestionBankAddPage />} />
+          <Route path="question-bank/:subjectId" element={<QuestionBankViewPage />} />
 
           {/* Batches */}
           <Route path="batches" element={<BatchListingPage />} />
@@ -93,15 +97,12 @@ function App() {
           <Route path="batches/:batchId/assign-lms" element={<AssignLMSPage />} />
           <Route path="batches/:batchId/assign-notes" element={<BatchNotesAssignmentPage />} />
 
-          {/* Exams */}
+          {/* Exams - Removed old question bank routes */}
           <Route path="exams" element={<ExamsMainPage />} />
           <Route path="exams/create" element={<CreateExamPage />} />
           <Route path="exams/:examId/edit" element={<EditExamPage />} />
           <Route path="exams/:examId/questions" element={<UpdateQuestionsPage />} />
           <Route path="exams/:examId/batches" element={<UpdateBatchesPage />} />
-          <Route path="exams/question-bank" element={<QuestionBankMainPage />} />
-          <Route path="exams/question-bank/add" element={<QuestionBankAddPage />} />
-          <Route path="exams/question-bank/:questionId" element={<QuestionBankViewPage />} />
           <Route path="exams/directory" element={<DirectoryPage />} />
           <Route path="exams/instructions" element={<InstructionsPage />} />
           <Route path="exams/instructions/create" element={<CreateInstructionPage />} />

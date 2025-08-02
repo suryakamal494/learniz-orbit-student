@@ -33,8 +33,8 @@ export default function QuestionBankMainPage() {
     navigate(`/teacher/question-bank/${subjectId}`)
   }
 
-  const handleAddQuestion = (subjectId: string) => {
-    navigate(`/teacher/question-bank/add`)
+  const handleAddQuestion = () => {
+    navigate('/teacher/question-bank/add')
   }
 
   const filteredSubjects = mockQuestionBankSubjects.filter(subject =>
@@ -52,7 +52,7 @@ export default function QuestionBankMainPage() {
           <p className="text-muted-foreground">Manage questions for all subjects</p>
         </div>
         <Button 
-          onClick={() => navigate('/teacher/question-bank/add')}
+          onClick={handleAddQuestion}
           className="bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           <Plus className="h-4 w-4 mr-2" />
@@ -131,7 +131,7 @@ export default function QuestionBankMainPage() {
                                   <Eye className="h-4 w-4 mr-2" />
                                   View Questions
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleAddQuestion(subject.id)}>
+                                <DropdownMenuItem onClick={handleAddQuestion}>
                                   <Plus className="h-4 w-4 mr-2" />
                                   Add Question
                                 </DropdownMenuItem>
@@ -167,7 +167,7 @@ export default function QuestionBankMainPage() {
                                   <Eye className="h-4 w-4 mr-2" />
                                   View Questions
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleAddQuestion(subject.id)}>
+                                <DropdownMenuItem onClick={handleAddQuestion}>
                                   <Plus className="h-4 w-4 mr-2" />
                                   Add Question
                                 </DropdownMenuItem>

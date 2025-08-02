@@ -5,9 +5,9 @@ import { ArrowLeft, Save, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { RichTextEditor } from '@/components/ui/rich-text-editor'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -15,12 +15,15 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 
 const formSchema = z.object({
   question: z.string().min(1, 'Question is required'),
-  type: z.enum(['multiple-choice', 'true-false', 'short-answer', 'essay']),
+  type: z.enum(['single', 'multiple', 'fillInBlanks']),
   difficulty: z.enum(['easy', 'medium', 'hard']),
   marks: z.number().min(1, 'Marks must be at least 1'),
   explanation: z.string().optional(),
   options: z.array(z.string()).optional(),
-  correctAnswer: z.string().optional()
+  correctAnswer: z.string().optional(),
+  chapter: z.string().min(1, 'Chapter is required'),
+  topic: z.string().min(1, 'Topic is required'),
+  category: z.string().min(1, 'Category is required')
 })
 
 type FormData = z.infer<typeof formSchema>
@@ -33,12 +36,15 @@ export default function QuestionBankAddPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       question: '',
-      type: 'multiple-choice',
+      type: 'single',
       difficulty: 'medium',
       marks: 1,
       explanation: '',
       options: ['', '', '', ''],
-      correctAnswer: ''
+      correctAnswer: '',
+      chapter: '',
+      topic: '',
+      category: ''
     }
   })
 
@@ -86,6 +92,7 @@ export default function QuestionBankAddPage() {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {/* Basic Details Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
@@ -100,10 +107,9 @@ export default function QuestionBankAddPage() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="multiple-choice">Multiple Choice</SelectItem>
-                          <SelectItem value="true-false">True/False</SelectItem>
-                          <SelectItem value="short-answer">Short Answer</SelectItem>
-                          <SelectItem value="essay">Essay</SelectItem>
+                          <SelectItem value="single">Single Choice</SelectItem>
+                          <SelectItem value="multiple">Multiple Choice</SelectItem>
+                          <SelectItem value="fillInBlanks">Fill in Blanks</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -152,8 +158,51 @@ export default function QuestionBankAddPage() {
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Category *</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter category" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="chapter"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Chapter *</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter chapter" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="topic"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Topic *</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter topic" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
+              {/* Question Content with Rich Text Editor */}
               <FormField
                 control={form.control}
                 name="question"
@@ -161,10 +210,11 @@ export default function QuestionBankAddPage() {
                   <FormItem>
                     <FormLabel>Question *</FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Enter your question..."
-                        className="min-h-[100px]"
-                        {...field}
+                      <RichTextEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Enter your question here... Use the formula button (∫) to add mathematical expressions."
+                        minHeight="150px"
                       />
                     </FormControl>
                     <FormMessage />
@@ -172,8 +222,8 @@ export default function QuestionBankAddPage() {
                 )}
               />
 
-              {/* Conditional fields based on question type */}
-              {questionType === 'multiple-choice' && (
+              {/* Conditional Options */}
+              {(questionType === 'single' || questionType === 'multiple') && (
                 <div className="space-y-4">
                   <Label>Options *</Label>
                   {[0, 1, 2, 3].map((index) => (
@@ -211,6 +261,7 @@ export default function QuestionBankAddPage() {
                 </div>
               )}
 
+              {/* Explanation with Rich Text Editor */}
               <FormField
                 control={form.control}
                 name="explanation"
@@ -218,10 +269,11 @@ export default function QuestionBankAddPage() {
                   <FormItem>
                     <FormLabel>Explanation (Optional)</FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Enter explanation for the answer..."
-                        className="min-h-[80px]"
-                        {...field}
+                      <RichTextEditor
+                        value={field.value || ''}
+                        onChange={field.onChange}
+                        placeholder="Enter explanation for the answer... You can include mathematical formulas and formatting."
+                        minHeight="120px"
                       />
                     </FormControl>
                     <FormMessage />
