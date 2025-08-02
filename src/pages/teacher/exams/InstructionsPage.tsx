@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -11,8 +12,8 @@ import { mockInstructions } from '@/data/mockInstructions'
 export default function InstructionsPage() {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedSubject, setSelectedSubject] = useState('')
-  const [selectedType, setSelectedType] = useState('')
+  const [selectedSubject, setSelectedSubject] = useState('all')
+  const [selectedType, setSelectedType] = useState('all')
 
   const handleCreateInstruction = () => {
     navigate('/teacher/exams/instructions/create')
@@ -25,8 +26,8 @@ export default function InstructionsPage() {
   // Filtering logic
   const filteredInstructions = mockInstructions.filter(instruction => {
     const searchRegex = new RegExp(searchTerm, 'i')
-    const subjectMatch = selectedSubject ? instruction.subject === selectedSubject : true
-    const typeMatch = selectedType ? instruction.type === selectedType : true
+    const subjectMatch = selectedSubject === 'all' ? true : instruction.subject === selectedSubject
+    const typeMatch = selectedType === 'all' ? true : instruction.type === selectedType
     const searchMatch = searchTerm ? searchRegex.test(instruction.title) || searchRegex.test(instruction.content) : true
 
     return subjectMatch && typeMatch && searchMatch
@@ -69,7 +70,7 @@ export default function InstructionsPage() {
                 <SelectValue placeholder="All Subjects" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Subjects</SelectItem>
+                <SelectItem value="all">All Subjects</SelectItem>
                 <SelectItem value="mathematics">Mathematics</SelectItem>
                 <SelectItem value="physics">Physics</SelectItem>
                 <SelectItem value="chemistry">Chemistry</SelectItem>
@@ -80,7 +81,7 @@ export default function InstructionsPage() {
                 <SelectValue placeholder="All Types" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="general">General</SelectItem>
                 <SelectItem value="subject-specific">Subject Specific</SelectItem>
               </SelectContent>
