@@ -26,7 +26,7 @@ export const ExamFilters: React.FC<ExamFiltersProps> = ({
   subjectColor 
 }) => {
   const updateFilter = (key: string, value: string) => {
-    onFiltersChange({ ...filters, [key]: value })
+    onFiltersChange({ ...filters, [key]: value === 'all' ? '' : value })
   }
 
   return (
@@ -49,7 +49,7 @@ export const ExamFilters: React.FC<ExamFiltersProps> = ({
           {/* Status Filter */}
           <div className="w-full sm:w-48">
             <Select
-              value={filters.status}
+              value={filters.status || 'all'}
               onValueChange={(value) => updateFilter('status', value)}
             >
               <SelectTrigger className="bg-background/50 border-border/40">
@@ -68,7 +68,7 @@ export const ExamFilters: React.FC<ExamFiltersProps> = ({
           {/* Difficulty Filter */}
           <div className="w-full sm:w-48">
             <Select
-              value={filters.difficulty}
+              value={filters.difficulty || 'all'}
               onValueChange={(value) => updateFilter('difficulty', value)}
             >
               <SelectTrigger className="bg-background/50 border-border/40">
