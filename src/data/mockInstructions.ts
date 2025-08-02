@@ -6,6 +6,8 @@ export const mockInstructions: Instruction[] = [
     id: '1',
     title: 'General Exam Guidelines',
     content: 'All students must arrive at least 15 minutes before the exam starts. Mobile phones and electronic devices are strictly prohibited during the examination.',
+    subject: 'General',
+    type: 'general',
     createdAt: '2024-01-15T10:00:00Z',
     updatedAt: '2024-01-15T10:00:00Z'
   },
@@ -13,6 +15,8 @@ export const mockInstructions: Instruction[] = [
     id: '2',
     title: 'Mathematics Exam Instructions',
     content: 'Use only blue or black ink. Calculators are allowed for sections 2 and 3. Show all working steps clearly for partial credit.',
+    subject: 'mathematics',
+    type: 'subject-specific',
     createdAt: '2024-01-20T14:30:00Z',
     updatedAt: '2024-01-22T09:15:00Z'
   },
@@ -20,6 +24,8 @@ export const mockInstructions: Instruction[] = [
     id: '3',
     title: 'Physics Laboratory Safety',
     content: 'Wear safety goggles at all times. Handle all equipment with care. Report any accidents immediately to the instructor.',
+    subject: 'physics',
+    type: 'subject-specific',
     createdAt: '2024-01-25T11:45:00Z',
     updatedAt: '2024-01-25T11:45:00Z'
   },
@@ -27,6 +33,8 @@ export const mockInstructions: Instruction[] = [
     id: '4',
     title: 'Online Exam Protocol',
     content: 'Ensure stable internet connection. Keep your camera on throughout the exam. Use Chrome or Firefox browsers for best compatibility.',
+    subject: 'General',
+    type: 'general',
     createdAt: '2024-02-01T16:20:00Z',
     updatedAt: '2024-02-03T10:30:00Z'
   }
