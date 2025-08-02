@@ -55,6 +55,16 @@ import ContentLibraryPage from './pages/teacher/lms/content/ContentLibraryPage';
 import LMSSeriesPage from './pages/teacher/lms/LMSSeriesPage';
 import CreateLMSSeriesPage from './pages/teacher/lms/CreateLMSSeriesPage';
 
+// Teacher Reports - Create placeholder pages
+import ReportsMainPage from './pages/teacher/reports/ReportsMainPage';
+import AttendancePage from './pages/teacher/reports/AttendancePage';
+import BatchReportsPage from './pages/teacher/reports/BatchReportsPage';
+
+// Teacher LMS Additional Pages
+import LMSMainPage from './pages/teacher/lms/LMSMainPage';
+import NotesPage from './pages/teacher/lms/NotesPage';
+import LMSDirectoryPage from './pages/teacher/lms/LMSDirectoryPage';
+
 import { AppLayout } from './components/layout/AppLayout';
 
 function App() {
@@ -85,10 +95,21 @@ function App() {
           <Route path="messages" element={<TeacherMessagesPage />} />
           <Route path="notifications" element={<TeacherNotificationsPage />} />
           
-          {/* Question Bank Routes - Consolidated under /teacher/question-bank */}
+          {/* Question Bank Routes */}
           <Route path="question-bank" element={<QuestionBankPage />} />
           <Route path="question-bank/add" element={<QuestionBankAddPage />} />
           <Route path="question-bank/:subjectId" element={<QuestionBankViewPage />} />
+
+          {/* Directory Route - Fixed */}
+          <Route path="directory" element={<DirectoryPage />} />
+
+          {/* Instructions Route - Alias for convenience */}
+          <Route path="instructions" element={<Navigate to="/teacher/exams/instructions" replace />} />
+
+          {/* Reports Routes - New */}
+          <Route path="reports" element={<ReportsMainPage />} />
+          <Route path="reports/attendance" element={<AttendancePage />} />
+          <Route path="reports/batch" element={<BatchReportsPage />} />
 
           {/* Batches */}
           <Route path="batches" element={<BatchListingPage />} />
@@ -97,7 +118,7 @@ function App() {
           <Route path="batches/:batchId/assign-lms" element={<AssignLMSPage />} />
           <Route path="batches/:batchId/assign-notes" element={<BatchNotesAssignmentPage />} />
 
-          {/* Exams - Removed old question bank routes */}
+          {/* Exams */}
           <Route path="exams" element={<ExamsMainPage />} />
           <Route path="exams/create" element={<CreateExamPage />} />
           <Route path="exams/:examId/edit" element={<EditExamPage />} />
@@ -108,13 +129,16 @@ function App() {
           <Route path="exams/instructions/create" element={<CreateInstructionPage />} />
           <Route path="exams/instructions/:instructionId/edit" element={<EditInstructionPage />} />
 
-          {/* LMS */}
+          {/* LMS Routes - Enhanced */}
+          <Route path="lms" element={<LMSMainPage />} />
           <Route path="lms/content" element={<LMSContentPage />} />
           <Route path="lms/content/create" element={<CreateLMSContentPage />} />
           <Route path="lms/content/:contentId/view" element={<ViewLMSContentPage />} />
           <Route path="lms/library" element={<ContentLibraryPage />} />
           <Route path="lms/series" element={<LMSSeriesPage />} />
           <Route path="lms/series/create" element={<CreateLMSSeriesPage />} />
+          <Route path="lms/notes" element={<NotesPage />} />
+          <Route path="lms/directory" element={<LMSDirectoryPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
