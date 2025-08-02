@@ -122,8 +122,8 @@ function App() {
           <Route path="exams" element={<ExamsMainPage />} />
           <Route path="exams/create" element={<CreateExamPage />} />
           <Route path="exams/:examId/edit" element={<EditExamPage />} />
-          <Route path="exams/:examId/questions" element={<UpdateQuestionsPage />} />
-          <Route path="exams/:examId/batches" element={<UpdateBatchesPage />} />
+          <Route path="exams/:examId/update-questions" element={<UpdateQuestionsPage />} />
+          <Route path="exams/:examId/update-batches" element={<UpdateBatchesPage />} />
           <Route path="exams/directory" element={<DirectoryPage />} />
           <Route path="exams/instructions" element={<InstructionsPage />} />
           <Route path="exams/instructions/create" element={<CreateInstructionPage />} />
