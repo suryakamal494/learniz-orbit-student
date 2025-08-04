@@ -1,89 +1,105 @@
 
-import { NotesAssignmentItem } from '@/types/batch'
+import { NotesData } from '@/types/notes';
 
-export const mockNotesAssignments: NotesAssignmentItem[] = [
+export const mockNotesData: NotesData[] = [
   {
-    id: '1',
-    institute: 'Learneazy',
-    title: 'Newton\'s Laws of Motion',
-    notesFor: {
-      type: 'Chapter Notes',
-      subject: 'Physics',
-      chapter: 'Laws of Motion',
-      topic: 'Newton\'s Laws'
-    },
-    fileSize: '2.5 MB',
-    uploadDate: '2024-01-15',
-    isAssigned: false
+    subjectId: '1',
+    subjectName: 'Physics',
+    chapters: [
+      {
+        id: '1',
+        title: 'Motion in a Straight Line',
+        description: 'Fundamentals of linear motion',
+        notes: [
+          {
+            id: '1',
+            title: 'Introduction to Motion',
+            fileName: 'motion-intro.pdf',
+            fileUrl: '#',
+            fileSize: '2.5 MB',
+            uploadedAt: '2024-01-15T10:30:00Z',
+            fileType: 'pdf'
+          },
+          {
+            id: '2',
+            title: 'Velocity and Acceleration',
+            fileName: 'velocity-acceleration.pdf',
+            fileUrl: '#',
+            fileSize: '3.2 MB',
+            uploadedAt: '2024-01-16T14:20:00Z',
+            fileType: 'pdf'
+          }
+        ]
+      },
+      {
+        id: '2',
+        title: 'Electromagnetic Induction',
+        description: 'Laws of electromagnetic induction',
+        notes: [
+          {
+            id: '3',
+            title: 'Faraday\'s Law',
+            fileName: 'faradays-law.pdf',
+            fileUrl: '#',
+            fileSize: '1.8 MB',
+            uploadedAt: '2024-01-18T09:15:00Z',
+            fileType: 'pdf'
+          }
+        ]
+      }
+    ]
   },
   {
-    id: '2',
-    institute: 'Learneazy',
-    title: 'Organic Compounds Classification',
-    notesFor: {
-      type: 'Topic Notes',
-      subject: 'Chemistry',
-      chapter: 'Organic Chemistry',
-      topic: 'Classification'
-    },
-    fileSize: '1.8 MB',
-    uploadDate: '2024-01-20',
-    isAssigned: true
+    subjectId: '2',
+    subjectName: 'Mathematics',
+    chapters: [
+      {
+        id: '3',
+        title: 'Differential Calculus',
+        description: 'Introduction to derivatives',
+        notes: [
+          {
+            id: '4',
+            title: 'Limits and Derivatives',
+            fileName: 'limits-derivatives.pdf',
+            fileUrl: '#',
+            fileSize: '4.1 MB',
+            uploadedAt: '2024-01-12T11:45:00Z',
+            fileType: 'pdf'
+          },
+          {
+            id: '5',
+            title: 'Applications of Derivatives',
+            fileName: 'derivative-applications.pptx',
+            fileUrl: '#',
+            fileSize: '5.3 MB',
+            uploadedAt: '2024-01-14T16:30:00Z',
+            fileType: 'pptx'
+          }
+        ]
+      }
+    ]
   },
   {
-    id: '3',
-    institute: 'Learneazy',
-    title: 'Limits and Derivatives',
-    notesFor: {
-      type: 'Chapter Notes',
-      subject: 'Mathematics',
-      chapter: 'Calculus',
-      topic: 'Limits'
-    },
-    fileSize: '3.2 MB',
-    uploadDate: '2024-01-18',
-    isAssigned: false
-  },
-  {
-    id: '4',
-    institute: 'Learneazy',
-    title: 'Cell Structure and Function',
-    notesFor: {
-      type: 'Chapter Notes',
-      subject: 'Biology',
-      chapter: 'Cell Biology',
-      topic: 'Cell Structure'
-    },
-    fileSize: '4.1 MB',
-    uploadDate: '2024-01-22',
-    isAssigned: false
-  },
-  {
-    id: '5',
-    institute: 'Learneazy',
-    title: 'Wave Optics Theory',
-    notesFor: {
-      type: 'Topic Notes',
-      subject: 'Physics',
-      chapter: 'Optics',
-      topic: 'Wave Theory'
-    },
-    fileSize: '2.9 MB',
-    uploadDate: '2024-01-25',
-    isAssigned: true
-  },
-  {
-    id: '6',
-    institute: 'Learneazy',
-    title: 'Chemical Bonding Concepts',
-    notesFor: {
-      type: 'Chapter Notes',
-      subject: 'Chemistry',
-      chapter: 'Chemical Bonding',
-      topic: 'Ionic and Covalent Bonds'
-    },
-    fileSize: '2.3 MB',
-    uploadDate: '2024-01-28',
-    isAssigned: false
+    subjectId: '3',
+    subjectName: 'Chemistry',
+    chapters: [
+      {
+        id: '4',
+        title: 'Organic Compounds',
+        description: 'Structure and properties of organic molecules',
+        notes: [
+          {
+            id: '6',
+            title: 'Hydrocarbons',
+            fileName: 'hydrocarbons.pdf',
+            fileUrl: '#',
+            fileSize: '2.9 MB',
+            uploadedAt: '2024-01-20T08:20:00Z',
+            fileType: 'pdf'
+          }
+        ]
+      }
+    ]
   }
-]
+];

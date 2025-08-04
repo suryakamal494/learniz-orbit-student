@@ -8,18 +8,25 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { TeacherScheduleClass } from '@/types/teacherSchedule';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 interface TeacherMobileScheduleCardProps {
   data: TeacherScheduleClass[];
 }
 
 export function TeacherMobileScheduleCard({ data }: TeacherMobileScheduleCardProps) {
+  const navigate = useNavigate();
+
   const handleAssignmentClick = (type: string, classItem: TeacherScheduleClass) => {
-    toast.success(`${type} assignment clicked for ${classItem.topic}`);
+    navigate(`/teacher/schedule/assign/${classItem.id}`);
   };
 
-  const handleActionClick = (action: string, classItem: TeacherScheduleClass) => {
-    toast.success(`${action} clicked for ${classItem.topic}`);
+  const handleEditClick = (classItem: TeacherScheduleClass) => {
+    navigate(`/teacher/schedule/edit/${classItem.id}`);
+  };
+
+  const handleDeleteClick = (classItem: TeacherScheduleClass) => {
+    toast.success(`Delete clicked for ${classItem.topic}`);
   };
 
   const getStatusBadge = (status: string) => {
@@ -58,13 +65,13 @@ export function TeacherMobileScheduleCard({ data }: TeacherMobileScheduleCardPro
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
-                    <DropdownMenuItem onClick={() => handleActionClick('Edit', classItem)}>
+                    <DropdownMenuItem onClick={() => handleEditClick(classItem)}>
                       <Edit className="h-4 w-4 mr-2" />
                       Edit Schedule
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem 
-                      onClick={() => handleActionClick('Delete', classItem)}
+                      onClick={() => handleDeleteClick(classItem)}
                       className="text-destructive focus:text-destructive"
                     >
                       <Trash2 className="h-4 w-4 mr-2" />

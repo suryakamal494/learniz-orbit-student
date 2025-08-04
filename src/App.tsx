@@ -46,6 +46,8 @@ import EditInstructionPage from './pages/teacher/exams/EditInstructionPage';
 
 // Teacher Schedule
 import CreateClassPage from './pages/teacher/schedule/CreateClassPage';
+import AssignLMSNotesPage from './pages/teacher/schedule/AssignLMSNotesPage';
+import EditSchedulePage from './pages/teacher/schedule/EditSchedulePage';
 
 // Teacher LMS
 import LMSContentPage from './pages/teacher/lms/LMSContentPage';
@@ -93,6 +95,8 @@ function App() {
           <Route index element={<TeacherDashboard />} />
           <Route path="schedule" element={<TeacherSchedulePage />} />
           <Route path="schedule/create" element={<CreateClassPage />} />
+          <Route path="schedule/assign/:scheduleId" element={<AssignLMSNotesPage />} />
+          <Route path="schedule/edit/:scheduleId" element={<EditSchedulePage />} />
           <Route path="messages" element={<TeacherMessagesPage />} />
           <Route path="notifications" element={<TeacherNotificationsPage />} />
           

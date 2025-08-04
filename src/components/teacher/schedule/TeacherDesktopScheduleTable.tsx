@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ChevronUp, ChevronDown, MoreVertical, ExternalLink, BookOpen, FileText, Zap, Edit, Trash2 } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -8,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { TeacherScheduleClass, TeacherScheduleSort } from '@/types/teacherSchedule';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 interface TeacherDesktopScheduleTableProps {
   data: TeacherScheduleClass[];
@@ -20,6 +20,8 @@ export function TeacherDesktopScheduleTable({
   sort,
   onSortChange
 }: TeacherDesktopScheduleTableProps) {
+  const navigate = useNavigate();
+
   const getSortIcon = (field: string) => {
     if (sort.field !== field) return null;
     return sort.direction === 'asc' ? 
@@ -28,11 +30,15 @@ export function TeacherDesktopScheduleTable({
   };
 
   const handleAssignmentClick = (type: string, classItem: TeacherScheduleClass) => {
-    toast.success(`${type} assignment clicked for ${classItem.topic}`);
+    navigate(`/teacher/schedule/assign/${classItem.id}`);
   };
 
-  const handleActionClick = (action: string, classItem: TeacherScheduleClass) => {
-    toast.success(`${action} clicked for ${classItem.topic}`);
+  const handleEditClick = (classItem: TeacherScheduleClass) => {
+    navigate(`/teacher/schedule/edit/${classItem.id}`);
+  };
+
+  const handleDeleteClick = (classItem: TeacherScheduleClass) => {
+    toast.success(`Delete clicked for ${classItem.topic}`);
   };
 
   const getStatusBadge = (status: string) => {
@@ -195,13 +201,13 @@ export function TeacherDesktopScheduleTable({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-48">
-                      <DropdownMenuItem onClick={() => handleActionClick('Edit', classItem)}>
+                      <DropdownMenuItem onClick={() => handleEditClick(classItem)}>
                         <Edit className="h-4 w-4 mr-2" />
                         Edit Schedule
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem 
-                        onClick={() => handleActionClick('Delete', classItem)}
+                        onClick={() => handleDeleteClick(classItem)}
                         className="text-destructive focus:text-destructive"
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
