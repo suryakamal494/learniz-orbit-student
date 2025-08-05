@@ -139,7 +139,7 @@ export default function AssignLMSNotesPage() {
                     <SelectValue placeholder="Select LMS Series" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">None Selected</SelectItem>
+                    <SelectItem value="none">None Selected</SelectItem>
                     {mockLMSSeries.map((series) => (
                       <SelectItem key={series.id} value={series.id}>
                         {series.title}
@@ -157,7 +157,7 @@ export default function AssignLMSNotesPage() {
                     <SelectValue placeholder="Select Notes" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">None Selected</SelectItem>
+                    <SelectItem value="none">None Selected</SelectItem>
                     {mockNotesData.map((noteData) =>
                       noteData.chapters.map((chapter) =>
                         chapter.notes.map((note) => (
@@ -179,7 +179,7 @@ export default function AssignLMSNotesPage() {
                     <SelectValue placeholder="Select Live Quiz" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">None Selected</SelectItem>
+                    <SelectItem value="none">None Selected</SelectItem>
                     {mockLiveQuizData.quizzes.map((quiz) => (
                       <SelectItem key={quiz.id} value={quiz.id}>
                         {quiz.title}
