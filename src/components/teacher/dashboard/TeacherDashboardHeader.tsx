@@ -10,9 +10,9 @@ export function TeacherDashboardHeader() {
     <header className="sticky top-0 z-50 glass border-b border-border/40 backdrop-blur-xl">
       <div className="flex items-center justify-between px-4 md:px-6 py-4">
         <div className="flex items-center gap-4">
-          <SidebarTrigger className="lg:hidden hover:bg-primary/15 transition-colors rounded-lg" />
+          <SidebarTrigger className="lg:hidden hover:bg-primary/10 transition-colors" />
           <div className="animate-fade-in">
-            <h1 className="text-display-sm font-bold bg-gradient-to-r from-primary via-primary-light to-accent-orange bg-clip-text text-transparent">
+            <h1 className="text-display-sm font-bold bg-gradient-to-r from-primary to-accent-orange bg-clip-text text-transparent">
               Teacher Dashboard
             </h1>
           </div>
@@ -24,18 +24,18 @@ export function TeacherDashboardHeader() {
             <Button
               variant="ghost"
               size="icon"
-              className="relative hover:bg-primary/15 transition-colors group rounded-xl border-transparent hover:border-primary/20 hover:shadow-sm"
+              className="relative hover:bg-primary/10 transition-colors group"
             >
-              <Calendar className="h-5 w-5 transition-transform group-hover:scale-110 text-primary" />
+              <Calendar className="h-5 w-5 transition-transform group-hover:scale-110" />
             </Button>
             
             <Button
               variant="ghost"
               size="icon"
-              className="relative hover:bg-primary/15 transition-colors group rounded-xl border-transparent hover:border-primary/20 hover:shadow-sm"
+              className="relative hover:bg-primary/10 transition-colors group"
             >
-              <Bell className="h-5 w-5 transition-transform group-hover:scale-110 text-primary" />
-              <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-accent-orange hover:bg-accent-orange/90 text-white border-accent-orange-light text-xs animate-pulse">
+              <Bell className="h-5 w-5 transition-transform group-hover:scale-110" />
+              <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-accent-orange hover:bg-accent-orange/90 text-xs animate-pulse">
                 3
               </Badge>
             </Button>
@@ -43,16 +43,16 @@ export function TeacherDashboardHeader() {
             <Button
               variant="ghost"
               size="icon"
-              className="hover:bg-primary/15 transition-colors group rounded-xl border-transparent hover:border-primary/20 hover:shadow-sm"
+              className="hover:bg-primary/10 transition-colors group"
             >
-              <Settings className="h-5 w-5 transition-transform group-hover:rotate-90 text-primary" />
+              <Settings className="h-5 w-5 transition-transform group-hover:rotate-90" />
             </Button>
             
             {/* Teacher Profile */}
             <div className="flex items-center gap-2 ml-2">
-              <Avatar className="h-9 w-9 border-2 border-primary/30 hover:border-primary/50 transition-colors shadow-sm">
+              <Avatar className="h-9 w-9 border-2 border-primary/20 hover:border-primary/40 transition-colors">
                 <AvatarImage src="" />
-                <AvatarFallback className="gradient-primary text-primary-foreground font-semibold">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-accent-orange text-white font-semibold">
                   TR
                 </AvatarFallback>
               </Avatar>

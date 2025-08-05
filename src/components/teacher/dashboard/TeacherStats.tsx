@@ -10,7 +10,7 @@ const stats = [
     change: "+12",
     changeType: "increase" as const,
     icon: Users,
-    gradient: "from-primary/80 to-primary"
+    color: "bg-gradient-to-br from-blue-500 to-blue-600"
   },
   {
     title: "Active Classes",
@@ -18,7 +18,7 @@ const stats = [
     change: "2 today",
     changeType: "neutral" as const,
     icon: BookOpen,
-    gradient: "from-success/80 to-success"
+    color: "bg-gradient-to-br from-green-500 to-green-600"
   },
   {
     title: "This Week",
@@ -26,7 +26,7 @@ const stats = [
     change: "6 pending",
     changeType: "neutral" as const,
     icon: Calendar,
-    gradient: "from-accent-teal/80 to-accent-teal"
+    color: "bg-gradient-to-br from-purple-500 to-purple-600"
   },
   {
     title: "Avg Performance",
@@ -34,7 +34,7 @@ const stats = [
     change: "+5%",
     changeType: "increase" as const,
     icon: TrendingUp,
-    gradient: "from-accent-orange/80 to-accent-orange"
+    color: "bg-gradient-to-br from-orange-500 to-orange-600"
   }
 ]
 
@@ -44,22 +44,22 @@ export function TeacherStats() {
       {stats.map((stat, index) => (
         <Card 
           key={stat.title}
-          className="relative overflow-hidden border-border/50 shadow-modern backdrop-blur-sm bg-card/95 hover:shadow-modern-lg transition-all duration-300 hover:scale-105 hover:border-primary/30 group animate-fade-in"
+          className="relative overflow-hidden border-border/50 shadow-premium backdrop-blur-sm bg-card/95 hover:shadow-premium-lg transition-all duration-300 hover:scale-105 group animate-fade-in"
           style={{ animationDelay: `${index * 100}ms` }}
         >
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.gradient} shadow-sm group-hover:shadow-md transition-all duration-300`}>
+              <div className={`p-3 rounded-xl ${stat.color} shadow-modern group-hover:shadow-modern-lg transition-all duration-300`}>
                 <stat.icon className="h-6 w-6 text-white" />
               </div>
               
               {stat.changeType === "increase" && (
-                <Badge variant="secondary" className="bg-success/15 text-success border-success/30">
+                <Badge variant="secondary" className="bg-success/10 text-success border-success/20">
                   {stat.change}
                 </Badge>
               )}
               {stat.changeType === "neutral" && (
-                <Badge variant="secondary" className="bg-muted/50 text-muted-foreground border-muted-foreground/30">
+                <Badge variant="secondary" className="bg-muted text-muted-foreground">
                   {stat.change}
                 </Badge>
               )}
