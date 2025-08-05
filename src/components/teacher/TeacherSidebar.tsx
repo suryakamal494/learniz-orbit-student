@@ -117,31 +117,31 @@ export function TeacherSidebar() {
           variant="outline"
           size="icon"
           onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-[100] h-12 w-12 glass shadow-modern-lg hover:shadow-modern-xl hover:scale-105 transition-all duration-300 group"
+          className="fixed top-4 left-4 z-[100] h-12 w-12 glass shadow-modern-lg hover:shadow-modern-xl hover:scale-105 transition-all duration-300 group border-primary/20 hover:border-primary/30"
         >
-          <Menu className="h-5 w-5 transition-transform group-hover:scale-110" />
+          <Menu className="h-5 w-5 transition-transform group-hover:scale-110 text-primary" />
         </Button>
       )}
       
       <Sidebar 
         ref={sidebarRef}
-        className="border-r-0 bg-background shadow-modern-lg z-50 [&[data-mobile=true]]:bg-background"
+        className="border-r-0 bg-sidebar shadow-modern-lg z-50 [&[data-mobile=true]]:bg-sidebar"
       >
-        <SidebarHeader className="border-b border-border/40 p-6 bg-background">
+        <SidebarHeader className="border-b border-sidebar-border/40 p-6 bg-gradient-to-br from-sidebar to-sidebar/50">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-primary to-primary/80 shadow-modern">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl gradient-primary shadow-modern">
                   <GraduationCap className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-background animate-pulse"></div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-sidebar animate-pulse"></div>
               </div>
               
               {!isCollapsed && (
                 <div className="flex flex-col animate-fade-in">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl font-bold text-foreground">Learniz</span>
-                    <Badge variant="secondary" className="bg-accent/10 text-accent text-xs">Teacher</Badge>
+                    <span className="text-xl font-bold text-sidebar-foreground">Learniz</span>
+                    <Badge variant="secondary" className="bg-accent-teal/20 text-accent-teal border-accent-teal/30 text-xs">Teacher</Badge>
                   </div>
                   <span className="text-xs text-muted-foreground">Teacher Portal</span>
                 </div>
@@ -153,20 +153,20 @@ export function TeacherSidebar() {
                 variant="ghost"
                 size="icon"
                 onClick={toggleSidebar}
-                className="h-8 w-8 hover:bg-muted transition-colors group"
+                className="h-8 w-8 hover:bg-sidebar-accent/50 transition-colors group"
               >
-                <X className="h-4 w-4 transition-transform group-hover:rotate-90" />
+                <X className="h-4 w-4 transition-transform group-hover:rotate-90 text-sidebar-foreground/70" />
               </Button>
             )}
           </div>
         </SidebarHeader>
 
-        <SidebarContent className="px-4 py-6 bg-background">
+        <SidebarContent className="px-4 py-6 bg-gradient-to-b from-sidebar to-sidebar/95">
           <SidebarGroup>
-            <SidebarGroupLabel className="text-muted-foreground font-semibold mb-4 px-2 flex items-center gap-2">
+            <SidebarGroupLabel className="text-sidebar-foreground/70 font-semibold mb-4 px-2 flex items-center gap-2">
               {!isCollapsed && (
                 <>
-                  <Zap className="h-4 w-4" />
+                  <Zap className="h-4 w-4 text-accent-orange" />
                   Teacher Navigation
                 </>
               )}
@@ -179,11 +179,11 @@ export function TeacherSidebar() {
                     <SidebarMenuButton 
                       asChild={!item.hasSubmenu}
                       className={`
-                        relative rounded-xl transition-all duration-300 hover:bg-primary/10
+                        relative rounded-xl transition-all duration-300 hover:bg-primary/15 hover:shadow-sm
                         group h-12 border border-transparent backdrop-blur-sm
                         ${isActive(item.url) 
-                          ? 'bg-primary/15 text-primary border-primary/30 shadow-modern font-semibold' 
-                          : 'text-foreground/80 hover:text-primary hover:border-border/50'
+                          ? 'bg-gradient-to-r from-primary/20 to-primary/10 text-primary border-primary/30 shadow-md font-semibold' 
+                          : 'text-sidebar-foreground/80 hover:text-primary hover:border-primary/20'
                         }
                       `}
                       style={{ animationDelay: `${index * 50}ms` }}
@@ -195,8 +195,8 @@ export function TeacherSidebar() {
                           <div className={`
                             p-2 rounded-lg transition-all duration-300
                             ${isActive(item.url) 
-                              ? 'bg-primary/25 text-primary' 
-                              : 'group-hover:bg-primary/15 group-hover:text-primary'
+                              ? 'bg-primary/25 text-primary shadow-sm' 
+                              : 'group-hover:bg-primary/20 group-hover:text-primary'
                             }
                           `}>
                             <item.icon className="h-5 w-5" />
@@ -204,7 +204,7 @@ export function TeacherSidebar() {
                           
                           {!isCollapsed && (
                             <div className="flex items-center justify-between w-full">
-                              <span className="font-semibold text-base md:text-sm text-foreground group-hover:text-primary">
+                              <span className="font-semibold text-base md:text-sm text-sidebar-foreground group-hover:text-primary">
                                 {item.title}
                               </span>
                               
@@ -212,7 +212,7 @@ export function TeacherSidebar() {
                                 {item.badge && (
                                   <Badge 
                                     variant="secondary" 
-                                    className="bg-primary/15 text-primary text-xs h-5 min-w-5 flex items-center justify-center font-semibold"
+                                    className="bg-accent-orange/20 text-accent-orange border-accent-orange/30 text-xs h-5 min-w-5 flex items-center justify-center font-semibold"
                                   >
                                     {item.badge}
                                   </Badge>
@@ -228,8 +228,8 @@ export function TeacherSidebar() {
                           <div className={`
                             p-2 rounded-lg transition-all duration-300
                             ${isActive(item.url) 
-                              ? 'bg-primary/25 text-primary' 
-                              : 'group-hover:bg-primary/15 group-hover:text-primary'
+                              ? 'bg-primary/25 text-primary shadow-sm' 
+                              : 'group-hover:bg-primary/20 group-hover:text-primary'
                             }
                           `}>
                             <item.icon className="h-5 w-5" />
@@ -237,7 +237,7 @@ export function TeacherSidebar() {
                           
                           {!isCollapsed && (
                             <div className="flex items-center justify-between w-full">
-                              <span className="font-semibold text-base md:text-sm text-foreground group-hover:text-primary">
+                              <span className="font-semibold text-base md:text-sm text-sidebar-foreground group-hover:text-primary">
                                 {item.title}
                               </span>
                               
@@ -245,7 +245,7 @@ export function TeacherSidebar() {
                                 {item.badge && (
                                   <Badge 
                                     variant="secondary" 
-                                    className="bg-primary/15 text-primary text-xs h-5 min-w-5 flex items-center justify-center font-semibold"
+                                    className="bg-accent-orange/20 text-accent-orange border-accent-orange/30 text-xs h-5 min-w-5 flex items-center justify-center font-semibold"
                                   >
                                     {item.badge}
                                   </Badge>
