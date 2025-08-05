@@ -64,7 +64,7 @@ export default function AssignLMSNotesPage() {
         </Button>
         <div>
           <h1 className="text-2xl font-bold text-foreground">Assign LMS and Notes</h1>
-          <p className="text-muted-foreground">Home > Online Classes > Assign LMS and Notes</p>
+          <p className="text-muted-foreground">Home {'>'} Online Classes {'>'} Assign LMS and Notes</p>
         </div>
       </div>
 

@@ -92,7 +92,7 @@ export default function EditSchedulePage() {
         </Button>
         <div>
           <h1 className="text-2xl font-bold text-foreground">Edit Schedule</h1>
-          <p className="text-muted-foreground">Home > Online Classes > Edit Schedule</p>
+          <p className="text-muted-foreground">Home {'>'} Online Classes {'>'} Edit Schedule</p>
         </div>
       </div>
 

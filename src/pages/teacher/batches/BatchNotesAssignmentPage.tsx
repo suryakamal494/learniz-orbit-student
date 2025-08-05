@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { 
@@ -20,7 +19,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { SchedulePagination } from '@/components/schedule/SchedulePagination'
-import { mockNotesAssignments } from '@/data/mockNotesAssignments'
+import { mockNotesData } from '@/data/mockNotesAssignments'
 import { NotesAssignmentItem } from '@/types/batch'
 
 export default function BatchNotesAssignmentPage() {
@@ -30,6 +29,26 @@ export default function BatchNotesAssignmentPage() {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set())
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(20)
+
+  // Convert mockNotesData to the expected format
+  const mockNotesAssignments = mockNotesData.flatMap(subject => 
+    subject.chapters.flatMap(chapter => 
+      chapter.notes.map(note => ({
+        id: note.id,
+        title: note.title,
+        institute: 'Sample Institute', // You can modify this as needed
+        fileSize: note.fileSize,
+        uploadDate: note.uploadedAt,
+        isAssigned: false, // You can modify this based on your logic
+        notesFor: {
+          type: 'Chapter Notes',
+          subject: subject.subjectName,
+          chapter: chapter.title,
+          topic: chapter.description
+        }
+      }))
+    )
+  )
 
   const filteredNotes = useMemo(() => {
     return mockNotesAssignments.filter(item => {
