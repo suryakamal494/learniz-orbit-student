@@ -1,93 +1,272 @@
 
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Calendar, Download, Search, Filter } from 'lucide-react'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import { CalendarIcon, Download, Search, Filter, RotateCcw, ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { format } from 'date-fns'
+import { cn } from '@/lib/utils'
+import { mockAttendanceData, getBatches, getClasses } from '@/data/mockAttendanceData'
+import { AttendanceTable } from '@/components/teacher/reports/AttendanceTable'
 
 export default function AttendancePage() {
   const navigate = useNavigate()
+  const [selectedClass, setSelectedClass] = useState('')
   const [selectedBatch, setSelectedBatch] = useState('')
-  const [selectedDateRange, setSelectedDateRange] = useState('')
+  const [fromDate, setFromDate] = useState<Date>()
+  const [toDate, setToDate] = useState<Date>()
+  const [fromDateOpen, setFromDateOpen] = useState(false)
+  const [toDateOpen, setToDateOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [hasSearched, setHasSearched] = useState(false)
+
+  const batches = getBatches()
+  const classes = getClasses()
+
+  const filteredData = useMemo(() => {
+    if (!hasSearched) return []
+    
+    return mockAttendanceData.filter(record => {
+      const matchesClass = !selectedClass || record.classTitle === selectedClass
+      const matchesBatch = !selectedBatch || record.batch === selectedBatch
+      const recordDate = new Date(record.date)
+      const matchesFromDate = !fromDate || recordDate >= fromDate
+      const matchesToDate = !toDate || recordDate <= toDate
+      
+      return matchesClass && matchesBatch && matchesFromDate && matchesToDate
+    })
+  }, [selectedClass, selectedBatch, fromDate, toDate, hasSearched])
+
+  const handleSearch = () => {
+    if (!selectedBatch) {
+      alert('Please select a batch to generate the report.')
+      return
+    }
+    
+    setIsLoading(true)
+    setHasSearched(true)
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+  }
+
+  const handleReset = () => {
+    setSelectedClass('')
+    setSelectedBatch('')
+    setFromDate(undefined)
+    setToDate(undefined)
+    setHasSearched(false)
+  }
+
+  const handleExportAll = () => {
+    console.log('Exporting all attendance data...')
+    // Implement export functionality
+  }
 
   return (
-    <div className="p-6 space-y-6 max-w-6xl mx-auto">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Attendance Reports</h1>
-          <p className="text-muted-foreground">Track and analyze student attendance patterns</p>
-        </div>
-        <Button onClick={() => navigate('/teacher/reports')}>
-          Back to Reports
-        </Button>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Breadcrumb Navigation */}
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/teacher">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/teacher/reports">Reports</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbPage>Attendance</BreadcrumbPage>
+          </BreadcrumbList>
+        </Breadcrumb>
 
-      {/* Filters */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Filter className="h-5 w-5" />
-            Filters
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="text-sm font-medium mb-2 block">Select Batch</label>
-              <Select value={selectedBatch} onValueChange={setSelectedBatch}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose batch" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="batch1">Physics - Grade 12A</SelectItem>
-                  <SelectItem value="batch2">Chemistry - Grade 12B</SelectItem>
-                  <SelectItem value="batch3">Mathematics - Grade 11A</SelectItem>
-                </SelectContent>
-              </Select>
+        {/* Header Section */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Attendance Reports
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              Track and analyze student attendance patterns across all your classes
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <Button 
+              onClick={handleExportAll} 
+              variant="outline" 
+              className="glass border-border/40"
+              disabled={!hasSearched || filteredData.length === 0}
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export All
+            </Button>
+            <Button 
+              onClick={() => navigate('/teacher/reports')} 
+              variant="ghost"
+              className="gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Reports
+            </Button>
+          </div>
+        </div>
+
+        {/* Filters Card */}
+        <Card className="glass border-border/40">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Filter className="h-5 w-5 text-blue-500" />
+              Filters & Search
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Class Filter */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Class</label>
+                <Select value={selectedClass} onValueChange={setSelectedClass}>
+                  <SelectTrigger className="glass border-border/40">
+                    <SelectValue placeholder="Select class" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">All Classes</SelectItem>
+                    {classes.map((cls) => (
+                      <SelectItem key={cls} value={cls}>{cls}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Batch Filter (Required) */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground flex items-center gap-1">
+                  Batch
+                  <span className="text-red-500 text-xs">*required</span>
+                </label>
+                <Select value={selectedBatch} onValueChange={setSelectedBatch}>
+                  <SelectTrigger className={cn(
+                    "glass border-border/40",
+                    !selectedBatch && "border-red-200 focus:border-red-400"
+                  )}>
+                    <SelectValue placeholder="Select batch" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {batches.map((batch) => (
+                      <SelectItem key={batch} value={batch}>{batch}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* From Date */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">From Date</label>
+                <Popover open={fromDateOpen} onOpenChange={setFromDateOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal glass border-border/40",
+                        !fromDate && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {fromDate ? format(fromDate, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 glass border-border/40" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={fromDate}
+                      onSelect={(date) => {
+                        setFromDate(date)
+                        setFromDateOpen(false)
+                      }}
+                      className="p-3 pointer-events-auto"
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              {/* To Date */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">To Date</label>
+                <Popover open={toDateOpen} onOpenChange={setToDateOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal glass border-border/40",
+                        !toDate && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {toDate ? format(toDate, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 glass border-border/40" align="end">
+                    <Calendar
+                      mode="single"
+                      selected={toDate}
+                      onSelect={(date) => {
+                        setToDate(date)
+                        setToDateOpen(false)
+                      }}
+                      className="p-3 pointer-events-auto"
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
-            <div>
-              <label className="text-sm font-medium mb-2 block">Date Range</label>
-              <Select value={selectedDateRange} onValueChange={setSelectedDateRange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select period" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="week">This Week</SelectItem>
-                  <SelectItem value="month">This Month</SelectItem>
-                  <SelectItem value="quarter">This Quarter</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-end">
-              <Button className="w-full">
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 mt-6">
+              <Button 
+                onClick={handleSearch}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                disabled={isLoading}
+              >
                 <Search className="h-4 w-4 mr-2" />
-                Generate Report
+                {isLoading ? 'Generating...' : 'Generate Report'}
+              </Button>
+              <Button 
+                onClick={handleReset} 
+                variant="outline"
+                className="glass border-border/40"
+              >
+                <RotateCcw className="h-4 w-4 mr-2" />
+                Reset
               </Button>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* Sample Attendance Data */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Attendance Overview</CardTitle>
-          <Button variant="outline" size="sm">
-            <Download className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="text-center py-12 text-muted-foreground">
-              <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>Select batch and date range to view attendance reports</p>
+        {/* Results Section */}
+        <Card className="glass border-border/40">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">Attendance Records</CardTitle>
+              {hasSearched && !isLoading && (
+                <div className="text-sm text-muted-foreground">
+                  {filteredData.length} record{filteredData.length !== 1 ? 's' : ''} found
+                </div>
+              )}
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardHeader>
+          <CardContent>
+            <AttendanceTable data={filteredData} isLoading={isLoading} />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
