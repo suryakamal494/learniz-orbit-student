@@ -31,7 +31,7 @@ export default function AttendancePage() {
     if (!hasSearched) return []
     
     return mockAttendanceData.filter(record => {
-      const matchesClass = !selectedClass || record.classTitle === selectedClass
+      const matchesClass = !selectedClass || selectedClass === 'all' || record.classTitle === selectedClass
       const matchesBatch = !selectedBatch || record.batch === selectedBatch
       const recordDate = new Date(record.date)
       const matchesFromDate = !fromDate || recordDate >= fromDate
@@ -136,7 +136,7 @@ export default function AttendancePage() {
                     <SelectValue placeholder="Select class" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Classes</SelectItem>
+                    <SelectItem value="all">All Classes</SelectItem>
                     {classes.map((cls) => (
                       <SelectItem key={cls} value={cls}>{cls}</SelectItem>
                     ))}
