@@ -46,6 +46,12 @@ export const ContentFiltersPanel: React.FC<ContentFiltersPanelProps> = ({
     return { subjects, chapters, topics, categories, questionBankTypes }
   }, [filters.subject, filters.chapter])
 
+  const handleFilterChange = (key: keyof ContentFilters, value: string) => {
+    // Convert "all-*" values back to empty strings for internal logic
+    const actualValue = value.startsWith('all-') ? '' : value
+    onFilterChange(key, actualValue)
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -63,7 +69,7 @@ export const ContentFiltersPanel: React.FC<ContentFiltersPanelProps> = ({
             </label>
             <Select
               value={filters.subject}
-              onValueChange={(value) => onFilterChange('subject', value)}
+              onValueChange={(value) => handleFilterChange('subject', value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select subject" />
@@ -82,15 +88,15 @@ export const ContentFiltersPanel: React.FC<ContentFiltersPanelProps> = ({
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">Chapter</label>
             <Select
-              value={filters.chapter}
-              onValueChange={(value) => onFilterChange('chapter', value)}
+              value={filters.chapter || 'all-chapters'}
+              onValueChange={(value) => handleFilterChange('chapter', value)}
               disabled={!filters.subject}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select chapter" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Chapters</SelectItem>
+                <SelectItem value="all-chapters">All Chapters</SelectItem>
                 {filterOptions.chapters.map(chapter => (
                   <SelectItem key={chapter} value={chapter}>
                     {chapter}
@@ -104,15 +110,15 @@ export const ContentFiltersPanel: React.FC<ContentFiltersPanelProps> = ({
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">Topic</label>
             <Select
-              value={filters.topic}
-              onValueChange={(value) => onFilterChange('topic', value)}
+              value={filters.topic || 'all-topics'}
+              onValueChange={(value) => handleFilterChange('topic', value)}
               disabled={!filters.chapter}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select topic" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Topics</SelectItem>
+                <SelectItem value="all-topics">All Topics</SelectItem>
                 {filterOptions.topics.map(topic => (
                   <SelectItem key={topic} value={topic}>
                     {topic}
@@ -126,14 +132,14 @@ export const ContentFiltersPanel: React.FC<ContentFiltersPanelProps> = ({
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">Category</label>
             <Select
-              value={filters.category}
-              onValueChange={(value) => onFilterChange('category', value)}
+              value={filters.category || 'all-categories'}
+              onValueChange={(value) => handleFilterChange('category', value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all-categories">All Categories</SelectItem>
                 {filterOptions.categories.map(category => (
                   <SelectItem key={category} value={category}>
                     {category}
@@ -147,14 +153,14 @@ export const ContentFiltersPanel: React.FC<ContentFiltersPanelProps> = ({
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">Question Bank Type</label>
             <Select
-              value={filters.questionBankType}
-              onValueChange={(value) => onFilterChange('questionBankType', value)}
+              value={filters.questionBankType || 'all-types'}
+              onValueChange={(value) => handleFilterChange('questionBankType', value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all-types">All Types</SelectItem>
                 {filterOptions.questionBankTypes.map(type => (
                   <SelectItem key={type} value={type}>
                     {type}
