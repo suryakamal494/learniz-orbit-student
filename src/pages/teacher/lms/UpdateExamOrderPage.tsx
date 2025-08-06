@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { TeacherDataWrapper } from '@/components/teacher/ui/TeacherDataWrapper'
 import { ContentOrderTable } from '@/components/teacher/lms/order/ContentOrderTable'
 import { mockLMSSeries } from '@/data/mockLMSSeries'
-import { mockLMSContent } from '@/data/mockLMSContent'
 import { mockExamsData } from '@/data/mockExamsData'
 import { LMSContentItem } from '@/types/lmsContent'
 import { ExamData } from '@/types/exam'
@@ -16,6 +15,75 @@ import { toast } from '@/components/ui/use-toast'
 interface ContentItemWithOrder extends LMSContentItem {
   order: number
   assignedQuizId?: string
+}
+
+// Mock LMS content for testing the update order functionality
+const getMockContentForSeries = (seriesId: string): LMSContentItem[] => {
+  const series = mockLMSSeries.find(s => s.id === seriesId)
+  if (!series) return []
+
+  return [
+    {
+      id: `content-${seriesId}-1`,
+      title: `Introduction to ${series.topic}`,
+      type: 'video-url',
+      institute: series.institute,
+      subject: series.subject,
+      chapter: series.chapter,
+      topic: series.topic,
+      content: 'https://www.youtube.com/watch?v=example1',
+      url: 'https://www.youtube.com/watch?v=example1',
+      description: `Basic introduction to ${series.topic} with practical examples and demonstrations`,
+      createdAt: '2024-01-15T10:00:00Z',
+      updatedAt: '2024-01-15T10:00:00Z',
+      createdBy: 'Prof. Smith'
+    },
+    {
+      id: `content-${seriesId}-2`,
+      title: `${series.topic} - Theory and Concepts`,
+      type: 'pdf',
+      institute: series.institute,
+      subject: series.subject,
+      chapter: series.chapter,
+      topic: series.topic,
+      content: `Comprehensive study guide covering theoretical concepts of ${series.topic}`,
+      url: `/documents/${series.topic.toLowerCase().replace(/\s+/g, '-')}-theory.pdf`,
+      description: 'Detailed theoretical explanation with diagrams and formulas',
+      createdAt: '2024-01-14T09:30:00Z',
+      updatedAt: '2024-01-14T09:30:00Z',
+      createdBy: 'Prof. Johnson'
+    },
+    {
+      id: `content-${seriesId}-3`,
+      title: `Interactive ${series.topic} Simulation`,
+      type: 'iframe',
+      institute: series.institute,
+      subject: series.subject,
+      chapter: series.chapter,
+      topic: series.topic,
+      content: `<iframe src="https://www.simulation.com/${series.topic}" width="100%" height="400px"></iframe>`,
+      url: `https://www.simulation.com/${series.topic}`,
+      description: 'Interactive simulation to visualize and experiment with concepts',
+      createdAt: '2024-01-13T14:20:00Z',
+      updatedAt: '2024-01-13T14:20:00Z',
+      createdBy: 'Dr. Williams'
+    },
+    {
+      id: `content-${seriesId}-4`,
+      title: `${series.topic} - Practice Problems`,
+      type: 'image',
+      institute: series.institute,
+      subject: series.subject,
+      chapter: series.chapter,
+      topic: series.topic,
+      content: `Collection of practice problems and solutions for ${series.topic}`,
+      url: `/images/${series.topic.toLowerCase().replace(/\s+/g, '-')}-problems.png`,
+      description: 'Practice worksheets with step-by-step solutions',
+      createdAt: '2024-01-12T11:15:00Z',
+      updatedAt: '2024-01-12T11:15:00Z',
+      createdBy: 'Prof. Davis'
+    }
+  ]
 }
 
 const UpdateExamOrderPage = () => {
@@ -50,14 +118,11 @@ const UpdateExamOrderPage = () => {
 
         setSeriesData(series)
 
-        // Get content items for this series (simulate by filtering by subject/chapter)
-        const relatedContent = mockLMSContent.filter(item => 
-          item.subject === series.subject && 
-          item.chapter === series.chapter
-        )
+        // Get mock content items for this series
+        const mockContent = getMockContentForSeries(seriesId!)
 
         // Add order and quiz assignment to content items
-        const contentWithOrder = relatedContent.map((item, index) => ({
+        const contentWithOrder = mockContent.map((item, index) => ({
           ...item,
           order: index + 1,
           assignedQuizId: undefined
