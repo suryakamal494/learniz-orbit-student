@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import { Eye, GripVertical, FileText, Video, Image, Globe } from 'lucide-react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -282,7 +281,7 @@ export const ContentOrderTable: React.FC<ContentOrderTableProps> = ({
         <ContentPreviewModal
           isOpen={!!previewItem}
           onClose={() => setPreviewItem(null)}
-          content={previewItem}
+          item={previewItem}
         />
       )}
     </>
