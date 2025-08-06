@@ -89,8 +89,7 @@ const LMSSeriesPage = () => {
         navigate(`/teacher/lms/series/${seriesId}/update`)
         break
       case 'update-exam':
-        console.log('Update exam/order for series:', seriesId)
-        // Add update exam logic here
+        navigate(`/teacher/lms/series/${seriesId}/update-order`)
         break
       case 'update-course':
         console.log('Update course for series:', seriesId)

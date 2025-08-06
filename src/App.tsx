@@ -57,6 +57,7 @@ import ContentLibraryPage from './pages/teacher/lms/content/ContentLibraryPage';
 import LMSSeriesPage from './pages/teacher/lms/LMSSeriesPage';
 import CreateLMSSeriesPage from './pages/teacher/lms/CreateLMSSeriesPage';
 import UpdateLMSSeriesPage from './pages/teacher/lms/UpdateLMSSeriesPage';
+import UpdateExamOrderPage from './pages/teacher/lms/UpdateExamOrderPage';
 
 // Teacher Reports - Create placeholder pages
 import ReportsMainPage from './pages/teacher/reports/ReportsMainPage';
@@ -144,6 +145,7 @@ function App() {
           <Route path="lms/series" element={<LMSSeriesPage />} />
           <Route path="lms/series/create" element={<CreateLMSSeriesPage />} />
           <Route path="lms/series/:seriesId/update" element={<UpdateLMSSeriesPage />} />
+          <Route path="lms/series/:seriesId/update-order" element={<UpdateExamOrderPage />} />
           <Route path="lms/notes" element={<NotesPage />} />
           <Route path="lms/directory" element={<LMSDirectoryPage />} />
         </Route>
