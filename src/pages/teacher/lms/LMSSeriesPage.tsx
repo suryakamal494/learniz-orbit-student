@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react'
 import { Plus, Search, Filter, Download, FileText, Eye, Edit, Settings, BookOpen } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -78,6 +77,28 @@ const LMSSeriesPage = () => {
     // Search is already applied through useMemo, this is just for UI feedback
     console.log('Search triggered:', searchQuery)
     setCurrentPage(1)
+  }
+
+  const handleSeriesAction = (seriesId: string, action: string) => {
+    switch (action) {
+      case 'preview':
+        console.log('Preview series:', seriesId)
+        // Add preview logic here
+        break
+      case 'update':
+        navigate(`/teacher/lms/series/${seriesId}/update`)
+        break
+      case 'update-exam':
+        console.log('Update exam/order for series:', seriesId)
+        // Add update exam logic here
+        break
+      case 'update-course':
+        console.log('Update course for series:', seriesId)
+        // Add update course logic here
+        break
+      default:
+        console.log('Unknown action:', action)
+    }
   }
 
   const getSeriesTypeColor = (type: LMSSeriesType) => {
@@ -331,19 +352,19 @@ const LMSSeriesPage = () => {
                                   </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
-                                  <DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => handleSeriesAction(series.id, 'preview')}>
                                     <Eye className="h-4 w-4 mr-2" />
                                     Preview
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => handleSeriesAction(series.id, 'update')}>
                                     <Edit className="h-4 w-4 mr-2" />
                                     Update
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => handleSeriesAction(series.id, 'update-exam')}>
                                     <Settings className="h-4 w-4 mr-2" />
                                     Update Exam/Order
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => handleSeriesAction(series.id, 'update-course')}>
                                     <BookOpen className="h-4 w-4 mr-2" />
                                     Update Course
                                   </DropdownMenuItem>
@@ -376,19 +397,19 @@ const LMSSeriesPage = () => {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleSeriesAction(series.id, 'preview')}>
                                 <Eye className="h-4 w-4 mr-2" />
                                 Preview
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleSeriesAction(series.id, 'update')}>
                                 <Edit className="h-4 w-4 mr-2" />
                                 Update
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleSeriesAction(series.id, 'update-exam')}>
                                 <Settings className="h-4 w-4 mr-2" />
                                 Update Exam/Order
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleSeriesAction(series.id, 'update-course')}>
                                 <BookOpen className="h-4 w-4 mr-2" />
                                 Update Course
                               </DropdownMenuItem>
