@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -8,12 +7,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Plus, Search, Filter, Edit, Eye, FileText } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { mockInstructions } from '@/data/mockInstructions'
+import InstructionPreviewModal from '@/components/teacher/exams/InstructionPreviewModal'
+import type { Instruction } from '@/types/instruction'
 
 export default function InstructionsPage() {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedSubject, setSelectedSubject] = useState('all')
   const [selectedType, setSelectedType] = useState('all')
+  
+  // Preview modal state
+  const [previewModal, setPreviewModal] = useState<{
+    isOpen: boolean
+    instruction: Instruction | null
+  }>({
+    isOpen: false,
+    instruction: null
+  })
 
   const handleCreateInstruction = () => {
     navigate('/teacher/exams/instructions/create')
@@ -21,6 +31,25 @@ export default function InstructionsPage() {
 
   const handleEditInstruction = (instructionId: string) => {
     navigate(`/teacher/exams/instructions/${instructionId}/edit`)
+  }
+
+  const handlePreviewInstruction = (instruction: Instruction) => {
+    setPreviewModal({
+      isOpen: true,
+      instruction
+    })
+  }
+
+  const handleClosePreview = () => {
+    setPreviewModal({
+      isOpen: false,
+      instruction: null
+    })
+  }
+
+  const handleEditFromPreview = (instructionId: string) => {
+    handleClosePreview()
+    handleEditInstruction(instructionId)
   }
 
   // Filtering logic
@@ -119,7 +148,11 @@ export default function InstructionsPage() {
                   Updated: {new Date(instruction.updatedAt).toLocaleDateString()}
                 </span>
                 <div className="flex gap-1">
-                  <Button size="sm" variant="ghost">
+                  <Button 
+                    size="sm" 
+                    variant="ghost"
+                    onClick={() => handlePreviewInstruction(instruction)}
+                  >
                     <Eye className="h-4 w-4" />
                   </Button>
                   <Button 
@@ -135,6 +168,14 @@ export default function InstructionsPage() {
           </Card>
         ))}
       </div>
+
+      {/* Preview Modal */}
+      <InstructionPreviewModal
+        isOpen={previewModal.isOpen}
+        onClose={handleClosePreview}
+        instruction={previewModal.instruction}
+        onEdit={handleEditFromPreview}
+      />
     </div>
   )
 }

@@ -43,7 +43,7 @@ const EditInstructionPage: React.FC = () => {
       })
     } else {
       // Instruction not found, redirect back
-      navigate('/teacher/instructions')
+      navigate('/teacher/exams/instructions')
       toast({
         title: "Error",
         description: "Instruction not found",
@@ -61,11 +61,11 @@ const EditInstructionPage: React.FC = () => {
       description: "Instruction updated successfully",
     })
     
-    navigate('/teacher/instructions')
+    navigate('/teacher/exams/instructions')
   }
 
   const handleCancel = () => {
-    navigate('/teacher/instructions')
+    navigate('/teacher/exams/instructions')
   }
 
   if (!instruction) {
@@ -74,7 +74,7 @@ const EditInstructionPage: React.FC = () => {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900">Instruction Not Found</h1>
           <p className="text-gray-600 mt-2">The requested instruction could not be found.</p>
-          <Button onClick={() => navigate('/teacher/instructions')} className="mt-4">
+          <Button onClick={() => navigate('/teacher/exams/instructions')} className="mt-4">
             Back to Instructions
           </Button>
         </div>
@@ -85,7 +85,7 @@ const EditInstructionPage: React.FC = () => {
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" onClick={() => navigate('/teacher/instructions')}>
+        <Button variant="ghost" onClick={() => navigate('/teacher/exams/instructions')}>
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Instructions
         </Button>
