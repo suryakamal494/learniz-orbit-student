@@ -12,13 +12,14 @@ import { mockLMSSeries } from '@/data/mockLMSSeries'
 import { mockLMSContent } from '@/data/mockLMSContent'
 import { LMSSeries, LMSSeriesType } from '@/types/lmsSeries'
 import { LMSContentItem } from '@/types/lmsContent'
+import type { ContentItem } from '@/types/lms'
 
 const LMSSeriesPreviewPage = () => {
   const { seriesId } = useParams()
   const navigate = useNavigate()
   const [mediaViewer, setMediaViewer] = useState<{
     isOpen: boolean
-    content: LMSContentItem | null
+    content: ContentItem | null
   }>({
     isOpen: false,
     content: null
@@ -82,22 +83,47 @@ const LMSSeriesPreviewPage = () => {
     return type.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
   }
 
-  const openMediaViewer = (content: LMSContentItem) => {
-    // Transform LMSContentItem to match MediaViewer expected format
-    const transformedContent = {
-      id: content.id,
-      title: content.title,
-      type: content.type === 'video-url' ? 'youtube' as const : 
-            content.type === 'pdf' ? 'pdf' as const :
-            content.type === 'image' ? 'video' as const : // Using video type for images
-            'reading' as const,
-      url: content.url,
-      description: content.description
+  // Transform LMSContentItem to ContentItem for MediaViewer compatibility
+  const transformToContentItem = (item: LMSContentItem): ContentItem => {
+    // Map LMSContentType to ContentItem type
+    let contentType: ContentItem['type']
+    switch (item.type) {
+      case 'video-url':
+        contentType = 'youtube'
+        break
+      case 'pdf':
+        contentType = 'pdf'
+        break
+      case 'image':
+        contentType = 'video' // Using video type as fallback for images
+        break
+      case 'iframe':
+        contentType = 'reading' // Using reading type as fallback for iframes
+        break
+      case 'text':
+        contentType = 'reading'
+        break
+      case 'file':
+        contentType = 'pdf'
+        break
+      default:
+        contentType = 'reading'
     }
-    
+
+    return {
+      id: item.id,
+      title: item.title,
+      type: contentType,
+      url: item.url,
+      description: item.description
+    }
+  }
+
+  const openMediaViewer = (content: LMSContentItem) => {
+    const transformedContent = transformToContentItem(content)
     setMediaViewer({
       isOpen: true,
-      content: transformedContent as any
+      content: transformedContent
     })
   }
 
