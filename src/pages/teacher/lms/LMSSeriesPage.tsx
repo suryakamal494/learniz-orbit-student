@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react'
 import { Plus, Search, Filter, Download, FileText, Eye, Edit, Settings, BookOpen } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -82,8 +83,7 @@ const LMSSeriesPage = () => {
   const handleSeriesAction = (seriesId: string, action: string) => {
     switch (action) {
       case 'preview':
-        console.log('Preview series:', seriesId)
-        // Add preview logic here
+        navigate(`/teacher/lms/series/${seriesId}/preview`)
         break
       case 'update':
         navigate(`/teacher/lms/series/${seriesId}/update`)
