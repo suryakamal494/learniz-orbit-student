@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from '@/components/ui/sonner'
 import { AppLayout } from '@/components/layout/AppLayout'
@@ -72,6 +72,19 @@ import DetailedExamReportPage from '@/pages/teacher/reports/DetailedExamReportPa
 
 const queryClient = new QueryClient()
 
+// Layout wrapper components
+const StudentLayoutWrapper = () => (
+  <AppLayout>
+    <Outlet />
+  </AppLayout>
+)
+
+const TeacherLayoutWrapper = () => (
+  <TeacherLayout>
+    <Outlet />
+  </TeacherLayout>
+)
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -81,7 +94,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           
           {/* Student Routes */}
-          <Route path="/" element={<AppLayout />}>
+          <Route path="/" element={<StudentLayoutWrapper />}>
             <Route index element={<Index />} />
             <Route path="schedule" element={<SchedulePage />} />
             <Route path="messages" element={<MessagesPage />} />
@@ -95,7 +108,7 @@ function App() {
           </Route>
           
           {/* Teacher Routes */}
-          <Route path="/teacher" element={<TeacherLayout />}>
+          <Route path="/teacher" element={<TeacherLayoutWrapper />}>
             <Route index element={<TeacherDashboard />} />
             <Route path="schedule" element={<TeacherSchedulePage />} />
             <Route path="messages" element={<TeacherMessagesPage />} />
