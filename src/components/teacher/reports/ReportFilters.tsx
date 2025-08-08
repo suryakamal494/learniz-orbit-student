@@ -37,7 +37,7 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({
             <SelectValue placeholder="Select batch (optional)" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Batches</SelectItem>
+            <SelectItem value="all">All Batches</SelectItem>
             {batches.map((batch) => (
               <SelectItem key={batch} value={batch}>
                 {batch}
@@ -71,7 +71,10 @@ export const ReportFilters: React.FC<ReportFiltersProps> = ({
               initialFocus
               mode="range"
               defaultMonth={filters.dateRange?.from}
-              selected={filters.dateRange}
+              selected={filters.dateRange?.from && filters.dateRange?.to ? {
+                from: filters.dateRange.from,
+                to: filters.dateRange.to
+              } : undefined}
               onSelect={(range) => 
                 onFiltersChange({ 
                   dateRange: {
