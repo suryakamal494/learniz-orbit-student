@@ -81,12 +81,13 @@ export function QuestionAnalysisChart({ questionAnalysis }: QuestionAnalysisChar
                           content={({ active, payload }) => {
                             if (active && payload && payload.length) {
                               const data = payload[0]
-                              const percentage = ((data.value || 0) / question.totalStudents * 100).toFixed(1)
+                              const value = typeof data.value === 'number' ? data.value : 0
+                              const percentage = ((value / question.totalStudents) * 100).toFixed(1)
                               return (
                                 <div className="bg-white p-3 border rounded shadow-lg">
                                   <p className="font-medium capitalize">{data.name}</p>
                                   <p className="text-sm text-gray-600">
-                                    {data.value} students ({percentage}%)
+                                    {value} students ({percentage}%)
                                   </p>
                                 </div>
                               )
