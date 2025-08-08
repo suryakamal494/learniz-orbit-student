@@ -93,6 +93,109 @@ export const mockStudentResults: Record<string, StudentExamResult[]> = {
       percentage: 60,
       passed: false
     }
+  ],
+  'exam-2': [
+    {
+      studentId: 'student-4',
+      studentName: 'Sarah Wilson',
+      answers: [
+        { questionId: 'q1', questionNumber: 1, status: 'correct', selectedAnswer: 'B', correctAnswer: 'B', timeSpent: 50 },
+        { questionId: 'q2', questionNumber: 2, status: 'correct', selectedAnswer: 'A', correctAnswer: 'A', timeSpent: 45 }
+      ],
+      totalScore: 20,
+      percentage: 85,
+      passed: true
+    }
+  ],
+  'exam-3': [
+    {
+      studentId: 'student-5',
+      studentName: 'David Brown',
+      answers: [
+        { questionId: 'q1', questionNumber: 1, status: 'correct', selectedAnswer: 'C', correctAnswer: 'C', timeSpent: 60 },
+        { questionId: 'q2', questionNumber: 2, status: 'wrong', selectedAnswer: 'A', correctAnswer: 'B', timeSpent: 55 }
+      ],
+      totalScore: 15,
+      percentage: 75,
+      passed: true
+    }
+  ],
+  'exam-4': [
+    {
+      studentId: 'student-1',
+      studentName: 'John Doe',
+      answers: [
+        { questionId: 'q1', questionNumber: 1, status: 'correct', selectedAnswer: 'A', correctAnswer: 'A', timeSpent: 120 },
+        { questionId: 'q2', questionNumber: 2, status: 'wrong', selectedAnswer: 'B', correctAnswer: 'C', timeSpent: 180 },
+        { questionId: 'q3', questionNumber: 3, status: 'correct', selectedAnswer: 'D', correctAnswer: 'D', timeSpent: 150 },
+        { questionId: 'q4', questionNumber: 4, status: 'skipped', correctAnswer: 'A', timeSpent: 0 },
+        { questionId: 'q5', questionNumber: 5, status: 'correct', selectedAnswer: 'B', correctAnswer: 'B', timeSpent: 200 },
+        { questionId: 'q6', questionNumber: 6, status: 'wrong', selectedAnswer: 'C', correctAnswer: 'A', timeSpent: 160 }
+      ],
+      totalScore: 12,
+      percentage: 67,
+      passed: true
+    },
+    {
+      studentId: 'student-2',
+      studentName: 'Jane Smith',
+      answers: [
+        { questionId: 'q1', questionNumber: 1, status: 'correct', selectedAnswer: 'A', correctAnswer: 'A', timeSpent: 100 },
+        { questionId: 'q2', questionNumber: 2, status: 'correct', selectedAnswer: 'C', correctAnswer: 'C', timeSpent: 140 },
+        { questionId: 'q3', questionNumber: 3, status: 'correct', selectedAnswer: 'D', correctAnswer: 'D', timeSpent: 130 },
+        { questionId: 'q4', questionNumber: 4, status: 'correct', selectedAnswer: 'A', correctAnswer: 'A', timeSpent: 170 },
+        { questionId: 'q5', questionNumber: 5, status: 'wrong', selectedAnswer: 'C', correctAnswer: 'B', timeSpent: 190 },
+        { questionId: 'q6', questionNumber: 6, status: 'correct', selectedAnswer: 'A', correctAnswer: 'A', timeSpent: 150 }
+      ],
+      totalScore: 15,
+      percentage: 83,
+      passed: true
+    },
+    {
+      studentId: 'student-3',
+      studentName: 'Mike Johnson',
+      answers: [
+        { questionId: 'q1', questionNumber: 1, status: 'wrong', selectedAnswer: 'B', correctAnswer: 'A', timeSpent: 180 },
+        { questionId: 'q2', questionNumber: 2, status: 'skipped', correctAnswer: 'C', timeSpent: 0 },
+        { questionId: 'q3', questionNumber: 3, status: 'correct', selectedAnswer: 'D', correctAnswer: 'D', timeSpent: 200 },
+        { questionId: 'q4', questionNumber: 4, status: 'wrong', selectedAnswer: 'B', correctAnswer: 'A', timeSpent: 160 },
+        { questionId: 'q5', questionNumber: 5, status: 'correct', selectedAnswer: 'B', correctAnswer: 'B', timeSpent: 140 },
+        { questionId: 'q6', questionNumber: 6, status: 'skipped', correctAnswer: 'A', timeSpent: 0 }
+      ],
+      totalScore: 6,
+      percentage: 33,
+      passed: false
+    },
+    {
+      studentId: 'student-6',
+      studentName: 'Emily Davis',
+      answers: [
+        { questionId: 'q1', questionNumber: 1, status: 'correct', selectedAnswer: 'A', correctAnswer: 'A', timeSpent: 110 },
+        { questionId: 'q2', questionNumber: 2, status: 'correct', selectedAnswer: 'C', correctAnswer: 'C', timeSpent: 120 },
+        { questionId: 'q3', questionNumber: 3, status: 'wrong', selectedAnswer: 'A', correctAnswer: 'D', timeSpent: 180 },
+        { questionId: 'q4', questionNumber: 4, status: 'correct', selectedAnswer: 'A', correctAnswer: 'A', timeSpent: 160 },
+        { questionId: 'q5', questionNumber: 5, status: 'correct', selectedAnswer: 'B', correctAnswer: 'B', timeSpent: 150 },
+        { questionId: 'q6', questionNumber: 6, status: 'correct', selectedAnswer: 'A', correctAnswer: 'A', timeSpent: 140 }
+      ],
+      totalScore: 15,
+      percentage: 83,
+      passed: true
+    },
+    {
+      studentId: 'student-7',
+      studentName: 'Alex Chen',
+      answers: [
+        { questionId: 'q1', questionNumber: 1, status: 'correct', selectedAnswer: 'A', correctAnswer: 'A', timeSpent: 90 },
+        { questionId: 'q2', questionNumber: 2, status: 'wrong', selectedAnswer: 'A', correctAnswer: 'C', timeSpent: 200 },
+        { questionId: 'q3', questionNumber: 3, status: 'correct', selectedAnswer: 'D', correctAnswer: 'D', timeSpent: 170 },
+        { questionId: 'q4', questionNumber: 4, status: 'correct', selectedAnswer: 'A', correctAnswer: 'A', timeSpent: 130 },
+        { questionId: 'q5', questionNumber: 5, status: 'skipped', correctAnswer: 'B', timeSpent: 0 },
+        { questionId: 'q6', questionNumber: 6, status: 'wrong', selectedAnswer: 'C', correctAnswer: 'A', timeSpent: 180 }
+      ],
+      totalScore: 9,
+      percentage: 50,
+      passed: false
+    }
   ]
 }
 
@@ -137,6 +240,68 @@ export const mockQuestionAnalysis: Record<string, QuestionAnalysis[]> = {
       skippedCount: 1,
       totalStudents: 25,
       correctPercentage: 88
+    }
+  ],
+  'exam-4': [
+    {
+      questionId: 'q1',
+      questionNumber: 1,
+      questionText: 'What is the frequency of a wave with wavelength 2m and speed 10 m/s?',
+      correctCount: 4,
+      wrongCount: 1,
+      skippedCount: 0,
+      totalStudents: 5,
+      correctPercentage: 80
+    },
+    {
+      questionId: 'q2',
+      questionNumber: 2,
+      questionText: 'A light ray travels from air to glass. What happens to its speed?',
+      correctCount: 2,
+      wrongCount: 2,
+      skippedCount: 1,
+      totalStudents: 5,
+      correctPercentage: 40
+    },
+    {
+      questionId: 'q3',
+      questionNumber: 3,
+      questionText: 'Calculate the refractive index if light bends 30° from normal in the medium.',
+      correctCount: 4,
+      wrongCount: 1,
+      skippedCount: 0,
+      totalStudents: 5,
+      correctPercentage: 80
+    },
+    {
+      questionId: 'q4',
+      questionNumber: 4,
+      questionText: 'What is the critical angle for total internal reflection in diamond (n=2.4)?',
+      correctCount: 3,
+      wrongCount: 1,
+      skippedCount: 1,
+      totalStudents: 5,
+      correctPercentage: 60
+    },
+    {
+      questionId: 'q5',
+      questionNumber: 5,
+      questionText: 'A concave mirror has focal length 20cm. Where should object be placed for magnification of 2?',
+      correctCount: 3,
+      wrongCount: 1,
+      skippedCount: 1,
+      totalStudents: 5,
+      correctPercentage: 60
+    },
+    {
+      questionId: 'q6',
+      questionNumber: 6,
+      questionText: 'Calculate the power of a lens with focal length 25cm.',
+      correctCount: 3,
+      wrongCount: 2,
+      skippedCount: 0,
+      totalStudents: 5,
+      correctPercentage: 60
     }
   ]
 }
