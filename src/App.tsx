@@ -60,10 +60,11 @@ import UpdateLMSSeriesPage from './pages/teacher/lms/UpdateLMSSeriesPage';
 import UpdateExamOrderPage from './pages/teacher/lms/UpdateExamOrderPage';
 import LMSSeriesPreviewPage from './pages/teacher/lms/LMSSeriesPreviewPage';
 
-// Teacher Reports - Create placeholder pages
+// Teacher Reports - Enhanced
 import ReportsMainPage from './pages/teacher/reports/ReportsMainPage';
 import AttendancePage from './pages/teacher/reports/AttendancePage';
 import BatchReportsPage from './pages/teacher/reports/BatchReportsPage';
+import DetailedExamReportPage from './pages/teacher/reports/DetailedExamReportPage';
 
 // Teacher LMS Additional Pages
 import LMSMainPage from './pages/teacher/lms/LMSMainPage';
@@ -71,6 +72,22 @@ import NotesPage from './pages/teacher/lms/NotesPage';
 import LMSDirectoryPage from './pages/teacher/lms/LMSDirectoryPage';
 
 import { AppLayout } from './components/layout/AppLayout';
+
+function StudentLayoutWrapper() {
+  return (
+    <AppLayout>
+      <Outlet />
+    </AppLayout>
+  );
+}
+
+function TeacherLayoutWrapper() {
+  return (
+    <TeacherLayout>
+      <Outlet />
+    </TeacherLayout>
+  );
+}
 
 function App() {
   return (
@@ -80,7 +97,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         
         {/* Student Routes */}
-        <Route path="/" element={<AppLayout><Outlet /></AppLayout>}>
+        <Route path="/" element={<StudentLayoutWrapper />}>
           <Route path="dashboard" element={<Index />} />
           <Route path="subject/:subjectId" element={<SubjectPage />} />
           <Route path="exam/:examId" element={<ExamPage />} />
@@ -94,7 +111,7 @@ function App() {
         </Route>
 
         {/* Teacher Routes */}
-        <Route path="/teacher" element={<TeacherLayout><Outlet /></TeacherLayout>}>
+        <Route path="/teacher" element={<TeacherLayoutWrapper />}>
           <Route index element={<TeacherDashboard />} />
           <Route path="schedule" element={<TeacherSchedulePage />} />
           <Route path="schedule/create" element={<CreateClassPage />} />
@@ -114,10 +131,11 @@ function App() {
           {/* Instructions Route - Alias for convenience */}
           <Route path="instructions" element={<Navigate to="/teacher/exams/instructions" replace />} />
 
-          {/* Reports Routes - New */}
+          {/* Reports Routes - Enhanced */}
           <Route path="reports" element={<ReportsMainPage />} />
           <Route path="reports/attendance" element={<AttendancePage />} />
           <Route path="reports/batch" element={<BatchReportsPage />} />
+          <Route path="reports/batch/:batchId/exam/:examId" element={<DetailedExamReportPage />} />
 
           {/* Batches */}
           <Route path="batches" element={<BatchListingPage />} />
