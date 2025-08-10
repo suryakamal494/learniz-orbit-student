@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, FileText, Video, Image, Globe, Download, Eye, Calendar, User, Hash } from 'lucide-react'
@@ -25,18 +24,90 @@ const LMSSeriesPreviewPage = () => {
     content: null
   })
 
+  // Sample fallback content to ensure at least 4 items are always shown
+  const sampleContent: LMSContentItem[] = [
+    {
+      id: 'sample-1',
+      title: 'Introduction Video',
+      type: 'video-url',
+      url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      description: 'A comprehensive introduction to the topic with visual examples and explanations.',
+      institute: 'Sample Institute',
+      subject: 'Sample Subject',
+      chapter: 'Sample Chapter',
+      topic: 'Sample Topic',
+      createdBy: 'Teacher',
+      createdAt: '2024-01-15T10:00:00Z',
+      updatedAt: '2024-01-15T10:00:00Z'
+    },
+    {
+      id: 'sample-2',
+      title: 'Study Guide PDF',
+      type: 'pdf',
+      url: '/placeholder.pdf',
+      description: 'Detailed study materials and practice questions for comprehensive learning.',
+      institute: 'Sample Institute',
+      subject: 'Sample Subject',
+      chapter: 'Sample Chapter',
+      topic: 'Sample Topic',
+      createdBy: 'Teacher',
+      createdAt: '2024-01-15T11:00:00Z',
+      updatedAt: '2024-01-15T11:00:00Z'
+    },
+    {
+      id: 'sample-3',
+      title: 'Interactive Simulation',
+      type: 'iframe',
+      url: 'https://www.example.com/simulation',
+      description: 'Interactive content that helps visualize complex concepts through simulations.',
+      institute: 'Sample Institute',
+      subject: 'Sample Subject',
+      chapter: 'Sample Chapter',
+      topic: 'Sample Topic',
+      createdBy: 'Teacher',
+      createdAt: '2024-01-15T12:00:00Z',
+      updatedAt: '2024-01-15T12:00:00Z'
+    },
+    {
+      id: 'sample-4',
+      title: 'Concept Diagram',
+      type: 'image',
+      url: '/placeholder.svg',
+      description: 'Visual representation of key concepts with detailed annotations and explanations.',
+      institute: 'Sample Institute',
+      subject: 'Sample Subject',
+      chapter: 'Sample Chapter',
+      topic: 'Sample Topic',
+      createdBy: 'Teacher',
+      createdAt: '2024-01-15T13:00:00Z',
+      updatedAt: '2024-01-15T13:00:00Z'
+    }
+  ]
+
   // Get series data and associated content
   const seriesData = useMemo(() => {
     const series = mockLMSSeries.find(s => s.id === seriesId)
     if (!series) return null
 
     // Filter content items that belong to this series
-    const content = mockLMSContent.filter(item => 
+    let content = mockLMSContent.filter(item => 
       item.institute === series.institute &&
       item.subject === series.subject &&
       item.chapter === series.chapter &&
       item.topic === series.topic
     )
+
+    // If we have less than 4 items, add sample content to ensure meaningful preview
+    if (content.length < 4) {
+      const additionalSample = sampleContent.slice(0, 4 - content.length).map(sample => ({
+        ...sample,
+        institute: series.institute,
+        subject: series.subject,
+        chapter: series.chapter,
+        topic: series.topic
+      }))
+      content = [...content, ...additionalSample]
+    }
 
     return { series, content }
   }, [seriesId])

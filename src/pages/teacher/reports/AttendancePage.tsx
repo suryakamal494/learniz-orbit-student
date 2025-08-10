@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -27,6 +26,7 @@ export default function AttendancePage() {
   const batches = getBatches()
   const classes = getClasses()
 
+  // Show all reports by default, then filter based on user selection
   const filteredData = useMemo(() => {
     if (!hasSearched) return []
     

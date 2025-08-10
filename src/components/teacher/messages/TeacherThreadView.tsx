@@ -1,10 +1,9 @@
-
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { MessageThread, Faculty } from "@/types/messages"
+import { MessageThread, Faculty, Message } from "@/types/messages"
 import { TeacherReplyBox } from "./TeacherReplyBox"
 import { ArrowLeft, Clock, User, Users } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
@@ -18,6 +17,8 @@ interface TeacherThreadViewProps {
 
 export function TeacherThreadView({ thread, currentUserId, faculty, onBack }: TeacherThreadViewProps) {
   const [showReplyBox, setShowReplyBox] = useState(false)
+  const [messages, setMessages] = useState<Message[]>(thread.messages)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
   
   const getParticipantInfo = (participantId: string) => {
     return faculty.find(f => f.id === participantId)
@@ -29,6 +30,33 @@ export function TeacherThreadView({ thread, currentUserId, faculty, onBack }: Te
       return <Users className="h-4 w-4 text-orange-500" />
     }
     return <User className="h-4 w-4 text-blue-500" />
+  }
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
+  const handleReply = (messageBody: string) => {
+    const otherParticipants = thread.participants.filter(p => p !== currentUserId)
+    const recipientId = otherParticipants[0] || ''
+    
+    const newMessage: Message = {
+      id: `msg-${Date.now()}`,
+      senderId: currentUserId,
+      recipientId: recipientId,
+      subject: `Re: ${thread.messages[0]?.subject || 'No Subject'}`,
+      body: messageBody,
+      timestamp: new Date(),
+      isRead: false,
+      threadId: thread.id
+    }
+
+    setMessages(prev => [...prev, newMessage])
+    setShowReplyBox(false)
   }
 
   const otherParticipants = thread.participants.filter(p => p !== currentUserId)
@@ -57,7 +85,7 @@ export function TeacherThreadView({ thread, currentUserId, faculty, onBack }: Te
           
           <div>
             <h2 className="text-xl font-semibold text-gray-900">
-              {thread.messages[0]?.subject}
+              {messages[0]?.subject || 'No Subject'}
             </h2>
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <span>Conversation with {mainParticipant?.name}</span>
@@ -75,8 +103,8 @@ export function TeacherThreadView({ thread, currentUserId, faculty, onBack }: Te
       </div>
 
       {/* Messages */}
-      <div className="space-y-4">
-        {thread.messages.map((message) => {
+      <div className="space-y-4 max-h-[calc(100vh-300px)] overflow-y-auto">
+        {messages.map((message) => {
           const sender = getParticipantInfo(message.senderId)
           const isFromCurrentUser = message.senderId === currentUserId
           
@@ -131,13 +159,14 @@ export function TeacherThreadView({ thread, currentUserId, faculty, onBack }: Te
             </Card>
           )
         })}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Reply Box */}
       {showReplyBox && (
         <TeacherReplyBox
           threadId={thread.id}
-          onSend={() => setShowReplyBox(false)}
+          onSend={handleReply}
           onCancel={() => setShowReplyBox(false)}
         />
       )}

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -215,7 +214,7 @@ const UpdateBatchesPage: React.FC = () => {
           <Button 
             onClick={handleUpdate}
             disabled={isUpdating || (assignType === 'specific' && selectedBatches.length === 0)}
-            className="w-full"
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl focus:ring-2 focus:ring-primary focus:ring-offset-2 font-semibold"
           >
             {isUpdating ? 'Updating...' : 'Update Batch Assignment'}
           </Button>
