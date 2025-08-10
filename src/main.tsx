@@ -3,6 +3,7 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import { QueryClientProvider } from './providers/QueryClientProvider'
 
 const container = document.getElementById("root");
 if (!container) {
@@ -10,4 +11,8 @@ if (!container) {
 }
 
 const root = createRoot(container);
-root.render(<App />);
+root.render(
+  <QueryClientProvider>
+    <App />
+  </QueryClientProvider>
+);
