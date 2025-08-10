@@ -121,12 +121,22 @@ export default function QuestionBankAddPage() {
     setIsSubmitting(true)
     try {
       const questionData: CreateQuestionData = {
-        ...data,
-        numberOfOptions,
+        questionBankType: data.questionBankType,
+        chapter: data.chapter,
+        topic: data.topic,
+        category: data.category,
+        difficulty: data.difficulty,
+        questionContent: data.questionContent,
+        questionType: data.questionType,
+        hint: data.hint || '',
+        marks: data.marks,
+        explanation: data.explanation,
+        numberOfOptions: numberOfOptions,
         options: data.options.slice(0, numberOfOptions).map((content, index) => ({
           content,
           image: optionImages[index] || undefined
         })),
+        correctAnswer: data.correctAnswer,
         questionImage: questionImage || undefined
       }
 
