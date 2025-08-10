@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -13,7 +14,6 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { ArrowLeft, Plus, X, Upload } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { ImageUpload } from '@/components/teacher/exams/ImageUpload'
-import { useQuery } from '@tanstack/react-query'
 import { questionBankService, CreateQuestionData } from '@/services/questionBankService'
 
 const formSchema = z.object({
@@ -46,11 +46,6 @@ const QuestionBankAddPage = () => {
     { content: '', image: null },
   ])
   const [questionImage, setQuestionImage] = useState<File | null>(null)
-
-  const { data: questionBankData = [] } = useQuery({
-    queryKey: ['questionBank'],
-    queryFn: questionBankService.getQuestions,
-  })
 
   const {
     register,
@@ -99,12 +94,22 @@ const QuestionBankAddPage = () => {
   const onSubmit = async (data: FormData) => {
     try {
       const questionData: CreateQuestionData = {
-        ...data,
+        questionBankType: data.questionBankType,
+        chapter: data.chapter,
+        topic: data.topic,
+        category: data.category,
+        difficulty: data.difficulty,
+        questionContent: data.questionText,
+        questionType: 'single', // Default to single answer
+        hint: '',
+        marks: data.marks,
+        explanation: data.explanation || '',
         numberOfOptions,
         options: options.map(opt => ({
           content: opt.content,
           image: opt.image as File,
         })),
+        correctAnswer: data.correctAnswer,
         questionImage: questionImage as File,
       }
 
@@ -265,7 +270,8 @@ const QuestionBankAddPage = () => {
               <Label>Question Image (Optional)</Label>
               <ImageUpload
                 onImageSelect={setQuestionImage}
-                currentImage={questionImage}
+                onImageRemove={() => setQuestionImage(null)}
+                selectedImage={questionImage}
               />
             </div>
 
@@ -324,7 +330,8 @@ const QuestionBankAddPage = () => {
                     <Label className="text-sm text-gray-600">Option Image (Optional)</Label>
                     <ImageUpload
                       onImageSelect={(file) => handleOptionImageChange(index, file)}
-                      currentImage={option.image}
+                      onImageRemove={() => handleOptionImageChange(index, null)}
+                      selectedImage={option.image}
                     />
                   </div>
                 </div>
@@ -369,7 +376,7 @@ const QuestionBankAddPage = () => {
           </Button>
           <Button
             type="submit"
-            className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl focus:ring-2 focus:ring-primary focus:ring-offset-2 font-semibold"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl focus:ring-2 focus:ring-primary focus:ring-offset-2 font-semibold transition-all duration-200"
           >
             Create
           </Button>
