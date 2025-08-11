@@ -29,7 +29,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 const navigationItems = [
-  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard, badge: null },
+  { title: "Dashboard", url: "/", icon: LayoutDashboard, badge: null },
   { title: "Academic Schedule", url: "/schedule", icon: Calendar, badge: "3" },
   { title: "Analysis", url: "/analysis", icon: BarChart3, badge: null },
   { title: "Messages", url: "/messages", icon: MessageCircle, badge: "12" },

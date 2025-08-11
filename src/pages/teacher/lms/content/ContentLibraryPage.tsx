@@ -277,7 +277,7 @@ const ContentLibraryPage = () => {
                                   <Eye className="h-4 w-4 mr-2" />
                                   View
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => navigate(`/teacher/lms/content/${content.id}/edit`)}>
+                                <DropdownMenuItem>
                                   <Edit className="h-4 w-4 mr-2" />
                                   Edit
                                 </DropdownMenuItem>

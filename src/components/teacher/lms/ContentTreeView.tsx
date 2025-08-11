@@ -154,7 +154,7 @@ export const ContentTreeView: React.FC<ContentTreeViewProps> = ({
                       <Eye className="h-4 w-4 mr-2" />
                       View
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate(`/teacher/lms/content/${node.content!.id}/edit`)}>
+                    <DropdownMenuItem>
                       <Edit className="h-4 w-4 mr-2" />
                       Edit
                     </DropdownMenuItem>
