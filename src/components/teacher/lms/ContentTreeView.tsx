@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react'
 import { ChevronDown, ChevronRight, FileText, Video, Image, Code, File, Type, Eye, Edit } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -153,7 +154,7 @@ export const ContentTreeView: React.FC<ContentTreeViewProps> = ({
                       <Eye className="h-4 w-4 mr-2" />
                       View
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate(`/teacher/lms/content/${node.content!.id}/edit`)}>
+                    <DropdownMenuItem>
                       <Edit className="h-4 w-4 mr-2" />
                       Edit
                     </DropdownMenuItem>
