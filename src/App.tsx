@@ -70,6 +70,7 @@ import DetailedExamReportPage from './pages/teacher/reports/DetailedExamReportPa
 import LMSMainPage from './pages/teacher/lms/LMSMainPage';
 import NotesPage from './pages/teacher/lms/NotesPage';
 import LMSDirectoryPage from './pages/teacher/lms/LMSDirectoryPage';
+import CreateNotesPage from './pages/teacher/lms/notes/CreateNotesPage';
 
 import { AppLayout } from './components/layout/AppLayout';
 
@@ -167,6 +168,7 @@ function App() {
           <Route path="lms/series/:seriesId/update-order" element={<UpdateExamOrderPage />} />
           <Route path="lms/series/:seriesId/preview" element={<LMSSeriesPreviewPage />} />
           <Route path="lms/notes" element={<NotesPage />} />
+          <Route path="lms/notes/create" element={<CreateNotesPage />} />
           <Route path="lms/directory" element={<LMSDirectoryPage />} />
         </Route>
 
