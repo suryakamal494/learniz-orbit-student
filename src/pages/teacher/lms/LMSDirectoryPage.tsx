@@ -19,8 +19,8 @@ interface TreeNode {
 
 export default function LMSDirectoryPage() {
   const navigate = useNavigate()
-  const [selectedInstitute, setSelectedInstitute] = useState<string>('')
-  const [selectedSubject, setSelectedSubject] = useState<string>('')
+  const [selectedInstitute, setSelectedInstitute] = useState<string>('all-institutes')
+  const [selectedSubject, setSelectedSubject] = useState<string>('all-subjects')
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set())
 
   // Get unique institutes and subjects
@@ -30,7 +30,7 @@ export default function LMSDirectoryPage() {
   }, [])
 
   const subjects = useMemo(() => {
-    const filteredSeries = selectedInstitute 
+    const filteredSeries = selectedInstitute !== 'all-institutes'
       ? mockLMSSeries.filter(series => series.institute === selectedInstitute)
       : mockLMSSeries
     const uniqueSubjects = Array.from(new Set(filteredSeries.map(series => series.subject)))
@@ -41,10 +41,10 @@ export default function LMSDirectoryPage() {
   const treeData = useMemo(() => {
     let filteredSeries = mockLMSSeries
 
-    if (selectedInstitute) {
+    if (selectedInstitute !== 'all-institutes') {
       filteredSeries = filteredSeries.filter(series => series.institute === selectedInstitute)
     }
-    if (selectedSubject) {
+    if (selectedSubject !== 'all-subjects') {
       filteredSeries = filteredSeries.filter(series => series.subject === selectedSubject)
     }
 
@@ -222,10 +222,10 @@ export default function LMSDirectoryPage() {
   const summaryStats = useMemo(() => {
     let filteredSeries = mockLMSSeries
 
-    if (selectedInstitute) {
+    if (selectedInstitute !== 'all-institutes') {
       filteredSeries = filteredSeries.filter(series => series.institute === selectedInstitute)
     }
-    if (selectedSubject) {
+    if (selectedSubject !== 'all-subjects') {
       filteredSeries = filteredSeries.filter(series => series.subject === selectedSubject)
     }
 
@@ -269,7 +269,7 @@ export default function LMSDirectoryPage() {
                   <SelectValue placeholder="Select Institute" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Institutes</SelectItem>
+                  <SelectItem value="all-institutes">All Institutes</SelectItem>
                   {institutes.map(institute => (
                     <SelectItem key={institute} value={institute}>
                       {institute}
@@ -286,7 +286,7 @@ export default function LMSDirectoryPage() {
                   <SelectValue placeholder="Select Subject" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Subjects</SelectItem>
+                  <SelectItem value="all-subjects">All Subjects</SelectItem>
                   {subjects.map(subject => (
                     <SelectItem key={subject} value={subject}>
                       {subject}
@@ -397,8 +397,8 @@ export default function LMSDirectoryPage() {
               <div>
                 <span className="font-medium">Active Filters:</span>
                 <span className="ml-2">
-                  {selectedInstitute || selectedSubject 
-                    ? `${selectedInstitute ? selectedInstitute : 'All Institutes'}${selectedSubject ? ` • ${selectedSubject}` : ' • All Subjects'}`
+                  {selectedInstitute !== 'all-institutes' || selectedSubject !== 'all-subjects'
+                    ? `${selectedInstitute !== 'all-institutes' ? selectedInstitute : 'All Institutes'}${selectedSubject !== 'all-subjects' ? ` • ${selectedSubject}` : ' • All Subjects'}`
                     : 'None'
                   }
                 </span>
