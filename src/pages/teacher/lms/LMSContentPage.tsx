@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -370,6 +371,7 @@ export default function LMSContentPage() {
                             </div>
                           </div>
                         </TableCell>
+                        <TableCell>{content.subject}</TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
