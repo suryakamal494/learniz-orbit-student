@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -71,10 +72,10 @@ export default function InstructionsPage() {
           <p className="text-muted-foreground">Manage exam instructions and guidelines</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => navigate('/teacher/exams')}>
+          <Button variant="outline" onClick={() => navigate('/teacher/exams')}>
             Back to Exams
           </Button>
-          <Button onClick={handleCreateInstruction}>
+          <Button variant="default" className="bg-primary hover:bg-primary/90" onClick={handleCreateInstruction}>
             <Plus className="h-4 w-4 mr-2" />
             Create Instruction
           </Button>
@@ -169,7 +170,6 @@ export default function InstructionsPage() {
         ))}
       </div>
 
-      {/* Preview Modal */}
       <InstructionPreviewModal
         isOpen={previewModal.isOpen}
         onClose={handleClosePreview}
