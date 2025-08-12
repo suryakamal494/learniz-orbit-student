@@ -1,151 +1,96 @@
 
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Search, ChevronRight, ChevronDown, Folder, FolderOpen, FileText, Video, Image } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { ChevronRight, ChevronDown, Folder, FolderOpen, Eye, ExpandIcon, ShrinkIcon, BookOpen, Video, FileText, PenTool, GraduationCap } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { mockLMSSeries } from '@/data/mockLMSSeries'
+import { LMSSeries } from '@/types/lmsSeries'
 
-interface DirectoryNode {
+interface TreeNode {
   id: string
   name: string
-  type: 'folder' | 'content' | 'video' | 'document' | 'image'
-  children?: DirectoryNode[]
-  contentCount?: number
-}
-
-const sampleDirectory: DirectoryNode[] = [
-  {
-    id: 'physics',
-    name: 'Physics',
-    type: 'folder',
-    contentCount: 45,
-    children: [
-      {
-        id: 'mechanics',
-        name: 'Mechanics',
-        type: 'folder',
-        contentCount: 15,
-        children: [
-          { id: 'kinematics', name: 'Kinematics Video Series', type: 'video' },
-          { id: 'dynamics', name: 'Dynamics Notes', type: 'document' },
-          { id: 'energy', name: 'Energy Conservation Slides', type: 'content' }
-        ]
-      },
-      {
-        id: 'thermodynamics',
-        name: 'Thermodynamics',
-        type: 'folder',
-        contentCount: 12,
-        children: [
-          { id: 'heat-transfer', name: 'Heat Transfer Diagrams', type: 'image' },
-          { id: 'gas-laws', name: 'Gas Laws Simulation', type: 'content' }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'chemistry',
-    name: 'Chemistry',
-    type: 'folder',
-    contentCount: 38,
-    children: [
-      {
-        id: 'organic',
-        name: 'Organic Chemistry',
-        type: 'folder',
-        contentCount: 20,
-        children: [
-          { id: 'hydrocarbons', name: 'Hydrocarbon Structures', type: 'document' },
-          { id: 'reactions', name: 'Reaction Mechanisms Video', type: 'video' }
-        ]
-      }
-    ]
-  }
-]
-
-interface DirectoryItemProps {
-  node: DirectoryNode
-  level: number
-  expandedNodes: Set<string>
-  onToggle: (nodeId: string) => void
-}
-
-const DirectoryItem: React.FC<DirectoryItemProps> = ({ node, level, expandedNodes, onToggle }) => {
-  const isExpanded = expandedNodes.has(node.id)
-  const hasChildren = node.children && node.children.length > 0
-  
-  const getIcon = () => {
-    switch (node.type) {
-      case 'folder':
-        return hasChildren && isExpanded 
-          ? <FolderOpen className="h-4 w-4 text-amber-500" />
-          : <Folder className="h-4 w-4 text-amber-600" />
-      case 'video':
-        return <Video className="h-4 w-4 text-red-500" />
-      case 'document':
-        return <FileText className="h-4 w-4 text-blue-500" />
-      case 'image':
-        return <Image className="h-4 w-4 text-green-500" />
-      default:
-        return <FileText className="h-4 w-4 text-gray-500" />
-    }
-  }
-
-  return (
-    <div className="w-full">
-      <div 
-        className={`
-          flex items-center gap-2 p-2 hover:bg-muted/50 cursor-pointer transition-colors
-          border-l-2 border-transparent hover:border-primary/30
-        `}
-        style={{ paddingLeft: `${12 + level * 24}px` }}
-        onClick={() => hasChildren && onToggle(node.id)}
-      >
-        {hasChildren && (
-          <div className="w-4 h-4 flex items-center justify-center">
-            {isExpanded 
-              ? <ChevronDown className="h-3 w-3 text-gray-500" />
-              : <ChevronRight className="h-3 w-3 text-gray-500" />
-            }
-          </div>
-        )}
-        {!hasChildren && <div className="w-4" />}
-        
-        <div className="flex items-center gap-2 min-w-0 flex-1">
-          {getIcon()}
-          <span className="font-medium text-foreground truncate">
-            {node.name}
-          </span>
-          {node.contentCount !== undefined && (
-            <span className="text-sm text-muted-foreground ml-auto">
-              ({node.contentCount})
-            </span>
-          )}
-        </div>
-      </div>
-      
-      {isExpanded && hasChildren && (
-        <div>
-          {node.children?.map((child) => (
-            <DirectoryItem
-              key={child.id}
-              node={child}
-              level={level + 1}
-              expandedNodes={expandedNodes}
-              onToggle={onToggle}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  )
+  type: 'chapter' | 'topic' | 'series'
+  children?: TreeNode[]
+  seriesCount?: number
+  seriesData?: LMSSeries
 }
 
 export default function LMSDirectoryPage() {
   const navigate = useNavigate()
+  const [selectedInstitute, setSelectedInstitute] = useState<string>('')
+  const [selectedSubject, setSelectedSubject] = useState<string>('')
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set())
-  const [searchTerm, setSearchTerm] = useState('')
+
+  // Get unique institutes and subjects
+  const institutes = useMemo(() => {
+    const uniqueInstitutes = Array.from(new Set(mockLMSSeries.map(series => series.institute)))
+    return uniqueInstitutes
+  }, [])
+
+  const subjects = useMemo(() => {
+    const filteredSeries = selectedInstitute 
+      ? mockLMSSeries.filter(series => series.institute === selectedInstitute)
+      : mockLMSSeries
+    const uniqueSubjects = Array.from(new Set(filteredSeries.map(series => series.subject)))
+    return uniqueSubjects
+  }, [selectedInstitute])
+
+  // Build tree structure from filtered data
+  const treeData = useMemo(() => {
+    let filteredSeries = mockLMSSeries
+
+    if (selectedInstitute) {
+      filteredSeries = filteredSeries.filter(series => series.institute === selectedInstitute)
+    }
+    if (selectedSubject) {
+      filteredSeries = filteredSeries.filter(series => series.subject === selectedSubject)
+    }
+
+    const chapters = new Map<string, TreeNode>()
+
+    filteredSeries.forEach(series => {
+      // Create chapter if it doesn't exist
+      if (!chapters.has(series.chapter)) {
+        chapters.set(series.chapter, {
+          id: `chapter-${series.chapter}`,
+          name: series.chapter,
+          type: 'chapter',
+          children: [],
+          seriesCount: 0
+        })
+      }
+
+      const chapter = chapters.get(series.chapter)!
+      chapter.seriesCount = (chapter.seriesCount || 0) + 1
+
+      // Find or create topic
+      let topic = chapter.children?.find(t => t.name === series.topic)
+      if (!topic) {
+        topic = {
+          id: `topic-${series.chapter}-${series.topic}`,
+          name: series.topic,
+          type: 'topic',
+          children: [],
+          seriesCount: 0
+        }
+        chapter.children?.push(topic)
+      }
+      topic.seriesCount = (topic.seriesCount || 0) + 1
+
+      // Add series
+      const seriesNode: TreeNode = {
+        id: `series-${series.id}`,
+        name: series.title,
+        type: 'series',
+        seriesData: series
+      }
+      topic.children?.push(seriesNode)
+    })
+
+    return Array.from(chapters.values())
+  }, [selectedInstitute, selectedSubject])
 
   const handleToggle = (nodeId: string) => {
     setExpandedNodes(prev => {
@@ -159,47 +104,242 @@ export default function LMSDirectoryPage() {
     })
   }
 
+  const expandAll = () => {
+    const allNodeIds = new Set<string>()
+    const collectNodeIds = (nodes: TreeNode[]) => {
+      nodes.forEach(node => {
+        if (node.children && node.children.length > 0) {
+          allNodeIds.add(node.id)
+          collectNodeIds(node.children)
+        }
+      })
+    }
+    collectNodeIds(treeData)
+    setExpandedNodes(allNodeIds)
+  }
+
+  const collapseAll = () => {
+    setExpandedNodes(new Set())
+  }
+
+  const getIcon = (node: TreeNode, isExpanded: boolean) => {
+    switch (node.type) {
+      case 'chapter':
+        return isExpanded 
+          ? <FolderOpen className="h-4 w-4 text-amber-500" />
+          : <Folder className="h-4 w-4 text-amber-600" />
+      case 'topic':
+        return <BookOpen className="h-4 w-4 text-blue-500" />
+      case 'series':
+        return <FileText className="h-4 w-4 text-green-500" />
+      default:
+        return <FileText className="h-4 w-4 text-gray-500" />
+    }
+  }
+
+  const getSeriesTypeIcon = (type: string) => {
+    switch (type) {
+      case 'video-series':
+        return <Video className="h-3 w-3 text-purple-500" />
+      case 'assignment-series':
+        return <PenTool className="h-3 w-3 text-green-500" />
+      case 'quiz-series':
+        return <GraduationCap className="h-3 w-3 text-orange-500" />
+      case 'exam-series':
+        return <GraduationCap className="h-3 w-3 text-red-500" />
+      default:
+        return <FileText className="h-3 w-3 text-blue-500" />
+    }
+  }
+
+  const renderTreeNode = (node: TreeNode, level = 0) => {
+    const isExpanded = expandedNodes.has(node.id)
+    const hasChildren = node.children && node.children.length > 0
+    const paddingLeft = level * 24
+
+    return (
+      <div key={node.id}>
+        <div 
+          className="flex items-center gap-2 py-2 px-3 hover:bg-muted/50 rounded-md transition-colors cursor-pointer"
+          style={{ paddingLeft: `${paddingLeft + 12}px` }}
+          onClick={() => hasChildren && handleToggle(node.id)}
+        >
+          {hasChildren ? (
+            <div className="w-4 h-4 flex items-center justify-center">
+              {isExpanded 
+                ? <ChevronDown className="h-3 w-3 text-gray-500" />
+                : <ChevronRight className="h-3 w-3 text-gray-500" />
+              }
+            </div>
+          ) : (
+            <div className="w-4" />
+          )}
+
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            {getIcon(node, isExpanded)}
+            <span className="font-medium text-foreground truncate">
+              {node.name}
+            </span>
+            {node.seriesCount !== undefined && (
+              <span className="text-sm text-muted-foreground">
+                ({node.seriesCount})
+              </span>
+            )}
+            {node.type === 'series' && node.seriesData && (
+              <>
+                <div className="flex items-center gap-1 ml-2">
+                  {getSeriesTypeIcon(node.seriesData.type)}
+                  <span className="text-xs text-muted-foreground">
+                    {node.seriesData.type.replace('-', ' ')}
+                  </span>
+                </div>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigate(`/teacher/lms/series/${node.seriesData!.id}/preview`)
+                  }}
+                  className="ml-auto h-6 w-6 p-0"
+                >
+                  <Eye className="h-3 w-3" />
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+
+        {hasChildren && isExpanded && (
+          <div>
+            {node.children!.map(child => renderTreeNode(child, level + 1))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // Calculate summary statistics
+  const summaryStats = useMemo(() => {
+    let filteredSeries = mockLMSSeries
+
+    if (selectedInstitute) {
+      filteredSeries = filteredSeries.filter(series => series.institute === selectedInstitute)
+    }
+    if (selectedSubject) {
+      filteredSeries = filteredSeries.filter(series => series.subject === selectedSubject)
+    }
+
+    const stats = {
+      totalSeries: filteredSeries.length,
+      videoSeries: filteredSeries.filter(s => s.type === 'video-series').length,
+      contentSeries: filteredSeries.filter(s => s.type === 'content-series').length,
+      assignmentSeries: filteredSeries.filter(s => s.type === 'assignment-series').length,
+      quizSeries: filteredSeries.filter(s => s.type === 'quiz-series').length,
+      examSeries: filteredSeries.filter(s => s.type === 'exam-series').length,
+      totalChapters: new Set(filteredSeries.map(s => s.chapter)).size,
+      totalTopics: new Set(filteredSeries.map(s => `${s.chapter}-${s.topic}`)).size
+    }
+
+    return stats
+  }, [selectedInstitute, selectedSubject])
+
   return (
     <div className="p-6 space-y-6 max-w-6xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground">LMS Directory</h1>
-          <p className="text-muted-foreground">Browse learning content by subject hierarchy</p>
+          <p className="text-muted-foreground">Browse learning content series by subject hierarchy</p>
         </div>
         <Button onClick={() => navigate('/teacher/lms')}>
           Back to LMS
         </Button>
       </div>
 
+      {/* Filters */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Filters</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium mb-2 block">Institute</label>
+              <Select value={selectedInstitute} onValueChange={setSelectedInstitute}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Institute" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All Institutes</SelectItem>
+                  {institutes.map(institute => (
+                    <SelectItem key={institute} value={institute}>
+                      {institute}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-2 block">Subject</label>
+              <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Subject" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All Subjects</SelectItem>
+                  {subjects.map(subject => (
+                    <SelectItem key={subject} value={subject}>
+                      {subject}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Directory Tree */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <Folder className="h-5 w-5" />
-              Content Directory
+              Series Directory
             </CardTitle>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                placeholder="Search content..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9 w-80"
-              />
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={expandAll}
+                className="flex items-center gap-2"
+              >
+                <ExpandIcon className="h-4 w-4" />
+                Expand All
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={collapseAll}
+                className="flex items-center gap-2"
+              >
+                <ShrinkIcon className="h-4 w-4" />
+                Collapse All
+              </Button>
             </div>
           </div>
         </CardHeader>
         <CardContent className="p-0">
           <div className="border-t max-h-96 overflow-y-auto">
-            {sampleDirectory.map((subject) => (
-              <DirectoryItem
-                key={subject.id}
-                node={subject}
-                level={0}
-                expandedNodes={expandedNodes}
-                onToggle={handleToggle}
-              />
-            ))}
+            {treeData.length > 0 ? (
+              treeData.map(chapter => renderTreeNode(chapter))
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <Folder className="h-12 w-12 text-muted-foreground mb-4" />
+                <h3 className="text-lg font-medium text-foreground mb-2">No content found</h3>
+                <p className="text-muted-foreground">No series match your current filters.</p>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -210,26 +350,59 @@ export default function LMSDirectoryPage() {
           <CardTitle>Content Summary</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
             <div className="text-center">
-              <Video className="h-6 w-6 mx-auto mb-2 text-red-500" />
-              <div className="text-lg font-bold">24</div>
-              <div className="text-sm text-muted-foreground">Videos</div>
+              <FileText className="h-6 w-6 mx-auto mb-2 text-blue-500" />
+              <div className="text-lg font-bold">{summaryStats.totalSeries}</div>
+              <div className="text-sm text-muted-foreground">Total Series</div>
+            </div>
+            <div className="text-center">
+              <Video className="h-6 w-6 mx-auto mb-2 text-purple-500" />
+              <div className="text-lg font-bold">{summaryStats.videoSeries}</div>
+              <div className="text-sm text-muted-foreground">Video Series</div>
             </div>
             <div className="text-center">
               <FileText className="h-6 w-6 mx-auto mb-2 text-blue-500" />
-              <div className="text-lg font-bold">156</div>
-              <div className="text-sm text-muted-foreground">Documents</div>
+              <div className="text-lg font-bold">{summaryStats.contentSeries}</div>
+              <div className="text-sm text-muted-foreground">Content Series</div>
             </div>
             <div className="text-center">
-              <Image className="h-6 w-6 mx-auto mb-2 text-green-500" />
-              <div className="text-lg font-bold">89</div>
-              <div className="text-sm text-muted-foreground">Images</div>
+              <PenTool className="h-6 w-6 mx-auto mb-2 text-green-500" />
+              <div className="text-lg font-bold">{summaryStats.assignmentSeries}</div>
+              <div className="text-sm text-muted-foreground">Assignment Series</div>
+            </div>
+            <div className="text-center">
+              <GraduationCap className="h-6 w-6 mx-auto mb-2 text-orange-500" />
+              <div className="text-lg font-bold">{summaryStats.quizSeries}</div>
+              <div className="text-sm text-muted-foreground">Quiz Series</div>
+            </div>
+            <div className="text-center">
+              <GraduationCap className="h-6 w-6 mx-auto mb-2 text-red-500" />
+              <div className="text-lg font-bold">{summaryStats.examSeries}</div>
+              <div className="text-sm text-muted-foreground">Exam Series</div>
             </div>
             <div className="text-center">
               <Folder className="h-6 w-6 mx-auto mb-2 text-amber-500" />
-              <div className="text-lg font-bold">12</div>
-              <div className="text-sm text-muted-foreground">Subjects</div>
+              <div className="text-lg font-bold">{summaryStats.totalChapters}</div>
+              <div className="text-sm text-muted-foreground">Chapters</div>
+            </div>
+          </div>
+          
+          <div className="mt-4 pt-4 border-t">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="font-medium">Total Topics:</span>
+                <span className="ml-2">{summaryStats.totalTopics}</span>
+              </div>
+              <div>
+                <span className="font-medium">Active Filters:</span>
+                <span className="ml-2">
+                  {selectedInstitute || selectedSubject 
+                    ? `${selectedInstitute ? selectedInstitute : 'All Institutes'}${selectedSubject ? ` • ${selectedSubject}` : ' • All Subjects'}`
+                    : 'None'
+                  }
+                </span>
+              </div>
             </div>
           </div>
         </CardContent>
