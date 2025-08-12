@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -57,9 +58,13 @@ export default function NotesPage() {
           <Button onClick={() => navigate('/teacher/lms')}>
             Back to LMS
           </Button>
-          <Button>
+          <Button 
+            variant="default" 
+            className="bg-primary hover:bg-primary/90"
+            onClick={() => navigate('/teacher/lms/notes/create')}
+          >
             <Plus className="h-4 w-4 mr-2" />
-            Add Notes
+            Create Notes
           </Button>
         </div>
       </div>
@@ -96,7 +101,6 @@ export default function NotesPage() {
         </CardContent>
       </Card>
 
-      {/* Notes Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {notes.map((note) => (
           <Card key={note.id} className="hover:shadow-md transition-shadow">
@@ -135,7 +139,6 @@ export default function NotesPage() {
         ))}
       </div>
 
-      {/* Stats Card */}
       <Card>
         <CardHeader>
           <CardTitle>Notes Statistics</CardTitle>
