@@ -9,7 +9,7 @@ interface TeacherLayoutProps {
 export function TeacherLayout({ children }: TeacherLayoutProps) {
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gray-50">
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-pastel-blue-50 via-background to-pastel-purple-50">
         <TeacherSidebar />
         <main className="flex-1 overflow-auto">
           {children}

@@ -5,15 +5,15 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-label-md font-semibold ring-offset-background transition-premium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 button-ripple relative overflow-hidden",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-label-md font-semibold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 relative overflow-hidden",
   {
     variants: {
       variant: {
-        default: "gradient-primary text-primary-foreground hover:shadow-premium-lg hover:scale-105 hover:shadow-primary/25",
-        destructive: "bg-error text-white hover:bg-error-light hover:shadow-premium-lg hover:shadow-error/25",
-        outline: "border-2 border-border bg-background hover:bg-accent hover:text-accent-foreground hover:border-primary/30 hover:shadow-premium",
-        secondary: "gradient-secondary text-white hover:shadow-premium-lg hover:scale-105 hover:shadow-accent-teal/25",
-        ghost: "hover:bg-accent hover:text-accent-foreground hover:scale-105 transition-spring",
+        default: "bg-gradient-to-r from-primary to-primary-light text-primary-foreground hover:shadow-pastel-lg hover:scale-105 hover:from-primary-light hover:to-primary",
+        destructive: "bg-gradient-to-r from-error to-error-light text-white hover:shadow-pastel-lg hover:scale-105",
+        outline: "border-2 border-border/60 bg-card/50 hover:bg-primary/10 hover:text-primary hover:border-primary/50 hover:shadow-pastel backdrop-blur-sm",
+        secondary: "bg-gradient-to-r from-secondary to-pastel-green-300 text-white hover:shadow-pastel-lg hover:scale-105",
+        ghost: "hover:bg-primary/10 hover:text-primary hover:scale-105 transition-all duration-300",
         link: "text-primary underline-offset-4 hover:underline hover:text-primary-light",
       },
       size: {
