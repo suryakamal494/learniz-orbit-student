@@ -20,33 +20,31 @@ export function BatchReports() {
   }
 
   const getPerformanceColor = (percentage: number) => {
-    if (percentage >= 85) return "bg-success-bg text-success border-2 border-success/30"
-    if (percentage >= 70) return "bg-warning-bg text-warning border-2 border-warning/30"
-    return "bg-error-bg text-error border-2 border-error/30"
+    if (percentage >= 85) return "bg-success/10 text-success border-success/20"
+    if (percentage >= 70) return "bg-warning/10 text-warning border-warning/20"
+    return "bg-destructive/10 text-destructive border-destructive/20"
   }
 
   return (
-    <Card className="border-2 border-primary/10 shadow-pastel-md backdrop-blur-sm">
-      <CardHeader className="flex flex-row items-center justify-between border-b border-primary/5">
+    <Card className="border-border/50 shadow-premium backdrop-blur-sm bg-card/95">
+      <CardHeader className="flex flex-row items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg bg-gradient-pastel-primary">
-            <FileBarChart className="h-5 w-5 text-white" />
-          </div>
+          <FileBarChart className="h-5 w-5 text-primary" />
           <div>
-            <CardTitle className="text-lg font-bold text-primary">Batch Reports</CardTitle>
+            <CardTitle className="text-lg font-bold text-foreground">Batch Reports</CardTitle>
             <p className="text-body-sm text-muted-foreground">Latest exam performance</p>
           </div>
         </div>
-        <Button variant="ghost" size="sm" onClick={() => navigate('/teacher/reports/batch')} className="text-primary hover:text-primary-dark hover:bg-primary/10">
+        <Button variant="ghost" size="sm" onClick={() => navigate('/teacher/reports/batch')}>
           View all
         </Button>
       </CardHeader>
       
-      <CardContent className="space-y-3 p-6">
+      <CardContent className="space-y-3">
         {latestReports.map((report, index) => (
           <div 
             key={report.id}
-            className="flex items-center justify-between p-3 rounded-lg hover:bg-primary/5 transition-all duration-300 group animate-fade-in cursor-pointer border-2 border-transparent hover:border-primary/20 bg-white/50"
+            className="flex items-center justify-between p-3 rounded-lg hover:bg-primary/5 transition-all duration-300 group animate-fade-in cursor-pointer border border-border/30"
             style={{ animationDelay: `${index * 100}ms` }}
             onClick={() => handleViewReport(report.examId)}
           >
@@ -72,7 +70,7 @@ export function BatchReports() {
               <Button size="sm" variant="outline" onClick={(e) => {
                 e.stopPropagation()
                 handleViewReport(report.examId)
-              }} className="border-primary/30 hover:border-primary/50 text-primary hover:text-primary-dark">
+              }}>
                 <Eye className="h-3 w-3 mr-1" />
                 View
               </Button>
