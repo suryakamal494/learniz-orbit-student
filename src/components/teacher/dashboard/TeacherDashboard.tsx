@@ -1,10 +1,10 @@
 
 import { TeacherDashboardHeader } from "./TeacherDashboardHeader"
-import { TeacherStats } from "./TeacherStats"
-import { QuickLinks } from "./QuickLinks"
-import { TodaysClasses } from "./TodaysClasses"
-import { BatchReports } from "./BatchReports"
-import { AttendanceToday } from "./AttendanceToday"
+import { ModernTeacherStats } from "./ModernTeacherStats"
+import { ModernQuickLinks } from "./ModernQuickLinks"
+import { ModernUpcomingClasses } from "./ModernUpcomingClasses"
+import { ModernBatchReports } from "./ModernBatchReports"
+import { ModernAttendanceToday } from "./ModernAttendanceToday"
 import { RecentActivity } from "./RecentActivity"
 
 export function TeacherDashboard() {
@@ -13,32 +13,32 @@ export function TeacherDashboard() {
       <TeacherDashboardHeader />
       
       <div className="flex-1 overflow-y-auto">
-        <div className="p-4 md:p-6 space-y-6">
-          {/* Quick Links */}
+        <div className="p-4 md:p-6 space-y-8">
+          {/* Quick Actions */}
           <div className="animate-slide-up stagger-1">
-            <QuickLinks />
+            <ModernQuickLinks />
           </div>
           
-          {/* Teacher Stats */}
+          {/* Performance Stats */}
           <div className="animate-slide-up stagger-2">
-            <TeacherStats />
+            <ModernTeacherStats />
+          </div>
+          
+          {/* Upcoming Classes */}
+          <div className="animate-slide-up stagger-3">
+            <ModernUpcomingClasses />
           </div>
           
           {/* Main Content Grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
             <div className="xl:col-span-2 space-y-6">
-              {/* Today's Classes */}
-              <div className="animate-slide-up stagger-3">
-                <TodaysClasses />
-              </div>
-              
               {/* Batch Reports and Attendance */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="animate-slide-up stagger-4">
-                  <BatchReports />
+                  <ModernBatchReports />
                 </div>
                 <div className="animate-slide-up stagger-5">
-                  <AttendanceToday />
+                  <ModernAttendanceToday />
                 </div>
               </div>
             </div>
