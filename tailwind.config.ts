@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -83,56 +84,6 @@ export default {
 					DEFAULT: 'hsl(var(--error))',
 					light: 'hsl(var(--error-light))',
 					bg: 'hsl(var(--error-bg))'
-				},
-				pastel: {
-					blue: {
-						50: 'hsl(216 100% 97%)',
-						100: 'hsl(216 100% 94%)',
-						200: 'hsl(216 95% 87%)',
-						300: 'hsl(216 90% 78%)',
-						400: 'hsl(216 85% 68%)',
-						500: 'hsl(216 80% 58%)',
-						600: 'hsl(216 75% 48%)',
-						700: 'hsl(216 70% 38%)',
-						800: 'hsl(216 65% 28%)',
-						900: 'hsl(216 60% 18%)',
-					},
-					green: {
-						50: 'hsl(142 76% 96%)',
-						100: 'hsl(142 76% 91%)',
-						200: 'hsl(142 76% 86%)',
-						300: 'hsl(142 76% 76%)',
-						400: 'hsl(142 76% 66%)',
-						500: 'hsl(142 76% 56%)',
-						600: 'hsl(142 76% 46%)',
-						700: 'hsl(142 76% 36%)',
-						800: 'hsl(142 76% 26%)',
-						900: 'hsl(142 76% 16%)',
-					},
-					purple: {
-						50: 'hsl(270 65% 97%)',
-						100: 'hsl(270 65% 92%)',
-						200: 'hsl(270 65% 85%)',
-						300: 'hsl(270 65% 75%)',
-						400: 'hsl(270 65% 65%)',
-						500: 'hsl(270 65% 55%)',
-						600: 'hsl(270 65% 45%)',
-						700: 'hsl(270 65% 35%)',
-						800: 'hsl(270 65% 25%)',
-						900: 'hsl(270 65% 15%)',
-					},
-					peach: {
-						50: 'hsl(25 95% 97%)',
-						100: 'hsl(25 95% 92%)',
-						200: 'hsl(25 95% 88%)',
-						300: 'hsl(25 95% 78%)',
-						400: 'hsl(25 95% 68%)',
-						500: 'hsl(25 95% 58%)',
-						600: 'hsl(25 95% 48%)',
-						700: 'hsl(25 95% 38%)',
-						800: 'hsl(25 95% 28%)',
-						900: 'hsl(25 95% 18%)',
-					}
 				}
 			},
 			borderRadius: {
@@ -178,13 +129,6 @@ export default {
 				'modern-lg': 'var(--shadow-lg)',
 				'modern-xl': 'var(--shadow-xl)',
 				'modern-2xl': 'var(--shadow-2xl)',
-				'pastel': '0 4px 6px -1px rgba(216, 180, 254, 0.1), 0 2px 4px -1px rgba(216, 180, 254, 0.06)',
-				'pastel-lg': '0 10px 15px -3px rgba(216, 180, 254, 0.1), 0 4px 6px -2px rgba(216, 180, 254, 0.05)',
-			},
-			backgroundImage: {
-				'gradient-pastel': 'linear-gradient(135deg, hsl(216 85% 88%) 0%, hsl(270 65% 85%) 25%, hsl(174 62% 87%) 50%, hsl(25 95% 88%) 75%, hsl(142 76% 86%) 100%)',
-				'gradient-primary': 'linear-gradient(135deg, hsl(216 85% 78%) 0%, hsl(216 85% 68%) 100%)',
-				'gradient-secondary': 'linear-gradient(135deg, hsl(142 76% 86%) 0%, hsl(142 76% 76%) 100%)',
 			},
 			keyframes: {
 				'accordion-down': {
