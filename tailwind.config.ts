@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -84,6 +83,55 @@ export default {
 					DEFAULT: 'hsl(var(--error))',
 					light: 'hsl(var(--error-light))',
 					bg: 'hsl(var(--error-bg))'
+				},
+				/* Pastel Color Extensions */
+				'pastel-blue': {
+					50: 'hsl(210, 100%, 97%)',
+					100: 'hsl(210, 100%, 95%)',
+					200: 'hsl(210, 85%, 90%)',
+					300: 'hsl(210, 75%, 85%)',
+					400: 'hsl(210, 70%, 80%)',
+					500: 'hsl(210, 65%, 75%)',
+					600: 'hsl(210, 60%, 70%)',
+					700: 'hsl(210, 55%, 65%)',
+					800: 'hsl(210, 50%, 60%)',
+					900: 'hsl(210, 45%, 55%)',
+				},
+				'pastel-green': {
+					50: 'hsl(150, 60%, 97%)',
+					100: 'hsl(150, 55%, 95%)',
+					200: 'hsl(150, 50%, 90%)',
+					300: 'hsl(150, 45%, 85%)',
+					400: 'hsl(150, 40%, 80%)',
+					500: 'hsl(150, 60%, 70%)',
+					600: 'hsl(150, 55%, 65%)',
+					700: 'hsl(150, 50%, 60%)',
+					800: 'hsl(150, 45%, 55%)',
+					900: 'hsl(150, 40%, 50%)',
+				},
+				'pastel-purple': {
+					50: 'hsl(270, 70%, 97%)',
+					100: 'hsl(270, 65%, 95%)',
+					200: 'hsl(270, 60%, 90%)',
+					300: 'hsl(270, 55%, 85%)',
+					400: 'hsl(270, 50%, 80%)',
+					500: 'hsl(270, 50%, 85%)',
+					600: 'hsl(270, 45%, 70%)',
+					700: 'hsl(270, 40%, 65%)',
+					800: 'hsl(270, 35%, 60%)',
+					900: 'hsl(270, 30%, 55%)',
+				},
+				'pastel-peach': {
+					50: 'hsl(25, 85%, 97%)',
+					100: 'hsl(25, 80%, 95%)',
+					200: 'hsl(25, 75%, 90%)',
+					300: 'hsl(25, 70%, 85%)',
+					400: 'hsl(25, 65%, 80%)',
+					500: 'hsl(25, 70%, 80%)',
+					600: 'hsl(25, 60%, 75%)',
+					700: 'hsl(25, 55%, 70%)',
+					800: 'hsl(25, 50%, 65%)',
+					900: 'hsl(25, 45%, 60%)',
 				}
 			},
 			borderRadius: {
@@ -124,11 +172,19 @@ export default {
 				'2xl': 'var(--spacing-2xl)',
 				'3xl': 'var(--spacing-3xl)',
 			},
+			backgroundImage: {
+				'gradient-pastel-primary': 'linear-gradient(135deg, hsl(var(--primary-light)), hsl(var(--primary)))',
+				'gradient-pastel-secondary': 'linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--accent-teal-light)))',
+				'gradient-pastel-accent': 'linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-orange-light)))',
+			},
 			boxShadow: {
 				'modern': 'var(--shadow-md)',
 				'modern-lg': 'var(--shadow-lg)',
 				'modern-xl': 'var(--shadow-xl)',
 				'modern-2xl': 'var(--shadow-2xl)',
+				'pastel-sm': '0 1px 2px 0 rgba(210, 180, 220, 0.05)',
+				'pastel-md': '0 4px 6px -1px rgba(210, 180, 220, 0.1), 0 2px 4px -1px rgba(210, 180, 220, 0.06)',
+				'pastel-lg': '0 10px 15px -3px rgba(210, 180, 220, 0.1), 0 4px 6px -2px rgba(210, 180, 220, 0.05)',
 			},
 			keyframes: {
 				'accordion-down': {

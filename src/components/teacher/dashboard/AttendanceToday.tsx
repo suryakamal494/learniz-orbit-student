@@ -31,9 +31,9 @@ export function AttendanceToday() {
   
   const getAttendanceColor = (present: number, total: number) => {
     const percentage = (present / total) * 100
-    if (percentage >= 90) return "bg-success/10 text-success border-success/20"
-    if (percentage >= 75) return "bg-warning/10 text-warning border-warning/20"
-    return "bg-destructive/10 text-destructive border-destructive/20"
+    if (percentage >= 90) return "bg-success-bg text-success border-2 border-success/30"
+    if (percentage >= 75) return "bg-warning-bg text-warning border-2 border-warning/30"
+    return "bg-error-bg text-error border-2 border-error/30"
   }
 
   const handleViewAttendance = (classId: string) => {
@@ -41,25 +41,27 @@ export function AttendanceToday() {
   }
 
   return (
-    <Card className="border-border/50 shadow-premium backdrop-blur-sm bg-card/95">
-      <CardHeader className="flex flex-row items-center justify-between">
+    <Card className="border-2 border-primary/10 shadow-pastel-md backdrop-blur-sm">
+      <CardHeader className="flex flex-row items-center justify-between border-b border-primary/5">
         <div className="flex items-center gap-2">
-          <Users className="h-5 w-5 text-primary" />
+          <div className="p-2 rounded-lg bg-gradient-pastel-secondary">
+            <Users className="h-5 w-5 text-white" />
+          </div>
           <div>
-            <CardTitle className="text-lg font-bold text-foreground">Today's Attendance</CardTitle>
+            <CardTitle className="text-lg font-bold text-primary">Today's Attendance</CardTitle>
             <p className="text-body-sm text-muted-foreground">Class attendance records</p>
           </div>
         </div>
-        <Button variant="ghost" size="sm" onClick={() => navigate('/teacher/reports/attendance')}>
+        <Button variant="ghost" size="sm" onClick={() => navigate('/teacher/reports/attendance')} className="text-primary hover:text-primary-dark hover:bg-primary/10">
           View all
         </Button>
       </CardHeader>
       
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-3 p-6">
         {attendanceData.map((record, index) => (
           <div 
             key={record.id}
-            className="flex items-center justify-between p-3 rounded-lg hover:bg-primary/5 transition-all duration-300 group animate-fade-in cursor-pointer border border-border/30"
+            className="flex items-center justify-between p-3 rounded-lg hover:bg-primary/5 transition-all duration-300 group animate-fade-in cursor-pointer border-2 border-transparent hover:border-primary/20 bg-white/50"
             style={{ animationDelay: `${index * 100}ms` }}
             onClick={() => handleViewAttendance(record.id)}
           >
@@ -85,7 +87,7 @@ export function AttendanceToday() {
               <Button size="sm" variant="outline" onClick={(e) => {
                 e.stopPropagation()
                 handleViewAttendance(record.id)
-              }}>
+              }} className="border-primary/30 hover:border-primary/50 text-primary hover:text-primary-dark">
                 <Eye className="h-3 w-3 mr-1" />
                 View
               </Button>

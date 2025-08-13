@@ -15,17 +15,27 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.1 83.2% 9.8%;
-    --primary-foreground: 210 40% 98%;
+    /* Pastel Primary Colors */
+    --primary: 210 65% 75%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 210 70% 85%;
+    --primary-dark: 210 60% 65%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Pastel Secondary Colors */
+    --secondary: 150 40% 85%;
+    --secondary-foreground: 150 60% 25%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Pastel Accent Colors */
+    --accent: 270 50% 85%;
+    --accent-foreground: 270 60% 25%;
+    --accent-teal: 180 45% 75%;
+    --accent-teal-light: 180 50% 85%;
+    --accent-orange: 25 70% 80%;
+    --accent-orange-light: 25 75% 90%;
+    --accent-orange-dark: 25 65% 70%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -33,9 +43,50 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
 
-    --ring: 222.1 83.2% 9.8%;
+    --ring: 210 65% 75%;
 
     --radius: 0.5rem;
+
+    /* Sidebar Colors */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222.2 84% 4.9%;
+    --sidebar-primary: 210 65% 75%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 70% 85%;
+    --sidebar-accent-foreground: 210 60% 25%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 210 65% 75%;
+
+    /* Success Colors (Pastel Green) */
+    --success: 150 60% 70%;
+    --success-light: 150 65% 80%;
+    --success-bg: 150 40% 95%;
+
+    /* Warning Colors (Pastel Yellow) */
+    --warning: 45 85% 75%;
+    --warning-light: 45 90% 85%;
+    --warning-bg: 45 70% 95%;
+
+    /* Error Colors (Pastel Red) */
+    --error: 0 65% 75%;
+    --error-light: 0 70% 85%;
+    --error-bg: 0 50% 95%;
+
+    /* Spacing Variables */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
+
+    /* Shadow Variables with Pastel Colors */
+    --shadow-sm: 0 1px 2px 0 rgba(210, 180, 220, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(210, 180, 220, 0.1), 0 2px 4px -1px rgba(210, 180, 220, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(210, 180, 220, 0.1), 0 4px 6px -2px rgba(210, 180, 220, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(210, 180, 220, 0.1), 0 10px 10px -5px rgba(210, 180, 220, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(210, 180, 220, 0.25);
   }
 
   .dark {
@@ -48,17 +99,17 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: 210 65% 75%;
     --primary-foreground: 222.1 83.2% 9.8%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 150 40% 85%;
+    --secondary-foreground: 150 60% 25%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.9%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 270 50% 85%;
+    --accent-foreground: 270 60% 25%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -66,7 +117,16 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
 
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 210 65% 75%;
+
+    --sidebar-background: 222.2 84% 4.9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 210 65% 75%;
+    --sidebar-primary-foreground: 222.1 83.2% 9.8%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 210 65% 75%;
   }
 }
 
