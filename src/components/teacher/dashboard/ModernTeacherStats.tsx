@@ -56,35 +56,34 @@ const stats = [
 
 export function ModernTeacherStats() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+    <>
       {stats.map((stat, index) => (
         <Card 
           key={stat.title}
-          className={`relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group animate-fade-in ${stat.gradient}`}
+          className={`relative overflow-hidden border-0 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 group animate-fade-in ${stat.gradient}`}
           style={{ animationDelay: `${index * 100}ms` }}
         >
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className={`p-3 rounded-xl ${stat.iconBg} shadow-md group-hover:shadow-lg transition-shadow`}>
-                <stat.icon className="h-6 w-6 text-white" />
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className={`p-2 rounded-lg ${stat.iconBg} shadow-sm group-hover:shadow-md transition-shadow`}>
+                <stat.icon className="h-4 w-4 text-white" />
               </div>
-              
-              <Badge className={`${stat.badgeColor} font-medium`}>
-                {stat.change}
-              </Badge>
             </div>
             
-            <div className="space-y-2">
-              <h3 className={`text-3xl font-bold ${stat.textColor} group-hover:scale-105 transition-transform`}>
+            <div className="space-y-1">
+              <h3 className={`text-2xl font-bold ${stat.textColor} group-hover:scale-105 transition-transform`}>
                 {stat.value}
               </h3>
-              <p className={`text-sm font-medium ${stat.subtitleColor}`}>
+              <p className={`text-xs font-medium ${stat.subtitleColor}`}>
                 {stat.title}
               </p>
+              <Badge className={`${stat.badgeColor} text-xs font-medium`}>
+                {stat.change}
+              </Badge>
             </div>
           </CardContent>
         </Card>
       ))}
-    </div>
+    </>
   )
 }

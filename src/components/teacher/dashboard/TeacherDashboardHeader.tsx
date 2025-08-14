@@ -3,16 +3,16 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Bell, Settings, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { TeacherProfileDropdown } from "./TeacherProfileDropdown"
 
 export function TeacherDashboardHeader() {
   return (
-    <header className="sticky top-0 z-50 glass border-b border-border/40 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 bg-gradient-to-r from-slate-50 via-blue-50/50 to-indigo-50/50 border-b border-border/40 backdrop-blur-xl shadow-sm">
       <div className="flex items-center justify-between px-4 md:px-6 py-4">
         <div className="flex items-center gap-4">
           <SidebarTrigger className="lg:hidden hover:bg-primary/10 transition-colors" />
           <div className="animate-fade-in">
-            <h1 className="text-display-sm font-bold bg-gradient-to-r from-primary to-accent-orange bg-clip-text text-transparent">
+            <h1 className="text-display-sm font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Teacher Dashboard
             </h1>
           </div>
@@ -24,18 +24,18 @@ export function TeacherDashboardHeader() {
             <Button
               variant="ghost"
               size="icon"
-              className="relative hover:bg-primary/10 transition-colors group"
+              className="relative hover:bg-blue-50 transition-colors group"
             >
-              <Calendar className="h-5 w-5 transition-transform group-hover:scale-110" />
+              <Calendar className="h-5 w-5 text-blue-600 transition-transform group-hover:scale-110" />
             </Button>
             
             <Button
               variant="ghost"
               size="icon"
-              className="relative hover:bg-primary/10 transition-colors group"
+              className="relative hover:bg-blue-50 transition-colors group"
             >
-              <Bell className="h-5 w-5 transition-transform group-hover:scale-110" />
-              <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-accent-orange hover:bg-accent-orange/90 text-xs animate-pulse">
+              <Bell className="h-5 w-5 text-blue-600 transition-transform group-hover:scale-110" />
+              <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white text-xs animate-pulse">
                 3
               </Badge>
             </Button>
@@ -43,23 +43,14 @@ export function TeacherDashboardHeader() {
             <Button
               variant="ghost"
               size="icon"
-              className="hover:bg-primary/10 transition-colors group"
+              className="hover:bg-blue-50 transition-colors group"
             >
-              <Settings className="h-5 w-5 transition-transform group-hover:rotate-90" />
+              <Settings className="h-5 w-5 text-blue-600 transition-transform group-hover:rotate-90" />
             </Button>
             
-            {/* Teacher Profile */}
-            <div className="flex items-center gap-2 ml-2">
-              <Avatar className="h-9 w-9 border-2 border-primary/20 hover:border-primary/40 transition-colors">
-                <AvatarImage src="" />
-                <AvatarFallback className="bg-gradient-to-br from-primary to-accent-orange text-white font-semibold">
-                  TR
-                </AvatarFallback>
-              </Avatar>
-              <div className="hidden md:block">
-                <p className="text-body-sm font-medium text-foreground">Prof. Teacher</p>
-                <p className="text-body-xs text-muted-foreground">Mathematics Dept.</p>
-              </div>
+            {/* Teacher Profile Dropdown */}
+            <div className="ml-2">
+              <TeacherProfileDropdown />
             </div>
           </div>
         </div>

@@ -53,11 +53,42 @@ const activities = [
 ]
 
 export function RecentActivity() {
+  const getTitleColor = (title: string) => {
+    if (title.toLowerCase().includes('math') || title.toLowerCase().includes('assignment')) {
+      return "text-blue-600 hover:text-blue-700"
+    }
+    if (title.toLowerCase().includes('class') || title.toLowerCase().includes('rescheduled')) {
+      return "text-purple-600 hover:text-purple-700"
+    }
+    if (title.toLowerCase().includes('student') || title.toLowerCase().includes('questions')) {
+      return "text-emerald-600 hover:text-emerald-700"
+    }
+    if (title.toLowerCase().includes('attendance')) {
+      return "text-orange-600 hover:text-orange-700"
+    }
+    return "text-indigo-600 hover:text-indigo-700"
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "completed":
+        return "bg-emerald-100 text-emerald-700 border-emerald-200"
+      case "pending":
+        return "bg-amber-100 text-amber-700 border-amber-200"
+      case "updated":
+        return "bg-blue-100 text-blue-700 border-blue-200"
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-200"
+    }
+  }
+
   return (
     <Card className="border-border/50 shadow-premium backdrop-blur-sm bg-card/95 h-fit">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
-          <CardTitle className="text-xl font-bold text-foreground">Recent Activity</CardTitle>
+          <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Recent Activity
+          </CardTitle>
           <p className="text-body-sm text-muted-foreground mt-1">
             Latest updates and notifications
           </p>
@@ -85,17 +116,12 @@ export function RecentActivity() {
             
             <div className="flex-1 min-w-0 space-y-1">
               <div className="flex items-start justify-between gap-2">
-                <h4 className="font-medium text-foreground text-body-sm group-hover:text-primary transition-colors line-clamp-1">
+                <h4 className={`font-medium text-body-sm transition-colors line-clamp-1 ${getTitleColor(activity.title)}`}>
                   {activity.title}
                 </h4>
                 <Badge 
                   variant="secondary" 
-                  className={`
-                    text-xs shrink-0
-                    ${activity.status === "completed" ? "bg-success/10 text-success border-success/20" : ""}
-                    ${activity.status === "pending" ? "bg-warning/10 text-warning border-warning/20" : ""}
-                    ${activity.status === "updated" ? "bg-primary/10 text-primary border-primary/20" : ""}
-                  `}
+                  className={`text-xs shrink-0 ${getStatusColor(activity.status)}`}
                 >
                   {activity.status}
                 </Badge>

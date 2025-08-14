@@ -13,19 +13,24 @@ export function TeacherDashboard() {
       <TeacherDashboardHeader />
       
       <div className="flex-1 overflow-y-auto">
-        <div className="p-4 md:p-6 space-y-8 max-w-7xl mx-auto">
-          {/* Quick Actions */}
-          <div className="animate-slide-up stagger-1">
-            <ModernQuickActions />
-          </div>
-          
-          {/* Teacher Stats */}
-          <div className="animate-slide-up stagger-2">
-            <ModernTeacherStats />
+        <div className="p-4 md:p-6 space-y-6 max-w-7xl mx-auto">
+          {/* Optimized Top Section - Quick Actions and Stats in a more compact layout */}
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 animate-slide-up stagger-1">
+            {/* Quick Actions - Compact Version */}
+            <div className="xl:col-span-2">
+              <ModernQuickActions />
+            </div>
+            
+            {/* Stats - More compact grid */}
+            <div className="xl:col-span-1">
+              <div className="grid grid-cols-2 gap-3">
+                <ModernTeacherStats />
+              </div>
+            </div>
           </div>
           
           {/* Today's Schedule */}
-          <div className="animate-slide-up stagger-3">
+          <div className="animate-slide-up stagger-2">
             <ModernUpcomingClasses />
           </div>
           
@@ -33,17 +38,17 @@ export function TeacherDashboard() {
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
             <div className="xl:col-span-2 space-y-6">
               {/* Batch Reports */}
-              <div className="animate-slide-up stagger-4">
+              <div className="animate-slide-up stagger-3">
                 <ModernBatchReports />
               </div>
               
               {/* Today's Attendance */}
-              <div className="animate-slide-up stagger-5">
+              <div className="animate-slide-up stagger-4">
                 <ModernAttendanceToday />
               </div>
             </div>
             
-            <div className="xl:col-span-1 animate-slide-up stagger-6">
+            <div className="xl:col-span-1 animate-slide-up stagger-5">
               <RecentActivity />
             </div>
           </div>

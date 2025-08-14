@@ -70,10 +70,10 @@ export function ModernAttendanceToday() {
       <CardHeader className="border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100 pb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-emerald-500/10 to-emerald-600/20 rounded-lg">
-              <Users className="h-5 w-5 text-emerald-600" />
+            <div className="p-2 bg-gradient-to-br from-blue-500/10 to-purple-600/20 rounded-lg">
+              <Users className="h-5 w-5 text-blue-600" />
             </div>
-            <CardTitle className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+            <CardTitle className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Today's Attendance
             </CardTitle>
           </div>
@@ -81,7 +81,7 @@ export function ModernAttendanceToday() {
             variant="outline" 
             size="sm"
             onClick={() => navigate('/teacher/reports/attendance')}
-            className="hover:bg-emerald-50 border-emerald-200 text-emerald-600 hover:text-emerald-700"
+            className="hover:bg-blue-50 border-blue-200 text-blue-600 hover:text-blue-700"
           >
             View All
           </Button>
@@ -115,7 +115,7 @@ export function ModernAttendanceToday() {
                     <Button 
                       variant="outline" 
                       size="sm"
-                      className="hover:bg-emerald-50 shrink-0 border-emerald-200 text-emerald-600 hover:text-emerald-700 hover:border-emerald-300"
+                      className="hover:bg-blue-50 shrink-0 border-blue-200 text-blue-600 hover:text-blue-700 hover:border-blue-300"
                     >
                       <Eye className="h-4 w-4 mr-2" />
                       View Details
