@@ -1,8 +1,7 @@
 
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useNavigate } from "react-router-dom"
-import { Plus, BookOpen, Calendar, FileText, Video } from "lucide-react"
+import { Plus, BookOpen, FileText, Video, Presentation } from "lucide-react"
 
 const quickActions = [
   {
@@ -17,10 +16,10 @@ const quickActions = [
     subtitleColor: "text-blue-700"
   },
   {
-    title: "Schedule Class", 
-    subtitle: "Plan sessions",
-    icon: Calendar,
-    path: "/teacher/schedule/create",
+    title: "AI PPT Generator", 
+    subtitle: "Create presentations",
+    icon: Presentation,
+    path: "/teacher/ppt-generator",
     gradient: "bg-gradient-to-br from-emerald-50 to-teal-100",
     iconBg: "bg-emerald-500",
     hoverGradient: "hover:from-emerald-100 hover:to-teal-200",
