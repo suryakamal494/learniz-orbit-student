@@ -58,6 +58,7 @@ const submenuItems = {
     { title: "Content Library", url: "/teacher/lms/library", emoji: "🗂️" },
     { title: "Directory", url: "/teacher/lms/directory", emoji: "📁" },
     { title: "Notes", url: "/teacher/lms/notes", emoji: "📝" },
+    { title: "AI Slides", url: "/teacher/lms/ai-slides", emoji: "🎨" },
   ],
   "Reports": [
     { title: "Attendance", url: "/teacher/reports/attendance", emoji: "📊" },
