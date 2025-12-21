@@ -74,6 +74,7 @@ import CreateNotesPage from './pages/teacher/lms/notes/CreateNotesPage';
 
 // Teacher AI Tools
 import PPTGeneratorPage from './pages/teacher/PPTGeneratorPage';
+import SlidesGPTPage from './pages/teacher/lms/SlidesGPTPage';
 
 import { AppLayout } from './components/layout/AppLayout';
 
@@ -173,6 +174,7 @@ function App() {
           <Route path="lms/notes" element={<NotesPage />} />
           <Route path="lms/notes/create" element={<CreateNotesPage />} />
           <Route path="lms/directory" element={<LMSDirectoryPage />} />
+          <Route path="lms/ai-slides" element={<SlidesGPTPage />} />
 
           {/* AI Tools */}
           <Route path="ppt-generator" element={<PPTGeneratorPage />} />
