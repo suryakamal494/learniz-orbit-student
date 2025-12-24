@@ -143,15 +143,30 @@ Return ONLY the JSON object, no additional text.`;
       }
       jsonStr = jsonStr.trim();
 
-      // Escape problematic backslash sequences that aren't valid JSON escapes
-      // Valid JSON escapes: \", \\, \/, \b, \f, \n, \r, \t, \uXXXX
-      // LaTeX symbols like \sin, \theta, \frac cause issues
-      jsonStr = jsonStr.replace(/\\([^"\\\/bfnrtu])/g, '\\\\$1');
+      // Fix LaTeX backslashes that break JSON parsing
+      // Replace single backslashes with double backslashes, but preserve already escaped ones
+      // First, temporarily replace valid JSON escapes, then escape remaining backslashes, then restore
+      jsonStr = jsonStr
+        .replace(/\\\\/g, '<<DOUBLE_BACKSLASH>>')  // Preserve already escaped backslashes
+        .replace(/\\"/g, '<<ESCAPED_QUOTE>>')      // Preserve escaped quotes
+        .replace(/\\n/g, '<<NEWLINE>>')            // Preserve newlines
+        .replace(/\\r/g, '<<CARRIAGE_RETURN>>')    // Preserve carriage returns
+        .replace(/\\t/g, '<<TAB>>')                // Preserve tabs
+        .replace(/\\b/g, '<<BACKSPACE>>')          // Preserve backspace
+        .replace(/\\f/g, '<<FORMFEED>>')           // Preserve form feed
+        .replace(/\\/g, '\\\\')                    // Escape all remaining backslashes
+        .replace(/<<DOUBLE_BACKSLASH>>/g, '\\\\') // Restore double backslashes
+        .replace(/<<ESCAPED_QUOTE>>/g, '\\"')      // Restore escaped quotes
+        .replace(/<<NEWLINE>>/g, '\\n')            // Restore newlines
+        .replace(/<<CARRIAGE_RETURN>>/g, '\\r')    // Restore carriage returns
+        .replace(/<<TAB>>/g, '\\t')                // Restore tabs
+        .replace(/<<BACKSPACE>>/g, '\\b')          // Restore backspace
+        .replace(/<<FORMFEED>>/g, '\\f');          // Restore form feed
 
       presentationData = JSON.parse(jsonStr);
     } catch (parseError) {
       console.error("JSON Parse error:", parseError);
-      console.error("Raw content:", content);
+      console.error("Raw content:", content.substring(0, 500));
       throw new Error("Failed to parse AI response as JSON");
     }
 
