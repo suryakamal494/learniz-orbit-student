@@ -143,6 +143,11 @@ Return ONLY the JSON object, no additional text.`;
       }
       jsonStr = jsonStr.trim();
 
+      // Escape problematic backslash sequences that aren't valid JSON escapes
+      // Valid JSON escapes: \", \\, \/, \b, \f, \n, \r, \t, \uXXXX
+      // LaTeX symbols like \sin, \theta, \frac cause issues
+      jsonStr = jsonStr.replace(/\\([^"\\\/bfnrtu])/g, '\\\\$1');
+
       presentationData = JSON.parse(jsonStr);
     } catch (parseError) {
       console.error("JSON Parse error:", parseError);
